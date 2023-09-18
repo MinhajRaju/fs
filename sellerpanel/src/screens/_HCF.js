@@ -212,13 +212,28 @@ export default class HCF extends React.Component {
     <div id="navMenuLevelFirst" class="collapse "
         data-bs-parent="#sideNavbar">
         <ul class="nav flex-column">
+        <li class="nav-item">
+                <a class="nav-link " href="/addp"
+                   >
+                    Add Product
+                </a>
+                
+            </li>
             <li class="nav-item">
-                <a class="nav-link " href="/ap"
+                <a class="nav-link " href="/allp"
                    >
                     All Product
                 </a>
                 
             </li>
+            <li class="nav-item">
+                <a class="nav-link " href="/media"
+                   >
+                   Media
+                </a>
+                
+            </li>
+            
             
         </ul>
     </div>

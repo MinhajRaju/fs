@@ -15,7 +15,12 @@ urlpatterns = [
 
     path('sellerproduct/' , views.SerllerProduct , name='SerllerProduct'),
     
-    path('bulkaction/' , views.BulkAction , name="BulkAction")
+    path('bulkaction/' , views.BulkAction , name="BulkAction"),
+        
+    path('media/' , views.Media , name="BulkAction"),
+    path('mediaupload/' , views.MediaUpload , name="MediaUpload"),
+
+    path('bulkmediaremove/' , views.RemoveMultiple , name="RemoveMultiple")
 
 
 ]

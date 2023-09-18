@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 import Dashboard from "./screens/_Dashborad";
 import HCF from "./screens/_HCF";
 import AllProduct from "./screens/_AllProduct";
-
+import Media from "./screens/_Media";
+import AddProduct from "./screens/_AddProduct";
 
 
 export default class App extends React.Component {
@@ -40,7 +41,9 @@ export default class App extends React.Component {
             <Route element={<HCF/>} >
 
             <Route exact path="/" element={<Dashboard />} />
-            <Route exact path="/ap" element={<AllProduct />} />
+            <Route exact path="/allp" element={<AllProduct />} />
+            <Route exact path="/media" element={<Media />} />
+            <Route exact path="/addp" element={<AddProduct/>} />
             
 
             </Route>

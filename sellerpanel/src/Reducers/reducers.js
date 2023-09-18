@@ -2,6 +2,7 @@ import {
     
     
     SELLER_RELETAD_PRODUCT,
+    MEDIA_ACTION
    
 
 
@@ -26,4 +27,21 @@ export const SellerItemReducers = (state = {}, action) => {
 
 
 }
+
+
+export const MediaItemReducers = (state = {}, action) => {
+
+    switch (action.type) {
+       
+        case MEDIA_ACTION:
+            return { loading: false, MediaData: action.payload }
+       
+        default:
+            return state
+    }
+
+
+}
+
+
 

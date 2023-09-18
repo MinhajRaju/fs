@@ -133,3 +133,54 @@ def BulkAction(request ):
 
 
     
+@api_view(['GET','POST'])
+def Media(request ): 
+    
+    seller = Seller_Profile.objects.get(id=1)
+    seller_image = Product_Image.objects.filter(seller=seller)
+    print(seller_image)
+
+
+    serializer = ProductImageSerializer(seller_image ,many=True).data
+    return Response(serializer)
+    
+
+
+    
+    
+@api_view(['GET','POST'])
+def MediaUpload(request ): 
+    seller = Seller_Profile.objects.get(id=1)
+   
+    image = request.FILES.getlist('file')
+    
+    for i in image:
+        Product_Image.objects.create(
+            seller = seller,
+            photo  = i
+        )
+       
+    seller_image = Product_Image.objects.filter(seller=seller)  
+    serializer = ProductImageSerializer(seller_image ,many=True).data
+    return Response(serializer)
+
+    
+
+@api_view(['GET','POST'])
+def RemoveMultiple(request ): 
+    seller = Seller_Profile.objects.get(id=1)
+   
+    idArray = request.data['idArray'] 
+
+    for i in idArray:
+        Product_Image.objects.get(id=i).delete()
+   
+       
+    seller_image = Product_Image.objects.filter(seller=seller)  
+    serializer = ProductImageSerializer(seller_image ,many=True).data
+    return Response(serializer)
+
+    
+
+
+   
