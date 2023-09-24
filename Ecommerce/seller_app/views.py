@@ -17,8 +17,7 @@ from customer_app.serializers import *
 from po_app.serializers import *
 from seller_app.serializers import *
 
-
-
+from django.db.models import Q
 
 
 
@@ -184,3 +183,111 @@ def RemoveMultiple(request ):
 
 
    
+
+
+   
+@api_view(['GET','POST'])
+def SellerWiseOrder(request ): 
+
+
+    if request.data['flag'] == "Cancle":
+        order_details = Order_Details.objects.get(id=request.data['id'])
+        product  = Product.objects.get(id=order_details.product.id)
+        product.totalqty += order_details.qty
+        product.save()
+        
+
+    if request.data['flag'] != None:
+        Order_Details.objects.filter(id=request.data['id']).update(order_status=request.data['flag'])
+
+    seller = Seller_Profile.objects.get(id=1)
+    order = Order.objects.get(id=int(request.data['orderId']))
+
+
+    
+
+    if len(request.data['status']) == 0 :   
+        order_with_order_Details = Order_Details.objects.filter(seller=seller).filter(order_no=order)
+    else:
+        order_with_order_Details = Order_Details.objects.filter(seller=seller).filter(order_no=order).filter(Q(order_status__in=request.data['status']))
+
+    serializer  = OrderDetailSerializer(order_with_order_Details , many=True).data
+
+    return Response(serializer)
+
+
+
+
+
+   
+@api_view(['GET','POST'])
+def OrderStatusUpdate(request ,id ): 
+
+    Order_Details.objects.filter(id=id).update(order_status=request.data)
+    seller = Seller_Profile.objects.get(id=1)
+    order = Order.objects.get(id=48)       
+    order_with_order_Details = Order_Details.objects.filter(seller=seller).filter(order_no=order)       
+    serializer  = OrderDetailSerializer(order_with_order_Details , many=True).data
+    return Response(serializer)
+
+
+
+
+
+
+
+
+   
+@api_view(['GET','POST'])
+def SellerOrderId(request ): 
+
+    order = Order.objects.filter(seller_id_array__contains=[1]) 
+    serializer  = OrderSerailizer(order , many=True).data
+    return Response(serializer)
+
+
+
+
+
+   
+@api_view(['GET','POST'])
+def OrderStatusLength(request ):   
+
+    order_details = Order_Details.objects.filter(seller=1)  
+    serializer  = OrderDetailSerializer(order_details , many=True).data
+
+    return Response(serializer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+@api_view(['GET','POST'])
+def OrderInfo(request  , id): 
+
+
+    order = Order.objects.get(id=id)
+
+    serializer  = OrderSerailizer(order , many=False).data
+
+    return Response(serializer)
+
+    
+    

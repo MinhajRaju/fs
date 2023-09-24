@@ -78,23 +78,63 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 
-class OrderDetailSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Order_Details
-        fields = '__all__'
 
 
 class OrderSerailizer(serializers.ModelSerializer):
 
-    order   = serializers.SerializerMethodField(read_only=True)
-
+    customer = serializers.SerializerMethodField(read_only=True)
+    shipping = serializers.SerializerMethodField(read_only=True)
+    order = serializers.SerializerMethodField(read_only=True)
+    
+    
     class Meta:
         model = Order
-        fields = ['order_no' , 'order']
+        fields = ['id' ,'customer' , 'shipping' , 'order']
+    
+    
+    def get_customer(self, obj):
+        return CustomerProfileSerializer(obj.customer , many=False).data
+    
+    def get_shipping(self, obj):
+        return ShippingAdressSerializer(obj.shipping , many=False).data
 
-    def get_order(self , obj):
-        return OrderDetailSerializer(obj.order_details_set.all(), many=True).data
+     
+    def get_order(self, obj):
+        return OrderDetailSerializer(obj.order_details_set.all() , many=True).data
+        
+
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+
+  
+    product = serializers.SerializerMethodField(read_only=True)
+   
+    seller = serializers.SerializerMethodField(read_only=True)
+    variation = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Order_Details
+        fields = ['id' , 'product' , 'seller' , 'order_no','order_date' , 'variation','order_status' , 'qty' , 'tprice']
+    
+
+    def get_product(self, obj):
+        return ProductSerializer(obj.product , many=False).data    
+   
+        
+    def get_seller(self, obj):
+        return SellerProfileSerializer(obj.seller , many=False).data
+            
+    def get_variation(self, obj):
+        return ProductVariation(obj.variation_id , many=False).data
+
+
+  
+
+  
+
+
 
 
 

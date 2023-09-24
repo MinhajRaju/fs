@@ -577,7 +577,7 @@ export const OrderItemSave = () => async (dispatch , getState) => {
         await axios.post(`/api/po/orderitemsave/`, parameter,config)
 
         localStorage.removeItem('cartItems')
-        window.location.replace('/')
+       // window.location.replace('/')
 
     }
     catch (error) {

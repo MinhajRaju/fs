@@ -1,3 +1,14 @@
 export const SELLER_RELETAD_PRODUCT = "SELLER_RELETAD_PRODUCT"
 export const BULK_ACTION =  "BULK_ACTION"
 export const MEDIA_ACTION =  "MEDIA_ACTION"
+
+export const SELLER_ORDER=  "SELLER_ORDER"
+
+export const SELLER_WISE_ORDER = 'SELLER_WISE_ORDER'
+
+
+export const ORDER_INFO = 'ORDER_INFO'
+
+export const STATUS_FLAG = "STATUS_FLAG"
+
+export const STATUS_LENGTH = "STATUS_LENGTH"

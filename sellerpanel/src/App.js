@@ -10,6 +10,8 @@ import HCF from "./screens/_HCF";
 import AllProduct from "./screens/_AllProduct";
 import Media from "./screens/_Media";
 import AddProduct from "./screens/_AddProduct";
+import OrderList from "./screens/_OrderList";
+import OrderDetails from "./screens/_OrderDetails";
 
 
 export default class App extends React.Component {
@@ -44,6 +46,8 @@ export default class App extends React.Component {
             <Route exact path="/allp" element={<AllProduct />} />
             <Route exact path="/media" element={<Media />} />
             <Route exact path="/addp" element={<AddProduct/>} />
+            <Route exact path="/ol" element={<OrderList/>} />
+            <Route exact path="/od/:id" element={<OrderDetails/>} />
             
 
             </Route>

@@ -15,7 +15,7 @@ class Product(models.Model):
     title = models.CharField(max_length=200 , null=True , blank=True)
     slug = models.SlugField(max_length=250 , null=True , blank=True)
     sku = models.CharField(max_length=150 , null=True , blank=True)
-    totalqty=models.CharField(max_length=150 , null=True, blank=True)
+    totalqty=models.IntegerField(max_length=150 , null=True, blank=True)
     flashsale = models.BooleanField(default=False , null=True , blank=True)
     discount   = models.IntegerField(default = 0 , null=True , blank=True)    
     rating  = models.FloatField(default=0 , null=True , blank=True)
@@ -99,29 +99,26 @@ class shippingAddress(models.Model):
 class Order(models.Model):
     customer  = models.ForeignKey(Customer_Profile , on_delete=models.CASCADE , null=True , blank=True)
     shipping = models.ForeignKey(shippingAddress , on_delete=models.CASCADE , null=True , blank=True)
-   
+    seller_id_array = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )   
     status = models.CharField(max_length=200 , null=True , blank=True)
     payment_type = models.CharField(max_length=200 , null=True , blank=True)
-    payment_status = models.CharField(max_length=150 , null=True , blank=True)
-    grand_total = models.CharField(max_length=150 , null=True , blank=True)
-   
+    payment_status = models.CharField(max_length=150 , null=True , blank=True)      
     order_date = models.DateTimeField(auto_now_add=True , blank=True , null=True)
     update_date = models.DateTimeField(auto_now=True, blank=True , null=True)
 
 
-    def __str__(self):
-        return self.payment_status
-
+ 
 
 
 
 
 class Order_Details(models.Model):
-    product=  models.ForeignKey(Product ,  on_delete=models.CASCADE)
+    product=  models.ForeignKey(Product ,  on_delete=models.CASCADE , null=True , blank=True)
     order_no= models.ForeignKey(Order , on_delete=models.CASCADE , null=True , blank=True)
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     variation_id = models.ForeignKey(Product_Variation , on_delete=models.SET_NULL , null=True , blank=True)
     order_date = models.DateTimeField(auto_now_add=True , blank=True , null=True)
+    order_status = models.CharField(max_length=200 , null=True , blank=True)
     update_date = models.DateTimeField(auto_now=True, blank=True , null=True)   
     qty = models.IntegerField(null=True  , blank=True)
     tprice = models.IntegerField(null=True , blank=True)

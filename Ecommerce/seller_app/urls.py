@@ -20,7 +20,14 @@ urlpatterns = [
     path('media/' , views.Media , name="BulkAction"),
     path('mediaupload/' , views.MediaUpload , name="MediaUpload"),
 
-    path('bulkmediaremove/' , views.RemoveMultiple , name="RemoveMultiple")
+    path('bulkmediaremove/' , views.RemoveMultiple , name="RemoveMultiple"),
 
+    path('sellerwiseorder/' , views.SellerWiseOrder , name="RemoveMultiple"),
+    path('sellerorderid/' , views.SellerOrderId , name="SellerOrderId"),
+    path('orderinfo/<int:id>' , views.OrderInfo , name="OrderInfo"),
+    path('orderstatus/<int:id>' , views.OrderStatusUpdate , name="OrderInfo"),
+
+
+    path('statuslength/',  views.OrderStatusLength , name="OrderStatusLength")
 
 ]

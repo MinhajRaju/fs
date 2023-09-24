@@ -224,16 +224,15 @@ def OrderItemSave(request):
             else:
                 variation = j['variationid']
 
-            Order_Details.objects.create(
+            order_details_instance  =  Order_Details.objects.create(
                 product = product,
                 order_no = orderInstance,
                 seller = sellerinstance,
                 variation_id = variation,
                 qty = j['pqty']
-
-
             )
 
+          
 
 
     return Response()

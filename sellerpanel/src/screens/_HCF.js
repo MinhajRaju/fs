@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export default class HCF extends React.Component {
@@ -189,7 +190,7 @@ export default class HCF extends React.Component {
                                     <ul class="navbar-nav flex-column" id="sideNavbar">
 
                                         <li class="nav-item ">
-                                            <a class="nav-link " href="index.html" >
+                                            <a class="nav-link " href="/" >
                                                 <div class="d-flex align-items-center">
                                                     <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
                                                     <span class="nav-link-text">Dashboard</span>
@@ -213,24 +214,24 @@ export default class HCF extends React.Component {
         data-bs-parent="#sideNavbar">
         <ul class="nav flex-column">
         <li class="nav-item">
-                <a class="nav-link " href="/addp"
+                <Link class="nav-link " to="/addp"
                    >
                     Add Product
-                </a>
+                </Link>
                 
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="/allp"
+                <Link class="nav-link " to="/allp"
                    >
                     All Product
-                </a>
+                </Link>
                 
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="/media"
+                <Link class="nav-link " to="/media"
                    >
                    Media
-                </a>
+                </Link>
                 
             </li>
             
@@ -238,6 +239,31 @@ export default class HCF extends React.Component {
         </ul>
     </div>
 </li>
+
+
+<li class="nav-item">
+                                                            <a class="nav-link  " href="#"
+                                                                data-bs-toggle="collapse" data-bs-target="#navOrders" aria-expanded="false"
+                                                                aria-controls="navOrders">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
+                                                                    <span class="nav-link-text">Orders</span>
+                                                                </div>
+                                                            </a>
+                                                            <div id="navOrders" class="collapse"
+                                                                data-bs-parent="#sideNavbar">
+                                                                <ul class="nav flex-column">
+                                                                    <li class="nav-item ">
+                                                                        <Link class="nav-link "
+                                                                            to="/ol">
+                                                                           Order  List
+                                                                        </Link>
+                                                                    </li>
+                                                                 
+                                                                   
+                                                                </ul>
+                                                            </div>
+                                                        </li>
 
                                         
 
