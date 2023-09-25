@@ -118,7 +118,7 @@ class Order_Details(models.Model):
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     variation_id = models.ForeignKey(Product_Variation , on_delete=models.SET_NULL , null=True , blank=True)
     order_date = models.DateTimeField(auto_now_add=True , blank=True , null=True)
-    order_status = models.CharField(max_length=200 , null=True , blank=True)
+    order_status = models.CharField(default='Pending' ,max_length=200 , null=True , blank=True)
     update_date = models.DateTimeField(auto_now=True, blank=True , null=True)   
     qty = models.IntegerField(null=True  , blank=True)
     tprice = models.IntegerField(null=True , blank=True)

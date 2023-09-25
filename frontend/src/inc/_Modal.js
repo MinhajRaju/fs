@@ -5,20 +5,63 @@ import store from '../store';
 import { RemoveFromCart } from '../Actions/actions';
 import {  Form } from 'react-bootstrap'
 import { AddToCart } from "../Actions/actions";
+import { CustomerloginAction } from "../Actions/actions";
+import { Link } from 'react-router-dom';
+import {AES, enc}from 'crypto-js';
 
 const mapStateToProps = (state) =>{
 
-    return {cart: state.CartReducer.cartItems}
+    return {cart: state.CartReducer.cartItems ,CustomerInfo:state.CustomerLoginReducers.CustomerInfo}
 
 }
 
 export default connect(mapStateToProps)(class Modal extends React.Component {
 
 
+    
+  constructor(props){
+    super(props)
+
+    this.state = {
+      email:null,
+    
+      pass:null
+    }
+
+  }
+
+  
+  submit =  (e) =>{
+    e.preventDefault()
+    store.dispatch(CustomerloginAction(this.state.email,this.state.pass)).then(()=>{
+
+    const  data = this.props.CustomerInfo
+
+    if(data.customer.length == 0){
+      console.log("this is not a customer acccoutn")
+    }
+    else{
+
+     
+      window.location.reload()
+     
+    }
+    }).catch((err)=>{
+        
+      //console.log(err)
+
+    })
+
+
+  }
+  
+
+
+
     render() {
       
 
-      const cart = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];
+      const cart = localStorage.getItem('CRT') ? JSON.parse(AES.decrypt(localStorage.getItem('CRT'), 'CARTITEMS').toString(enc.Utf8)) : [];
 
       const itemsPrice = cart.reduce((acc, item) => acc + item.price * item.pqty, 0).toFixed(2)
       
@@ -138,34 +181,30 @@ export default connect(mapStateToProps)(class Modal extends React.Component {
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content p-4">
                             <div class="modal-header border-0">
-                                <h5 class="modal-title fs-3 fw-bold" id="userModalLabel">Sign Up</h5>
+                              
 
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>
-                                    <div class="mb-3">
-                                        <label for="fullName" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="fullName" placeholder="Enter Your Name" required="" />
-                                    </div>
+                                   
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="email" placeholder="Enter Email address" required="" />
+                                        <input onChange={(e) => this.setState({email:e.target.value})} type="email" class="form-control" id="inputEmail4" placeholder="Email" required />
                                     </div>
 
                                     <div class="mb-5">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="password" placeholder="Enter Password" required="" />
-                                        <small class="form-text">By Signup, you agree to our <a href="javascript:void(0)">Terms of Service</a> & <a
-                                            href="javascript:void(0)">Privacy Policy</a></small>
+                                        <input onChange={(e) => this.setState({pass:e.target.value})} type="password" id="fakePassword" placeholder="Enter Password" class="form-control" required />
+                                        
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                                  <button type="submit" onClick={(e)=> this.submit(e)} class="btn btn-primary">Login</button>
                                 </form>
                             </div>
                             <div class="modal-footer border-0 justify-content-center">
 
-                                Already have an account? <a href="#">Sign in</a>
+                               Create a account? <a href="/signup" target="_blank" >Sign up</a>
                             </div>
                         </div>
                     </div>

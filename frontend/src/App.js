@@ -10,7 +10,8 @@ import Product from "./screens/_Product"
 import CategoryProduct from "./screens/_CategoryProduct"
 
 import CheckOut from "./screens/_Checkout"
-
+import Signup from "./screens/_Signup"
+import Signin from "./screens/_Signin"
 
 
 
@@ -39,13 +40,15 @@ export default class App extends React.Component {
 
 
           <Routes>
-
+            <Route exact path="/signin" element={<Signin />} />
+            <Route exact path="/signup/" element={<Signup />} />
             <Route element={< HCF />}>
 
               <Route exact path="/" element={<Dashboard />} />
               <Route exact path="/product/:slug/" element={<Product />} />
               <Route exact path="/category/:catname" element={<CategoryProduct />} />           
               <Route exact path="/checkout/" element={<CheckOut />} />
+              
 
             </Route>
 

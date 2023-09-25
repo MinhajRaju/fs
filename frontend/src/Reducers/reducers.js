@@ -49,7 +49,11 @@ import {
     
     CATEGORY_TOTAL,
     BRAND_REQUEST,
-    FILTER_DATA
+    FILTER_DATA,
+    REGISTER_CUSTOMER,
+
+    LOGIN_SUCCESS,
+    LOGIN_FAIL
 
 } from "../Constants/constants"
 
@@ -316,3 +320,30 @@ export const FilterItemReducers = (state = {}, action) => {
 }
 
 
+export const RegisterCustomerReducers = (state = {}, action) => {
+
+    switch (action.type) {
+       
+        case REGISTER_CUSTOMER:
+            return { loading: false, RegisterCustomerState: action.payload }
+       
+        default:
+            return state
+    }
+
+
+}
+
+
+export const CustomerLoginReducers = (state={} , action) =>{
+    
+    switch(action.type){
+    
+        case LOGIN_SUCCESS:
+            return {loading:false, CustomerInfo:action.payload}
+        case LOGIN_FAIL:
+            return {loading:false , error:action.payload} 
+        default:
+            return state
+    }
+}

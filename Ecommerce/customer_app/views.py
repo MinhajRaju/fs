@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 #Model import
 from admin_app.models import *
@@ -28,23 +30,40 @@ def All(request):
 
 
 @api_view(['GET','POST'])
-def CreateCustomer(request):
+def RegisterCustomer(request):
     data = request.data
     userinstance = User.objects.create(
-        username = data['username'],
-        password = make_password(data['password'])
+        username = data['name'],
+        email = data['email'],
+        password = make_password(data['pass'])       
+        
     )
-    Customer_Profile.objects.create(
+    customerprofileinstance = Customer_Profile.objects.create(
         user = userinstance,
-        phone_number = data['phone_number']
+        phone_number = data['number']
     )
-
-
-
-    cporfile = Customer_Profile.objects.all()
-    serializer = CustomerProfileSerializer(cporfile  , many=True).data
+   
+    serializer = CustomerProfileSerializerWithToken(customerprofileinstance  , many=False).data
     return Response(serializer)
 
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        print(data)
+        print(self.user)
+        serializer = UserSerializerWithToken(self.user).data
+        print(serializer)
+        for k, v in serializer.items():
+            data[k] = v
+
+        return data
+
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['GET','POST'])

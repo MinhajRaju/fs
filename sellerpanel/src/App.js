@@ -39,10 +39,12 @@ export default class App extends React.Component {
 
 
           <Routes>
-
+            
+         
             <Route element={<HCF/>} >
 
             <Route exact path="/" element={<Dashboard />} />
+
             <Route exact path="/allp" element={<AllProduct />} />
             <Route exact path="/media" element={<Media />} />
             <Route exact path="/addp" element={<AddProduct/>} />

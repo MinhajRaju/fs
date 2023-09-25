@@ -194,14 +194,14 @@ def OrderItemSave(request):
 
     x = [i['seller'] for i in cartitem]
     sellerid  = set(x)
-
+  
 
 
 
     orderInstance = Order.objects.create(
         customer = customerinstance,
         shipping = shippingAddressinstance,
-        
+        seller_id_array = list(sellerid),
         status = "Hold",
         payment_status = "paid"
     )

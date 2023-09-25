@@ -17,9 +17,14 @@ import { OrderItemReducers } from './Reducers/reducers'
 import { CategoryTotalReducer } from './Reducers/reducers'
 import { BrandTotalReducer } from './Reducers/reducers'
 import { FilterItemReducers } from './Reducers/reducers'
+import { RegisterCustomerReducers } from './Reducers/reducers'
+import { CustomerLoginReducers } from './Reducers/reducers'
+import {AES, enc}from 'crypto-js';
 
 
-const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
+
+
+const cartItemsFromStorage = localStorage.getItem('CRT') ? JSON.parse(AES.decrypt(localStorage.getItem('CRT'), 'CARTITEMS').toString(enc.Utf8)) : []
 
 export const initialstate = {
 
@@ -46,7 +51,9 @@ const reducer = combineReducers({
     OrderItemReducers,
     CategoryTotalReducer,
     BrandTotalReducer,
-    FilterItemReducers
+    FilterItemReducers,
+    RegisterCustomerReducers,
+    CustomerLoginReducers
     
 })
 

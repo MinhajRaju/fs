@@ -50,12 +50,21 @@ import {
     CATEGORY_TOTAL,
 
     BRAND_REQUEST,
-    FILTER_DATA
+    FILTER_DATA,
+    REGISTER_CUSTOMER,
+
+    LOGIN_SUCCESS,
+    LOGIN_FAIL
+
+
 
 
 
 } from "../Constants/constants"
 import axios from 'axios'
+import { setEncrypt } from "./encrypt"
+import {AES, enc}from 'crypto-js';
+
 
 
 export const NestedCategoryAction = () => async (dispatch) => {
@@ -487,8 +496,12 @@ export const AddToCart = (slug ,variation=null , qty=1) => async (dispatch ,getS
 
     })
 
+    let obj = getState().CartReducer.cartItems
+    console.log("Add to cart" , obj)
+   
+    const envrypted = AES.encrypt(JSON.stringify(obj),"CARTITEMS").toString();
+    localStorage.setItem('CRT', envrypted)
 
-    localStorage.setItem('cartItems', JSON.stringify(getState().CartReducer.cartItems))
 
 
 
@@ -504,7 +517,12 @@ export const RemoveFromCart = (id) => (dispatch, getState) => {
         payload: id,
     })
 
-    localStorage.setItem('cartItems', JSON.stringify(getState().CartReducer.cartItems))
+
+
+    let obj = getState().CartReducer.cartItems
+   
+    const envrypted = AES.encrypt(JSON.stringify(obj),"CARTITEMS").toString();
+    localStorage.setItem('CRT', envrypted)
 }
 
 
@@ -595,3 +613,80 @@ export const OrderItemSave = () => async (dispatch , getState) => {
 
 
 
+
+
+export const RegisterCustomerAction = (name , number, email,  pass) => async (dispatch , getState) => {
+
+   
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+     
+
+        const parameter = {
+
+            name,
+            number,
+            email, 
+            pass
+           
+    
+    
+    
+        }
+
+
+        await axios.post(`/api/customer/register/`, parameter,config)
+
+     
+        dispatch({
+            type:REGISTER_CUSTOMER,
+            payload:"Successfully Register"
+        })
+   
+
+
+}
+
+
+
+export const CustomerloginAction = (email, password) => async (dispatch , getState) => {
+
+    try {
+       
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+
+        const parameter = {
+             'username':email,
+             'password':password,
+
+        }
+
+        console.log(parameter)
+      
+        const { data } = await axios.post('/api/customer/customerlogin/', parameter, config)
+
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data
+        })
+        let obj = data
+        setEncrypt(obj , 'MYKEY4DEMO' , 'CI')
+
+    }
+    catch (error) {
+        dispatch({
+            type: LOGIN_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+        })
+
+    }
+}

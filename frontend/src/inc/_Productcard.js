@@ -6,15 +6,30 @@ import store from "../store";
 
 export default class ProductCard extends React.Component {
 
+
+
+    addToCart = (slug) =>{
+        const customerInfo = localStorage.getItem('CI')
+        console.log(customerInfo)
+
+        if(customerInfo){
+            store.dispatch(AddToCart(slug))
+        }
+      
+
+ 
+
+    }
+
+
     render() {
        
-        console.log(this.props.message)
-
+        
 
         return (
             <>
 
-                {this.props.message !== null ? this.props.message : null}
+               
 
                 {this.props.data == undefined ? null : this.props.data.map((data) => {
 
@@ -81,7 +96,7 @@ export default class ProductCard extends React.Component {
 
                                         {data.variation.length == 0 ?(
     <div>
-    <a href="#!" onClick={()=> store.dispatch(AddToCart(data.slug))} class="btn btn-primary btn-sm">
+    <a   data-bs-toggle={localStorage.getItem("CI") ? null : "modal"}   data-bs-target= {localStorage.getItem("CustomerInfo") ? null : "#userModal"} href="#!" onClick={()=> this.addToCart(data.slug)} class="btn btn-primary btn-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round"

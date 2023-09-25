@@ -43,12 +43,14 @@ export default withRouter(
 
       fetchMoreData = () => {
         store.dispatch(CategoryRelatedItemAction(this.props.params.catname));
-
-        if (this.state.items.length >= this.props.TotalProduct.totalproduct) {
-          this.setState({ hasMore: false });
-          return;
-        }
-
+        setTimeout(() => {
+          if (this.state.items.length >= this.props.TotalProduct.totalproduct && this.props.TotalProduct.totalproduct !== undefined)  {
+            this.setState({ hasMore: false });
+            return;
+          }
+  
+        }, 500);
+     
         setTimeout(() => {
           this.setState({
             items: this.state.items.concat(Array.from({ length: 20 })),

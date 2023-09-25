@@ -5,7 +5,7 @@ import store from '../store';
 import { RemoveFromCart } from '../Actions/actions';
 import { ShippingAddress } from "../Actions/actions";
 import { OrderItemSave } from "../Actions/actions";
-
+import {AES, enc}from 'crypto-js';
 
 const mapStateToProps =  (state) =>{
 
@@ -34,7 +34,7 @@ export default connect(mapStateToProps)(class CheckOut extends React.Component{
 
     render(){
 
-      const cart = JSON.parse(localStorage.getItem('cartItems'));
+      const cart = localStorage.getItem('CRT') ? JSON.parse(AES.decrypt(localStorage.getItem('CRT'), 'CARTITEMS').toString(enc.Utf8)) : []
       const itemsPrice = cart.reduce((acc, item) => acc + item.price * item.pqty, 0).toFixed(2)
       const tship = Number(itemsPrice) + 100
 

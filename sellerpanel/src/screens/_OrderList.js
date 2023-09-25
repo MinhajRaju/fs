@@ -102,14 +102,14 @@ export default connect(mapStateToProps)(class OrderList extends React.Component{
                                                            
 
                                                               
-                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Pending').length == 0 ? null : (<><span class="badge bg-light-warning text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Pending').length} -Pending</span><br/></>) }
+                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Pending').length == 0 ? null : (<><span class="badge bg-light-warning text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Pending').length} -Pending</span>&nbsp;</>) }
 
-                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Rts').length == 0 ? null : (<><span class="badge bg-light-success text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Rts').length} -Shipped</span><br/></>) }
-                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Cancle').length == 0 ? null : (<><span class="badge bg-light-danger text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Cancle').length} -Cancle</span><br/></>) }
+                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Rts').length == 0 ? null : (<><span class="badge bg-light-success text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Rts').length} -Shipped</span>&nbsp;</>) }
+                                                        {this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Cancle').length == 0 ? null : (<><span class="badge bg-light-danger text-dark-primary">{this.props.SellerData.filter((item)=> item.order_no == data.id && item.order_status == 'Cancle').length} -Cancle</span>&nbsp;</>) }
 
-                                                            -----
-                                                            <br/>                          
-                                                             <span class="badge bg-light-primary text-dark-primary">Total-{this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id).length} items</span>
+                                                            
+                                                                                  
+                                                           <span>-></span>  <span class="badge bg-light-primary text-dark-primary">Total-{this.props.SellerData == undefined ? null : this.props.SellerData.filter((item)=> item.order_no == data.id).length} items</span>
                                                            
                                                           
                                                          

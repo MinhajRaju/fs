@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Customer_Profile(models.Model):
-    user = models.OneToOneField(User , on_delete=models.CASCADE , null=True , blank=True)
+    user = models.ForeignKey(User , on_delete=models.CASCADE , null=True , blank=True)
     phone_number = models.CharField(max_length=200 , null=True , blank=True)
     flag = models.CharField(max_length=150 , default="Customer")
     product_id = ArrayField(models.IntegerField() , null=True , blank=True)

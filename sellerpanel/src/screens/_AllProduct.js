@@ -412,20 +412,27 @@ export default connect(mapStateToProps)(class AllProduct extends React.Component
       const customStyles = {
         rows: {
             style: {
-                minHeight: '72px', // override the row height
+                minHeight: '72px',
+               
+              // override the row height
             },
         },
         headCells: {
             style: {
                 paddingLeft: '8px', // override the cell padding for head cells
                 paddingRight: '8px',
+              
+              
+               
+                
+
             },
         },
         cells: {
             style: {
                padding:'10px',
-               
-               
+             
+              
             },
         },
     };

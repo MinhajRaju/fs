@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import store from "../store";
 import { FlashSaleAction } from "../Actions/actions";
 import { initialstate } from "../store";
+import {AES, enc}from 'crypto-js';
+import { getDencrypt } from "../Actions/encrypt";
 
 
 import Modal from "./_Modal";
@@ -50,6 +52,11 @@ export default connect(mapStateToProps)(class Header extends React.Component {
 
 
     render() {
+
+        
+            const  res = localStorage.getItem('CustomerInfo') ?  getDencrypt('CI' , 'MYKEY4DEMO') : null
+      
+        
 
         console.log(initialstate.cart.cartItems)
 
@@ -252,13 +259,13 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                             aria-controls="offcanvasRight" class="text-reset">
                                                 <div class="lh-1">
                                                     <div class="position-relative d-inline-block mb-2">
-                                                    <i class="bi bi-cart2 fs-4"></i>
+                                                   CART &nbsp;&nbsp;
                                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                             {this.props.cart.length}
                                                            
                                                         </span>
                                                     </div>
-                                                    <p class="mb-0 d-none d-xl-block small">Notification</p>
+                                                   
                                                 </div>
                                             </a>
 
@@ -274,16 +281,18 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ms-6 text-center">
-                                        <a href="#" class="text-reset" data-bs-toggle="modal" data-bs-target="#userModal">
-                                            <div class="lh-1">
-                                                <div class="mb-2">
-                                                    <i class="bi bi-person-circle fs-4"></i>
+                                    <div class="ms-12 text-center">
 
-                                                </div>
-                                                <p class="mb-0 d-none d-xl-block small">Sign up</p>
-                                            </div>
-                                        </a>
+                                         {localStorage.getItem('CustomerInfo') ? `Hello ,${res.username}` :  (
+
+<a href="#" class="text-reset" data-bs-toggle="modal" data-bs-target="#userModal">
+<div class="lh-1">
+    
+   <p class="mb-0 d-none d-xl-block small">Login</p>
+</div>
+</a>
+                                         )}
+                                      
                                     </div>
                                    
 
