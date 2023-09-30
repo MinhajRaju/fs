@@ -34,11 +34,15 @@ class Rating_Comment(models.Model):
             else:
                 x = []
                 for i in rating:
-                    x.append(i.rating)
+
+                    if i.rating == None:
+                        pass
+                    else:                        
+                        x.append(i.rating)
                 print(len(x) , sum(x))       
-                res  = sum(x)/len(x)
-                print(res)
-                Product.objects.filter(id=self.product_id.id).update(rating=round(res))
+                res  = sum(x)/len(x)               
+                
+                Product.objects.filter(id=self.product_id.id).update(rating=res)
                 super().save(*args, **kwargs)
     
 

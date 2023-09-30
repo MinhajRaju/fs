@@ -176,7 +176,9 @@ export default withRouter(
             <div class=" mt-8 mb-lg-14 mb-8">
               <div class="container">
                 <div class="row gx-10">
-                  <aside class="col-lg-3 col-md-4 mb-6 mb-md-0">
+                  <aside class="col-lg-3 col-md-4 mb-6 mb-md-0" style={{background: "#f9f9f9",
+    padding: "22px",
+    borderRadius: "16px" , width:"20%"}}>
                     <div
                       class="offcanvas offcanvas-start offcanvas-collapse w-md-50 "
                       tabindex="-1"

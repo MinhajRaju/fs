@@ -960,7 +960,7 @@ progress {
     .container-sm,
     .container-xl,
     .container-xxl {
-        max-width: 1320px
+        max-width: 1500px
     }
 }
 
@@ -12722,7 +12722,7 @@ fieldset:disabled .btn {
 }
 
 .pt-6 {
-    padding-top: 1.5rem !important
+    padding-top: 0rem !important
 }
 
 .pt-7 {
@@ -12866,7 +12866,7 @@ fieldset:disabled .btn {
 }
 
 .pb-4 {
-    padding-bottom: 1rem !important
+    padding-bottom: 0rem !important
 }
 
 .pb-5 {
@@ -26281,7 +26281,10 @@ a:hover {
 h1,
 h2,
 h3 {
-    letter-spacing: -.03rem
+    letter-spacing: -.03rem;
+    font-family: Arial, sans-serif;
+    font-weight:100;
+    font-size: x-large;
 }
 
 .nav-scroll {
@@ -26555,7 +26558,7 @@ h3 {
 }
 
 .dropdown-menu-lg {
-    min-width: 22rem !important
+    min-width: 16rem !important
 }
 
 @media (max-width:420px) {
@@ -31121,3 +31124,40 @@ span.flatpickr-weekday {
 .apexcharts-xaxis-label {
     fill: var(--fc-gray-500)
 }
+
+
+/* CSS */
+.button-13 {
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 60px;
+}
+
+.button-13:hover {
+  background-color: #f7fafa;
+}
+
+.button-13:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
+}
+
+

@@ -67,8 +67,8 @@ def Create(request):
     data = request.data
     sellerinstance = Seller_Profile.objects.get(id=2)
 
-    variation = [{"id":2,"color":"red","qty":12,"size":"50","product":5,"product_image_id":[16,17,18]},
-                 {"id":3,"color":"red","qty":30,"size":"50","product":5,"product_image_id":[19,20,21]}]
+    variation = [{"id":2,"color":"red","qty":12,"size":"50","product":6},
+                 {"id":3,"color":"red","qty":30,"size":"50","product":6}]
 
     sumofqty = [v['qty'] for i  , v in enumerate(variation)]
 
@@ -190,6 +190,7 @@ def OrderItemSave(request):
 
     customerinstance = Customer_Profile.objects.get(id=3)
     shippingAddressinstance = shippingAddress.objects.get(id=2)
+    
 
 
     x = [i['seller'] for i in cartitem]
@@ -221,6 +222,9 @@ def OrderItemSave(request):
             product = Product.objects.get(id=j['product'])
             if j['variationid'] != None:
                 variation = Product_Variation.objects.get(id=j['variationid'])
+                variation.qty -= j['pqty']
+                variation.save()
+
             else:
                 variation = j['variationid']
 
@@ -231,6 +235,8 @@ def OrderItemSave(request):
                 variation_id = variation,
                 qty = j['pqty']
             )
+            product.totalqty -= j['pqty']
+            product.save() 
 
           
 
@@ -341,6 +347,15 @@ def FilterRelatedItem(request , **kwargs):
 
 
 
+
+@api_view(['GET','POST'])
+def RelatedAttr(request ):
+
+    data = request.data
+    p = Product_Variation.objects.filter(product = data['pid'] , color=data['cid'] , size=data['id'] )
+    print(p)
+    serializers = ProductVariation(p , many=True).data
+    return Response(serializers)
 
 
 

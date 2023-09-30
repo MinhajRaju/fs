@@ -65,3 +65,6 @@ export const REGISTER_CUSTOMER = "REGISTER_CUSTOMER"
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_FAIL = "LOGIN_FAIL"
+
+
+export const RELATED_ATTR = "RELATED_ATTR"

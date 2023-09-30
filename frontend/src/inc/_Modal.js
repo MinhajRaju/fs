@@ -125,23 +125,7 @@ export default connect(mapStateToProps)(class Modal extends React.Component {
                                         <div class="col-4 col-md-3 col-lg-3">
 
                                         <div class="input-group input-spinner  ">
-                    
-                    <Form.Control
-                                                                        as="select"
-                                                                        value={data.pqty}
-                                                                        onChange={(e) => store.dispatch(AddToCart(data.slug, data.variation , Number(e.target.value)))}
-
-                                                                    >
-                                                                        {
-
-                                                                            [...Array(data.qty).keys()].map((x) => (
-                                                                                <option key={x + 1} value={x + 1}>
-                                                                                    {x + 1}
-                                                                                </option>
-                                                                            ))
-                                                                        }
-
-                                                                    </Form.Control>
+                  
                    
                   </div>
 

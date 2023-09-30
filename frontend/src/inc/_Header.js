@@ -54,7 +54,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
     render() {
 
         
-            const  res = localStorage.getItem('CustomerInfo') ?  getDencrypt('CI' , 'MYKEY4DEMO') : null
+            const  res = localStorage.getItem('CI') ?  getDencrypt('CI' , 'MYKEY4DEMO') : null
       
         
 
@@ -64,32 +64,10 @@ export default connect(mapStateToProps)(class Header extends React.Component {
             <>
                 <header style={{background:"#f3f2f7"}}>
                     <div class="container">
-                       
-                        <div class="row align-items-center pt-6 pb-4 mt-4 mt-lg-0">
-                            <div class="col-xl-2 col-md-3 mb-4 mb-md-0 col-12 text-center text-md-start">
-                                <a href="https://freshcart.codescandy.com/index.html"><img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
-                                    alt="" /></a>
-
-                            </div>
-
-                            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-9">
-                            <nav class="navbar navbar-expand-lg navbar-light navbar-default p-0 p-sm-0 navbar-offcanvas-color "
-                    aria-label="Offcanvas navbar large">
-                    <div class="container">
-
-
-                        <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
-                            <div class="offcanvas-header pb-1">
-                                <a href="index.html"><img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
-                                    alt="" /></a>
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-
-
-                                <div class="">
-                                    <ul class="navbar-nav align-items-center ">
-                                        <li class="dropdown me-6 d-none d-lg-block ">
+                    <div class="row" style={{padding:"10px"}}>
+          <div class="col-md-2 col-12 text-center text-md-start">
+          <ul class="navbar-nav align-items-center ">
+                                        <li class="dropdown me-6 d-none d-lg-block " style={{marginTop:"8px"}}>
                                             <a href="#" class="text-inherit" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                     class="bi bi-text-left me-2" viewBox="0 0 16 16">
@@ -97,7 +75,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                                         d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z">
                                                     </path>
                                                 </svg>
-                                                Categories
+                                                All Categories
                                             </a>
 
 
@@ -118,7 +96,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                                                                 fill-rule="evenodd"></path>
                                                                         </svg>
 
-                                                                        <span class="ms-1">{level1.name}</span>
+                                                                        <span class="ms-2">{level1.name}</span>
                                                                     </div>
                                                                     <div>
                                                                         <i class="feather-icon icon-chevron-right"></i>
@@ -225,8 +203,104 @@ export default connect(mapStateToProps)(class Header extends React.Component {
 
 
                                     </ul>
+          </div>
+          <div class="col-md-2 col-12 text-center text-md-start">
+          <a href="/"><img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
+                                    alt="" /></a>
+          </div>
+          <div class="col-md-3 col-12 text-center text-md-start">
+          <form action="#">
+            <div class="input-group ">
+              <input class="form-control rounded" type="search" placeholder="Search for products " />
+              <span class="input-group-append">
+                <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-search">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </form>
 
-                                </div>
+            </div>
+
+            <div class="col-1 text-end d-none d-md-block">
+
+            </div>
+            <div class="col-2 text-end d-none d-md-block">
+            <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button"
+                                            aria-controls="offcanvasRight" class="text-reset">
+                                                <div class="lh-1" style={{marginTop:"14px" ,color:"#00bd00"}}>
+                                                    <div class="position-relative d-inline-block mb-2">
+                                                    <i class="fa-solid fa-cart-plus fa-lg"></i> &nbsp;&nbsp;
+                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                            {this.props.cart.length}
+                                                           
+                                                        </span>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </a> 
+            </div>
+          <div class="col-2 text-end d-none d-md-block">
+                                         
+         
+
+            {localStorage.getItem('CI')  ? (  <div class="dropdown selectBox" style={{marginTop:"10px" }}>
+              <a class="dropdown-toggle selectValue text-reset" href="javascript:void(0)" data-bs-toggle="dropdown" aria-expanded="false">
+                
+                <span class="me-1">
+                                                        
+
+              
+
+                Hello,{res.username}
+                </span>
+              </a>
+
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="javascript:void(0)"> <span class="me-2">
+                  
+                </span><i class="fa-solid fa-user"></i> &nbsp; Profile </a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)"><span class="me-2">
+
+                </span><i class="fas fa-sign-out-alt fa-rotate-180 "></i> &nbsp; Logout </a></li>
+
+              </ul>
+            </div>) : (<a href="#" class="text-reset" data-bs-toggle="modal" data-bs-target="#userModal">
+<div class="lh-1" style={{marginTop:"12px"}}>
+
+
+   <p class="mb-0 d-none d-xl-block small" ><i class="fa fa-sign-in" aria-hidden="true"></i> &nbsp;Login</p>
+</div>
+</a>)}                     
+          
+
+          </div>
+        </div>
+                       
+                        <div class="row align-items-center pt-6 pb-4 mt-4 mt-lg-0" style={{paddingBottom:"0rem" , paddingTop:"0rem"}}>
+                        
+
+                            <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-9">
+                            <nav class="navbar navbar-expand-lg navbar-light navbar-default p-0 p-sm-0 navbar-offcanvas-color "
+                    aria-label="Offcanvas navbar large">
+                    <div class="container">
+
+
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
+                            <div class="offcanvas-header pb-1">
+                                <a href="index.html"><img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
+                                    alt="" /></a>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+
+
+                                
                             </div>
                         </div>
                     </div >
@@ -237,37 +311,14 @@ export default connect(mapStateToProps)(class Header extends React.Component {
 
                             </div>
 
-                            <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-9">
-                                <form action="#">
-                                    <div class="input-group">
-                                        <input class="form-control" type="search" placeholder="Search for products"
-                                            aria-label="Recipient's username" aria-describedby="button-addon2" />
-                                        <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
-                                    </div>
-                                </form>
-
-
-
-                            </div>
+                            
                             <div class="col-xxl-4 col-xl-2 col-lg-3 d-none d-lg-block">
                                 <div class="d-flex align-items-right  ms-14">
                                     <div class="text-center">
 
                                         <div class="dropdown">
 
-                                            <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button"
-                                            aria-controls="offcanvasRight" class="text-reset">
-                                                <div class="lh-1">
-                                                    <div class="position-relative d-inline-block mb-2">
-                                                   CART &nbsp;&nbsp;
-                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                            {this.props.cart.length}
-                                                           
-                                                        </span>
-                                                    </div>
-                                                   
-                                                </div>
-                                            </a>
+                                           
 
                                             <div class="dropdown-menu dropdown-menu-lg p-0">
                                                 <div>
@@ -283,16 +334,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                     </div>
                                     <div class="ms-12 text-center">
 
-                                         {localStorage.getItem('CustomerInfo') ? `Hello ,${res.username}` :  (
-
-<a href="#" class="text-reset" data-bs-toggle="modal" data-bs-target="#userModal">
-<div class="lh-1">
-    
-   <p class="mb-0 d-none d-xl-block small">Login</p>
-</div>
-</a>
-                                         )}
-                                      
+ 
                                     </div>
                                    
 

@@ -54,8 +54,8 @@ import {
     REGISTER_CUSTOMER,
 
     LOGIN_SUCCESS,
-    LOGIN_FAIL
-
+    LOGIN_FAIL,
+    RELATED_ATTR
 
 
 
@@ -480,6 +480,8 @@ export const CustomerInfoAction = (id) => async (dispatch) => {
 export const AddToCart = (slug ,variation=null , qty=1) => async (dispatch ,getState) => {
     const { data } = await axios.get(`/api/po/singleproduct/${slug}`)
 
+    console.log(slug , variation , qty , 'form action add to cart')
+
     dispatch({
 
         type:ADD_TO_CART,
@@ -594,7 +596,7 @@ export const OrderItemSave = () => async (dispatch , getState) => {
 
         await axios.post(`/api/po/orderitemsave/`, parameter,config)
 
-        localStorage.removeItem('cartItems')
+        localStorage.removeItem('CRT')
        // window.location.replace('/')
 
     }
@@ -689,4 +691,39 @@ export const CustomerloginAction = (email, password) => async (dispatch , getSta
         })
 
     }
+}
+
+
+export const RelatedAttrAction = (pid , cid , id) => async (dispatch, getState) => {
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+
+    const parameter = {
+        pid,
+        cid,
+        id
+
+    }
+
+
+
+    const {data}  = await axios.post('/api/po/relatedattr/' , parameter , config)
+
+
+
+
+    dispatch({
+        type: RELATED_ATTR,
+        payload: data
+    })
+
+
+
+ 
 }

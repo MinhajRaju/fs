@@ -16,11 +16,27 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductVariation(serializers.ModelSerializer):
 
     variation_image =  serializers.SerializerMethodField(read_only=True)
-
+    colors =  serializers.SerializerMethodField(read_only=True)
+    size =  serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Product_Variation
-        fields= ['id','sku','color','qty','size','variation_image']
+        fields= ['id','sku','product','color','colors','qty','size','variation_image']
+
+    def get_colors(self , obj):
+
+        if obj.color == None:
+            return 
+        else:
+         
+            return ColorAttrSerializer(obj.color , many=False).data
+    def get_size(self , obj):
+        if obj.size == None:
+            return 
+        else:
+
+            return SizeAttrSerializer(obj.size , many=False).data
+
 
     def get_variation_image(self, obj):
         return ProductImageSerializer(obj.product_image_set.all(), many=True).data
@@ -127,7 +143,12 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         return SellerProfileSerializer(obj.seller , many=False).data
             
     def get_variation(self, obj):
-        return ProductVariation(obj.variation_id , many=False).data
+
+        if obj.variation_id == None:
+            return None
+        else:      
+         
+         return ProductVariation(obj.variation_id , many=False).data
 
 
   

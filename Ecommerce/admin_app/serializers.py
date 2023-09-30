@@ -14,3 +14,19 @@ class CategoryNestedSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         return CategoryNestedSerializer(obj.get_children(), many=True).data
+
+
+class ColorAttrSerializer(serializers.ModelSerializer):
+    
+
+    class Meta:
+        model = Color_Attr
+        fields = '__all__'
+
+class SizeAttrSerializer(serializers.ModelSerializer):
+    
+
+    class Meta:
+        model = Size_Attr
+        fields = '__all__'
+

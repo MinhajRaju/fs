@@ -163,49 +163,7 @@ export default withRouter(connect(mapStateToProps)(class Product extends React.C
                             <ImageWithThumb data={this.props.SingleProductData} rating={this.state.ratingvalue}/>
 
                             
-                            <div class="col-md-4" style={{ background: "white" }} >
-                                <div class="row">
-
-
-
-                                    <div class="col">
-
-                                        <div class="card p-6 card-product">
-                                            <div>
-                                                <img src="https://freshcart.codescandy.com/assets/images/stores-logo/stores-logo-1.svg" alt=""
-                                                    class="rounded-circle icon-shape icon-xl" />
-                                            </div>
-                                            <div class="mt-4">
-
-                                                <h2 class="mb-1 h5"><a href="#!" class="text-inherit">E-Grocery Super Market</a></h2>
-                                                <div class="small text-muted"><span class="me-2">Organic </span><span
-                                                    class="me-2">Groceries</span>
-                                                    <span>Butcher Shop</span>
-                                                </div>
-                                                <br />
-                                                <div class="mt-2">
-                                                    <span>Monthly revenue</span>
-                                                    <h1 class=" mb-2 fw-bold fs-2">$93</h1>
-
-                                                </div>
-                                                <div>
-
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-
-
-
-                                </div>
-
-                            </div>
+                           
 
 
                         </div>

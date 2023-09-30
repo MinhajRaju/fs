@@ -53,12 +53,14 @@ import {
     REGISTER_CUSTOMER,
 
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    RELATED_ATTR
 
 } from "../Constants/constants"
 
 import { initialstate } from "../store"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const NestedcategoryReducer = (state = [], action) => {
 
@@ -248,6 +250,16 @@ export const CartReducer = (state = { cartItems: initialstate.cart.cartItems }, 
             const existItem = state.cartItems.find(x => x.product === item.product)
 
             if (existItem) {
+                toast.warn('Already in cart', {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    });
                 return {
                     ...state,
                     cartItems: state.cartItems.map(x =>
@@ -256,7 +268,17 @@ export const CartReducer = (state = { cartItems: initialstate.cart.cartItems }, 
 
             } else {
 
-
+                toast.success('Add to cart', {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    
+                    });
                 return {
 
                     cartItems: [...state.cartItems, item]
@@ -343,6 +365,18 @@ export const CustomerLoginReducers = (state={} , action) =>{
             return {loading:false, CustomerInfo:action.payload}
         case LOGIN_FAIL:
             return {loading:false , error:action.payload} 
+        default:
+            return state
+    }
+}
+
+export const RelatedAttrReducers = (state={} , action) =>{
+    
+    switch(action.type){
+    
+        case RELATED_ATTR:
+            return {loading:false, RelatedAttrInfo:action.payload}
+      
         default:
             return state
     }
