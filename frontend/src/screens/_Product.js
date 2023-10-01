@@ -241,60 +241,7 @@ export default withRouter(connect(mapStateToProps)(class Product extends React.C
                                                    
                                                         
 
-                                                        {this.props.SingleProductData == undefined ? null : this.props.SingleProductData.rc.map((data)=>{
-
-                                                            return (
-
-<div class="d-flex border-bottom pb-6 mb-6">
-                                                            <img src="../assets/images/avatar/avatar-10.jpg" alt=""
-                                                                class="rounded-circle avatar-lg" />
-                                                            <div class="ms-5">
-                                                                <h6 class="mb-1">
-                                                                   {data.customer.user.username}
-
-                                                                </h6>
-
-
-                                                                <p class="small"> <span class="text-muted">30 December 2022</span>
-                                                                    <span class="text-primary ms-3 fw-bold">Verified Purchase</span></p>
-
-                                                                <div class=" mb-2">
-
-                                                                    <Rating value={data.rating}/>
-
-
-                                                                    <span class="ms-3 text-dark fw-bold">Need to recheck the weight at delivery point</span>
-                                                                </div>
-
-                                                                <p>{data.comment}</p>
-                                                                <div>
-                                                                    <div class="border icon-shape icon-lg border-2 ">
-                                                                        <img src="../assets/images/products/product-img-1.jpg" alt=""
-                                                                            class="img-fluid " />
-                                                                    </div>
-                                                                    <div class="border icon-shape icon-lg border-2 ms-1 ">
-                                                                        <img src="../assets/images/products/product-img-2.jpg" alt=""
-                                                                            class="img-fluid " />
-                                                                    </div>
-                                                                    <div class="border icon-shape icon-lg border-2 ms-1 ">
-                                                                        <img src="../assets/images/products/product-img-3.jpg" alt=""
-                                                                            class="img-fluid " />
-                                                                    </div>
-
-                                                                </div>
-
-                                                                <div class="d-flex justify-content-end mt-4">
-                                                                    <a href="#" class="text-muted"><i class="feather-icon icon-thumbs-up me-1"></i>Helpful</a>
-                                                                    <a href="#" class="text-muted ms-4"><i class="feather-icon icon-flag me-2"></i>Report
-                                                                        abuse</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                            )
-
-                                                        })}
+                                                        
                                                         
                                                         
                                                         

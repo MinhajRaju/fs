@@ -54,6 +54,8 @@ class Product_Variation(models.Model):
 
 
 from PIL import Image  ,ImageOps
+from rembg import remove
+import os
 class Product_Image(models.Model):
 
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
@@ -64,9 +66,11 @@ class Product_Image(models.Model):
 
     def save(self, *args, **kwargs):
            
-            new_image = compress(self.photo)            
-            im = Image.open(new_image)      
-            im = ImageOps.exif_transpose(im)
+            new_image = compress(self.photo)      
+
+            im = Image.open(new_image)
+            im = ImageOps.exif_transpose(im)     
+        
             super().save(*args, **kwargs)
 
 

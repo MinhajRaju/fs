@@ -40,7 +40,7 @@ class Rating_Comment(models.Model):
                     else:                        
                         x.append(i.rating)
                 print(len(x) , sum(x))       
-                res  = sum(x)/len(x)               
+                res  = round(sum(x)/len(x), 2)               
                 
                 Product.objects.filter(id=self.product_id.id).update(rating=res)
                 super().save(*args, **kwargs)

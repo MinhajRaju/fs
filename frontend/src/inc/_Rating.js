@@ -11,7 +11,7 @@ export default  class Rating extends React.Component{
 
             <>
             <small class="text-warning"> 
-                    <span class="badge bg-light-success text-dark-success">{this.props.value} &nbsp;<i class="fa-solid fa-star"></i></span>
+                  {this.props.value== null ? "Rating not given " : ( <> <span class="badge bg-light-success text-dark-success">{this.props.value} &nbsp;<i class="fa-solid fa-star"></i></span></>)} 
                   
             </small>
             </>

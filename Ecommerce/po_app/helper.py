@@ -6,12 +6,15 @@ from io import BytesIO
 from PIL import Image 
 from django.core.files import File
 import random
-
+from rembg import remove
+from PIL import Image  ,ImageOps
 def compress(image):
     im = Image.open(image)
     im_io = BytesIO()
-    im.save(im_io, 'JPEG', quality=60)
+    im.save(im_io, 'PNG', quality=60)
     new_image = File(im_io, name=image.name)
+    print("new image" , new_image)
+
     return new_image
 
 
@@ -48,6 +51,7 @@ class RandomFileName(object):
 
     def __call__(self, _, filename):
         # @note It's up to the validators to check if it's the correct file type in name or if one even exist.
+      
         extension = os.path.splitext(filename)[1]
         return self.path % (uuid.uuid4(), extension)
 
