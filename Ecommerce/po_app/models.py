@@ -56,20 +56,56 @@ class Product_Variation(models.Model):
 from PIL import Image  ,ImageOps
 from rembg import remove
 import os
+from pathlib import Path
+from io import BytesIO
+from django.core.files.base import ContentFile
+
+
+
+import numpy as np
+from cvzone.SelfiSegmentationModule import SelfiSegmentation
+
+
+
+
 class Product_Image(models.Model):
 
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     product = models.ForeignKey(Product , on_delete=models.SET_NULL , null=True , blank=True)
     variation  = models.ForeignKey(Product_Variation , on_delete=models.SET_NULL , null=True , blank=True)
     photo = models.ImageField(upload_to=RandomFileName('product_image/'))
+  
 
 
     def save(self, *args, **kwargs):
            
-            new_image = compress(self.photo)      
+            new_image = Image.open(self.photo)
+             
 
-            im = Image.open(new_image)
-            im = ImageOps.exif_transpose(im)     
+            """   img = np.array(new_image)
+            segmentor = SelfiSegmentation()
+            rmbg = segmentor.removeBG(img , (255,255,255) , cutThreshold=0.7)
+            buffer = BytesIO()
+            output_img = Image.fromarray(rmbg)
+            output_img.save(buffer , format='png')
+            val = buffer.getvalue()
+            self.rmbg_photo.save("test.png" , ContentFile(val) , save=False) """
+            
+
+            im = remove(new_image , bgcolor=(255,255,255,255)) 
+            im_io = BytesIO()
+            im.save(im_io, 'PNG', quality=100)
+            val =  im_io.getvalue()
+
+            
+    
+            self.photo.save("Test.png" , ContentFile(   val)  ,save=False)
+            
+        
+          
+           
+          
+          
         
             super().save(*args, **kwargs)
 

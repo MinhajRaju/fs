@@ -18,7 +18,7 @@ class Rating_Comment(models.Model):
     customer  = models.ForeignKey(Customer_Profile , on_delete=models.CASCADE , null=True , blank=True)
     rating = models.FloatField(default=0 , null=True , blank=True)
     comment = models.CharField(max_length=200 , null=True , blank=True)
-
+    createdAt = models.DateField(auto_now_add=True , blank=True , null=True)
 
     def save(self, *args, **kwargs):
            

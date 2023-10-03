@@ -14,7 +14,7 @@ import ProductCarousel from '../inc/_ProductCarousel';
 import { CustomerInfoAction } from '../Actions/actions';
 import Rating from '../inc/_Rating';
 import Dashboard from './_Dashboard';
-
+import {AES, enc}from 'crypto-js';
 
 
 
@@ -30,6 +30,7 @@ export default withRouter(connect(mapStateToProps)(class Product extends React.C
 
     constructor(props) {
         super(props)
+        
         store.dispatch(SingleProductAction(this.props.params.slug))
         store.dispatch(RelatedItemAction(this.props.params.slug))
         store.dispatch(CustomerInfoAction(1))

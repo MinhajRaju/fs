@@ -6,6 +6,7 @@ import { AddToCart } from '../Actions/actions';
 import store from "../store";
 import {  Form } from 'react-bootstrap'
 import { connect } from "react-redux";
+import $ from 'jquery'
 
 import { RelatedAttrAction } from "../Actions/actions";
 import { ToastContainer, toast } from 'react-toastify';
@@ -35,24 +36,35 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
             size:null,
             cid:null,
             Cselected:null,
-            Sselected:null
+            Sselected:null,
+            comment:null,
+            indexing:[],
+            spinner:false
            
         }
 
 
     }
     componentDidMount() {
-        setTimeout(this.thumbimage, 3000) 
+       
+      
+        setTimeout(this.thumbimage, 1000) 
+     
         
         setTimeout(() => {
             this.cvProduct()
             this.svProduct()
            
-               
+            this.setState({comment:this.props.data.rc.slice(0,2)})
+            this.setState({indexing:[2]})
+            
 
           
            
-        }, 2000);
+        }, 1000);
+
+
+     
       
 
     }
@@ -274,83 +286,144 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
     }
 
 
+    load = () =>{
+
+        console.log("load" , this.props.data.rc , this.state.indexing)
+
+        this.setState((prevState) => ({
+            indexing:[[...prevState.indexing, 2].reduce((acc , item) =>  acc + item , 0)]
+          }));
+
+          this.setState({spinner:true})
+
+          
+        
+          setTimeout(() => {
+            
+            const t = Number(this.state.indexing)
+            console.log("T" ,t)
+           
+            this.setState({comment:this.props.data.rc.slice(0,t)})
+           
+            this.setState({spinner:false})
+
+          
+           
+        }, 200);
+       
+    }
+      
+   
+
+
 
     render(){
 
-        console.log(this.state.size , this.props.RelatedAttrData , this.state.pqty,  this.state.test)
+        console.log(this.props.data )
 
         
       
         return(
 
             <> 
-            <div class="col-md-1 "  >
-    
-
- 
-
-
+            
+      
         
-{this.state.thumbnail == null ? null : this.state.thumbnail.map((data) => {
+      
+            <div class="col-md-5 sticky-xl-top " style={{height:"fit-content"}} >
+
+            <table class="table table-bordered" style={{border:"1px solid rgb(240, 240, 240)" }}>
+  <thead>
+   <tr>
+    <th scope="col" style={{width:"30%"}}>
+      {this.state.thumbnail == null ? null : this.state.thumbnail.map((data) => {
     return (
     
-      
-            <img  onMouseOver={this.productimage} width="70%" height="4%" style={{border:"1px solid #b5b0b0" ,margin:"1px"}} src={`../../assets/static${data.photo}`} />
+            
+            <img  onMouseOver={this.productimage} width="15%" height="4%" src={`../../assets/static${data.photo}`} />
            
- 
+          
           
     )
 
 })}
-       
-        
-  
-       
-            </div>
-           
-           
-      
-            <div class="col-md-4 " >
-                                <div class="slider slider-for" >
-                                    <div class="test" style={{border:"1px solid #999393" , boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}>
-
-                                        <ReactImageMagnify {...{
+  </th>
+  </tr>
+  <tr>
+      <th scope="col" > <ReactImageMagnify {...{
                                             smallImage: {
                                                 alt: 'Wristwatch by Ted Baker London',
                                                 isFluidWidth: true,
                                                 src: this.state.imagePath,
                                                 imageClassName: 'test',
-                                              
+                                            
+                                            
                                                
                                             },
                                             largeImage: {
                                                 src: this.state.imagePath,
-                                                width: 2500,
+                                                width: 2000,
                                                 className: 'test',
-                                             
-                                                height: 4500
+                                              
+                                                height: 1500
                                             },
                                             enlargedImageContainerDimensions: {
-                                                width: '200%',
-                                                height: '115%'
+                                                width: '180%',
+                                                height: '200%',
+                                            
+                                               
+                                            },
+                                            enlargedImageContainerStyle:{
+                                                marginLeft:"2pc",
+                                                padding:"2pc",
+                                                marginTop:"-6.5pc",
+                                                border:"1px solid rgb(240, 240, 240)"
                                             },
                                             shouldUsePositiveSpaceLens: true
-                                        }} />
+                                        }} /></th>
+    
+    </tr>
+    <tr>
+        <th style={{border:"none" , display:"flex"}}> <button id="myButton" class="button-87" style={{width:"50%", backgroundColor:"#D1E7DD"}} role="button" onClick={()=>  this.cartAdd(this.props.data.slug , this.state.variationid , this.state.pqty)} ><i class="feather-icon icon-shopping-bag me-2"></i>Add to
+                        cart</button>
+                        <Form.Control
+                                                                        as="select"
+                                                                        style={{width:"30%" , margin:"auto"}}
+                                                                        value={this.state.pqty == undefined ? 1 : this.state.pqty}
+                                                                        onChange={(e) => this.setState({pqty:e.target.value}) }
 
-                                    </div>
+                                                                    >
+                                                                        {
 
+                                                                            this.props.RelatedAttrData == undefined ? this.props.data == undefined ? null : [...Array(parseInt(this.props.data.totalqty)).keys()].map((x) => (
+                                                                                <option key={x + 1} value={x + 1}>
+                                                                                    {x + 1}
+                                                                                </option>
+                                                                            )) :  [...Array(parseInt(this.props.RelatedAttrData[0].qty )).keys()].map((x) => (
+                                                                                <option key={x + 1} value={x + 1}>
+                                                                                    {x + 1}
+                                                                                </option>
+                                                                            ))
 
+                                                                           
+                                                                        }
 
-                                </div>
-                                <br />
-                                <div >
+                                                                    </Form.Control>
 
-                                  
-                                </div>
+        </th>
+        </tr>
+        
+  </thead>
+
+    </table>
+              
+                            
+                            
+                              
                             </div>
 
 
-
+                          
                          
 
 
@@ -379,7 +452,7 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
           
               
                            
-            <div class="row">           
+                   
        
       
             {this.state.test == undefined && this.state.test == null? null : this.state.test.map(( data)=>{
@@ -387,30 +460,33 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
         
 return (
     <>
-        <div class="col-1 custom-border">   
-
-    <p style={{fontSize:"14px",  fontWeight:"bold"}}>{data.color.length == 0 ? null : 'Color'}</p>   
-
-</div>
-
-
-
-{ data.color == undefined ||  data.color.length == 0 ? null : data.color.map((d)=>{
+    <table class="table"  style={{width:"50%" , border:"none"}}>
+  <thead>
+    <tr >
+      <th style={{width:"5%", borderBottom:"none"}} ><p>{data.color.length == 0 ? null : 'Color'}</p></th>
+      { data.color == undefined ||  data.color.length == 0 ? null : data.color.map((d)=>{
     return(
 
        <>
-           <div class="col-1 custom-border">   
+       <th style={{width:"5%"  ,borderBottom:"none"}} ><p class="button-13"  onClick={() => this.test(this.props.data.id  , d.id)} >{d.color}</p></th>  
 
-<button class="button-13" role="button" onClick={() => this.test(this.props.data.id  , d.id)} >{d.color}</button>
 
-</div>
-&nbsp;
+
+
+
        </>
                 
     
           
     )
 })}
+    </tr>
+  </thead> 
+    </table>
+   
+
+
+
 
 
     
@@ -424,53 +500,110 @@ return (
  
             
             
-        </div>
+  
 
-        <div class="row">           
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {this.state.size == undefined && this.state.size== null? null : this.state.size.map(( data)=>{
+
+        
+return (
+    <>
+    <table class="table"  style={{width:"50%" }}>
+  <thead>
+    <tr >
+      <th style={{width:"5%", borderBottom:"none"}} ><p>{data.size.length == 0 ? null : 'Size'}</p></th>
+      { data.size == undefined ||  data.size.length == 0 ? null : data.size.map((d)=>{
+    return(
+
+       <>
+       <th style={{width:"5%"  ,borderBottom:"none"}} ><p class="button-13" role="button" onClick={()=> this.fetch(this.props.data.id , this.state.cid , d.id)}  >{d.size}</p>   </th>  
+
+
+
+
+
+       </>
+                
+    
+          
+    )
+})}
+    </tr>
+  </thead> 
+    </table>
+   
+
+
+
+
+
+    
+    </>
+
+
+)
+
+            }) }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
        
       
-       {this.state.size == undefined ? null : this.state.size.map(( data)=>{
-
-   
-return (
-<>
-   <div class="col-1 custom-border">   
-
-<p style={{fontSize:"14px",  fontWeight:"bold"}}>{data.size.length == 0 ? null : 'Size'}</p>   
-
-</div>
-
-
-{ data.size == undefined ||  data.size.length == 0 ? null : data.size.map((d)=>{
-return(
-
-  <>
-   <div class="col-1 custom-border">   
-
-<button class="button-13" role="button" onClick={()=> this.fetch(this.props.data.id , this.state.cid , d.id)}  >{d.size}</button>   
-
-</div>
-&nbsp;
-  </>
-           
-  
-     
-)
-})}
-
-
-
-</>
-
-
-)
-
-       }) }
+       
 
 
        
        
-   </div>
+
 
    <br/>
 
@@ -545,42 +678,12 @@ return(
             <div>
 
 
-            <Form.Control
-                                                                        as="select"
-                                                                        style={{width:"15%"}}
-                                                                        value={this.state.pqty == undefined ? 1 : this.state.pqty}
-                                                                        onChange={(e) => this.setState({pqty:e.target.value}) }
-
-                                                                    >
-                                                                        {
-
-                                                                            this.props.RelatedAttrData == undefined ? [...Array(parseInt(this.props.data.totalqty)).keys()].map((x) => (
-                                                                                <option key={x + 1} value={x + 1}>
-                                                                                    {x + 1}
-                                                                                </option>
-                                                                            )) :  [...Array(parseInt(this.props.RelatedAttrData[0].qty )).keys()].map((x) => (
-                                                                                <option key={x + 1} value={x + 1}>
-                                                                                    {x + 1}
-                                                                                </option>
-                                                                            ))
-
-                                                                           
-                                                                        }
-
-                                                                    </Form.Control>
+           
                    
                 
 
             </div>
-            <div class="mt-3 row justify-content-start g-2 align-items-center" >
-
-                <div class="col-xxl-4  d-grid">
-
-                    <button id="myButton" class="button-13" style={{width:"100%", backgroundColor:"#D1E7DD"}} role="button" onClick={()=>  this.cartAdd(this.props.data.slug , this.state.variationid , this.state.pqty)} ><i class="feather-icon icon-shopping-bag me-2"></i>Add to
-                        cart</button>
-                </div>
-
-            </div>
+     
 
             <hr class="my-6" style={{ border: "none" }} />
 
@@ -682,7 +785,7 @@ return(
 <br/>
 
  
-<div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0"}}>
+<div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0", borderBottom:"1px solid #f0f0f0"}}>
     
     <div class="row">
     <h1 style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>Rating & Reviews</h1>
@@ -699,7 +802,7 @@ return(
            <div class="col-2" style={{textAlign: "center" ,marginTop: "28px"}}>
            <h3>{this.props.data.rating}<i
                    class="bi bi-star-fill ms-1 small "></i></h3>
-                <span style={{fontSize:"13px"}}>{this.props.data.rc.filter((item) => item.rating !== null).length.to} rating  & {this.props.data.rc.length}  review</span>
+                <span style={{fontSize:"13px"}}>{this.props.data.rc.filter((item) => item.rating !== null).length} rating  & {this.props.data.rc.length}  review</span>
             </div>                                                          
           <div class="col-4">
              
@@ -775,10 +878,10 @@ return(
    
 
 
-    {this.props.data == undefined ? null : this.props.data.rc.map((data)=>{
+    {this.state.comment == undefined ? null : this.state.comment.map((data)=>{
 
 return (
-    <div class="row" style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>
+    <div class="row block loadMore"   style={{borderBottom:"1px solid #f0f0f0" , padding:"10px" }}>
 <div >
 
 <div class="ms-5">
@@ -815,7 +918,9 @@ return (
 )
 
 })}
-    
+     {this.state.spinner == true ? (<div class="spinner-border spinner-border-sm" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>): this.state.comment ==  null ? null :this.state.comment.length == this.props.data.rc.length ? (<div style={{ color:"green"}} ><b>No more comment</b></div>): (<><div style={{cursor:"pointer" , color:"green"}} onClick={()=> this.load()} id="load"> <b>More comment</b></div></>)} 
 
 
 </div>  

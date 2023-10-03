@@ -66,7 +66,8 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, obj):
         return ProductImageSerializer(obj.product_image_set.all(), many=True).data
     def get_rc(self , obj):
-        return RatingAndCommentSerializer(obj.rating_comment_set.all() , many=True).data
+        query = obj.rating_comment_set.all().order_by('-id')
+        return RatingAndCommentSerializer(query , many=True).data
     def get_category(self , obj):
         category = []
         for i in obj.categories:

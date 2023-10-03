@@ -10,6 +10,7 @@ import { FilterItemAction } from "../Actions/actions";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../inc/_Spinner";
 
+
 const mapStateToProps = (state) => {
   console.log(state);
   return {

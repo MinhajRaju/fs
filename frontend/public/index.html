@@ -81,7 +81,18 @@
 
   <script type="text/javascript" src="/static/js/bundle.js"></script>
 
-
+  <script>
+    $(document).ready(function(e) {
+      var limit = 2;
+            $(".block").slice(0, limit).show();
+            $(document).on('click','#load',function(e){
+            limit += 1;
+            e.preventDefault();
+            $(".block").slice(0, limit).show();
+            });
+        //var lenght_name = $(".loadMore li").length;
+    });
+</script>
 
 </body>
 

@@ -145,15 +145,19 @@ def Media(request ):
     
 
 
-    
+from PIL import Image  ,ImageOps
+from rembg import remove
     
 @api_view(['GET','POST'])
 def MediaUpload(request ): 
     seller = Seller_Profile.objects.get(id=1)
    
     image = request.FILES.getlist('file')
+
+
     
     for i in image:
+       
         Product_Image.objects.create(
             seller = seller,
             photo  = i

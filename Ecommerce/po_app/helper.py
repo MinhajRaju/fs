@@ -8,12 +8,12 @@ from django.core.files import File
 import random
 from rembg import remove
 from PIL import Image  ,ImageOps
+
 def compress(image):
-    im = Image.open(image)
+    im = Image.open(image) 
     im_io = BytesIO()
     im.save(im_io, 'PNG', quality=60)
-    new_image = File(im_io, name=image.name)
-    print("new image" , new_image)
+    new_image = File(im_io, name=image.name)   
 
     return new_image
 
@@ -46,6 +46,7 @@ def update_save_image(sender, instance, *args, **kwargs):
 
 @deconstructible
 class RandomFileName(object):
+    print("randomfile" , object)
     def __init__(self, path):
         self.path = os.path.join(path, "%s%s")
 

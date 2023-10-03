@@ -3,6 +3,9 @@ import React from "react";
 import Rating from "./_Rating";
 import { AddToCart } from "../Actions/actions";
 import store from "../store";
+import { Link } from "react-router-dom";
+
+import {AES, enc}from 'crypto-js';
 
 export default class ProductCard extends React.Component {
 
@@ -44,44 +47,14 @@ export default class ProductCard extends React.Component {
                                             <span class="badge bg-danger">{this.props.tag}</span>
                                         </div>
 
-                                        <a href={`/product/${data.slug}`}> <img src="../assets/images/products/product-img-15.jpg"
-                                            alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
+                                        <Link to={`/product/${data.slug}`}> <img src="../assets/images/products/product-img-15.jpg"
+                                            alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></Link>
 
 
                                     </div>
 
-                                    <div class="text-small mb-1">
-                                        
-                                        {data.category.map((data)=>{
-                                            return(
-                                                <>
-                                                
-                                                <a href={`/category/${data.name}`}
-                                                class="text-decoration-none text-muted" style={{textTransform:"capitalize"}}><small>
-                                                     {`${data.name}`}</small></a>
-
-                                                    
-                                                   
-                                                </>
-                                        
-
-                                                
-
-                                            )
-
-                         
-                                          
-
-                                        })}
-                                       
-                                  
-
-                                  
-
-
-
-                                    </div>
-                                    <h2 class="fs-6"><a href={`/product/${data.slug}`} class="text-inherit text-decoration-none">{data.title}</a>
+                                    
+                                    <h2 class="fs-6"><Link to={`/product/${data.slug}`} class="text-inherit text-decoration-none">{data.title}</Link>
                                     </h2>
                                     <div>
 
