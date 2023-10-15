@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'admin_app.apps.AdminAppConfig',
     'customer_app.apps.CustomerAppConfig',
+    'django_advance_thumbnail',
     'po_app.apps.PoAppConfig',
     'seller_app.apps.SellerAppConfig',
 
@@ -146,3 +147,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../frontend/public/assets/static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+DJANGORESIZED_DEFAULT_SIZE = [1024 , 768]
+DJANGORESIZED_DEFAULT_SCALE = 1
+DJANGORESIZED_DEFAULT_QUALITY = 90
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True

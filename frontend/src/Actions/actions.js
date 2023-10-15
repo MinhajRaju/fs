@@ -55,7 +55,8 @@ import {
 
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    RELATED_ATTR
+    RELATED_ATTR,
+    RECENT_VIEW
 
 
 
@@ -720,6 +721,42 @@ export const RelatedAttrAction = (pid , cid , id) => async (dispatch, getState) 
 
     dispatch({
         type: RELATED_ATTR,
+        payload: data
+    })
+
+
+
+ 
+}
+
+
+
+
+export const RecentViewAction = ( recentpid) => async (dispatch, getState) => {
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+
+    const parameter = {
+        recentpid
+       
+
+    }
+
+
+
+    const {data}  = await axios.post('/api/po/recentp/' , parameter , config)
+
+
+
+
+    dispatch({
+        type: RECENT_VIEW,
         payload: data
     })
 

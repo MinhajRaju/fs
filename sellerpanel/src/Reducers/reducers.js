@@ -7,7 +7,10 @@ import {
     SELLER_WISE_ORDER,
     ORDER_INFO,
     STATUS_FLAG,
-    STATUS_LENGTH
+    STATUS_LENGTH,
+    ALL_NESTED_CATEGORY_FAIL,
+    ALL_NESTED_CATEGORY_REQUEST,
+    ALL_NESTED_CATEGORY_SUCCESS,
    
 
 
@@ -16,6 +19,19 @@ import {
 } from "../Constants/constants";
 
 
+export const NestedcategoryReducer = (state = [], action) => {
+
+    switch (action.type) {
+        case ALL_NESTED_CATEGORY_REQUEST:
+            return { loading: true }
+        case ALL_NESTED_CATEGORY_SUCCESS:
+            return { loading: false, NestedCategoryData: action.payload }
+        case ALL_NESTED_CATEGORY_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
 
 
 

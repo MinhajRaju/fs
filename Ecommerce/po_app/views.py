@@ -250,7 +250,7 @@ def SameStore(request , id):
 
 
 
-    product = random.sample(list(Product.objects.filter(seller=id)) , 2)
+    product = random.sample(list(Product.objects.filter(seller=id)) , len(Product.objects.filter(seller=id)))
     print(product)
     
 
@@ -388,7 +388,7 @@ def DashProduct(request , *args , **kwargs):
 
 
 
-@api_view(['GET' , 'PSOT'])
+@api_view(['GET' , 'POST'])
 def ShippingAddress(request , userid):
     customer = Customer_Profile.objects.get(id=userid)
     shippingaddress = shippingAddress.objects.filter(customer = customer)
@@ -398,6 +398,18 @@ def ShippingAddress(request , userid):
 
     return Response(serializers)
 
+
+
+@api_view(['GET' , 'POST'])
+def RecentView(request):
+
+    idarr =request.data['recentpid']
+    product = []    
+    for i in idarr:
+        product.append(Product.objects.get(id=int(i)))    
+    serializer = ProductSerializer(product , many=True).data
+    return Response(serializer)
+  
 
 
 

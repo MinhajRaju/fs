@@ -9,4 +9,5 @@ admin.site.register(Product_Image)
 admin.site.register(shippingAddress)
 admin.site.register(Order)
 admin.site.register(Order_Details)
+admin.site.register(Services)
 

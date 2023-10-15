@@ -4,19 +4,34 @@ from seller_app.models import *
 from customer_app.models import *
 from admin_app.models import *
 from django.contrib.postgres.fields import ArrayField
- 
+from django_resized import ResizedImageField
 from po_app.helper import *
 from django.db.models.signals import pre_save , post_delete , post_save
+
+class Services(models.Model):
+    warrenty = models.CharField(max_length=100 , null=True , blank=True)
+
+
+    def __str__(self):
+        return self.warrenty
+
+
 
 
 class Product(models.Model):
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     brand = models.ForeignKey(Brand , on_delete=models.SET_NULL , null=True , blank=True)
     title = models.CharField(max_length=200 , null=True , blank=True)
+    wservices = models.ForeignKey(Services , on_delete=models.SET_NULL , null=True ,  blank=True)
+    oservices = models.CharField(max_length=1000 , null=True , blank=True)
     slug = models.SlugField(max_length=250 , null=True , blank=True)
     sku = models.CharField(max_length=150 , null=True , blank=True)
     totalqty=models.IntegerField(max_length=150 , null=True, blank=True)
     flashsale = models.BooleanField(default=False , null=True , blank=True)
+    highlights = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )
+    sdes =  models.CharField(max_length=1000 , null=True , blank=True)
+    ldes = models.CharField(null=True , blank=True)
+    spec = models.CharField(max_length=1000 , null=True , blank=True)
     discount   = models.IntegerField(default = 0 , null=True , blank=True)    
     rating  = models.FloatField(default=0 , null=True , blank=True)
     categories = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )
@@ -66,20 +81,21 @@ import numpy as np
 from cvzone.SelfiSegmentationModule import SelfiSegmentation
 
 
-
+from django_advance_thumbnail import AdvanceThumbnailField
 
 class Product_Image(models.Model):
 
     seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     product = models.ForeignKey(Product , on_delete=models.SET_NULL , null=True , blank=True)
     variation  = models.ForeignKey(Product_Variation , on_delete=models.SET_NULL , null=True , blank=True)
-    photo = models.ImageField(upload_to=RandomFileName('product_image/'))
+    photo = ResizedImageField(upload_to=RandomFileName('product_image/'))
+    thumbnail = AdvanceThumbnailField(source_field='photo',upload_to=RandomFileName('thumbnail_image/') , null=True , blank=True , size=(300, 300))
   
 
 
     def save(self, *args, **kwargs):
            
-            new_image = Image.open(self.photo)
+            """  new_image = Image.open(self.photo) """
              
 
             """   img = np.array(new_image)
@@ -91,19 +107,26 @@ class Product_Image(models.Model):
             val = buffer.getvalue()
             self.rmbg_photo.save("test.png" , ContentFile(val) , save=False) """
             
-
+            """ 
             im = remove(new_image , bgcolor=(255,255,255,255)) 
             im_io = BytesIO()
             im.save(im_io, 'PNG', quality=100)
             val =  im_io.getvalue()
-
+            """
             
     
-            self.photo.save("Test.png" , ContentFile(   val)  ,save=False)
+            """   self.photo.save("Test.png" , ContentFile(   val)  ,save=False) """
+                
+            """ 
+                new_image = compress(self.photo)            
+                im = Image.open(new_image) 
+                im = ImageOps.exif_transpose(im)
+            """
             
-        
-          
-           
+
+     
+  
+                    
           
           
         

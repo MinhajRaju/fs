@@ -9,6 +9,7 @@ import { SellerWiseOrderReducers } from './Reducers/reducers'
 import { OrderInfoReducers } from './Reducers/reducers'
 import { StatusFlagReducers } from './Reducers/reducers'
 import { StatusLengthReducers } from './Reducers/reducers'
+import { NestedcategoryReducer } from './Reducers/reducers'
 
 
 const reducer = combineReducers({
@@ -19,8 +20,8 @@ const reducer = combineReducers({
     SellerWiseOrderReducers,
     OrderInfoReducers,
     StatusFlagReducers,
-    StatusLengthReducers
-  
+    StatusLengthReducers,
+    NestedcategoryReducer
     
     
 })

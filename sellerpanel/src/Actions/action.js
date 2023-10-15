@@ -4,7 +4,10 @@ import { SELLER_RELETAD_PRODUCT,
     SELLER_WISE_ORDER,
     ORDER_INFO,
     STATUS_FLAG,
-    STATUS_LENGTH
+    STATUS_LENGTH,
+    ALL_NESTED_CATEGORY_FAIL,
+    ALL_NESTED_CATEGORY_REQUEST,
+    ALL_NESTED_CATEGORY_SUCCESS,
 
 
 
@@ -12,6 +15,42 @@ import { SELLER_RELETAD_PRODUCT,
 
 
 import axios from 'axios'
+
+
+
+export const NestedCategoryAction = () => async (dispatch) => {
+
+    try {
+        dispatch({
+            type: ALL_NESTED_CATEGORY_REQUEST
+        })
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+
+
+        const { data } = await axios.get('/api/admin/category/', config)
+
+
+
+        dispatch({
+            type: ALL_NESTED_CATEGORY_SUCCESS,
+            payload: data
+        })
+       
+
+    }
+    catch (error) {
+        dispatch({
+            type: ALL_NESTED_CATEGORY_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+        })
+
+    }
+}
 
 export const SellerProductAction = () => async (dispatch , getState) => {
 

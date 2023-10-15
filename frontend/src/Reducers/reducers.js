@@ -54,7 +54,8 @@ import {
 
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    RELATED_ATTR
+    RELATED_ATTR,
+    RECENT_VIEW
 
 } from "../Constants/constants"
 
@@ -376,6 +377,19 @@ export const RelatedAttrReducers = (state={} , action) =>{
     
         case RELATED_ATTR:
             return {loading:false, RelatedAttrInfo:action.payload}
+      
+        default:
+            return state
+    }
+}
+
+
+export const RecentViewReducers = (state={} , action) =>{
+    
+    switch(action.type){
+    
+        case RECENT_VIEW:
+            return {loading:false, RecentViewData:action.payload}
       
         default:
             return state

@@ -180,7 +180,7 @@ export default class HCF extends React.Component {
  
     
             <nav class="navbar-vertical-nav d-none d-xl-block ">
-                <div class="navbar-vertical "  style={{width:"15%"}}>
+                <div class="navbar-vertical "  style={{width:"195px"}}>
                                 <div class="px-4 py-5">
                                     <a href="https://freshcart.codescandy.com/index.html" class="navbar-brand">
                                         <img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg" alt="" />
@@ -214,21 +214,21 @@ export default class HCF extends React.Component {
         data-bs-parent="#sideNavbar">
         <ul class="nav flex-column">
         <li class="nav-item">
-                <Link class="nav-link " to="/addp"
+                <Link class="nav-link " style={{fontSize:"11px"}} to="/addp"
                    >
                     Add Product
                 </Link>
                 
             </li>
             <li class="nav-item">
-                <Link class="nav-link " to="/allp"
+                <Link class="nav-link " style={{fontSize:"11px"}} to="/allp"
                    >
                     All Product
                 </Link>
                 
             </li>
             <li class="nav-item">
-                <Link class="nav-link " to="/media"
+                <Link class="nav-link " style={{fontSize:"11px"}} to="/media"
                    >
                    Media
                 </Link>
@@ -254,7 +254,7 @@ export default class HCF extends React.Component {
                                                                 data-bs-parent="#sideNavbar">
                                                                 <ul class="nav flex-column">
                                                                     <li class="nav-item ">
-                                                                        <Link class="nav-link "
+                                                                        <Link  style={{fontSize:"11px"}}  class="nav-link "
                                                                             to="/ol">
                                                                            Order  List
                                                                         </Link>

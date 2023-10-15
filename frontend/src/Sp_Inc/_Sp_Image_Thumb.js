@@ -3,6 +3,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import Carousel from 'react-grid-carousel'
 import Rating from "../inc/_Rating";
 import { AddToCart } from '../Actions/actions';
+import { RecentViewAction } from "../Actions/actions";
 import store from "../store";
 import {  Form } from 'react-bootstrap'
 import { connect } from "react-redux";
@@ -39,7 +40,9 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
             Sselected:null,
             comment:null,
             indexing:[],
-            spinner:false
+            spinner:false,
+            spec:null,
+            recent:null
            
         }
 
@@ -56,18 +59,67 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
             this.svProduct()
            
             this.setState({comment:this.props.data.rc.slice(0,2)})
+            
+            
             this.setState({indexing:[2]})
+            const val  =sessionStorage.getItem('RV')
+
             
 
-          
+
+            sessionStorage.setItem('RV' , [...[val] , this.props.data.id])
+
+
+            
+            sessionStorage.setItem('test' ,"TEstst" , 4000)
+
+            console.log(localStorage.getItem('test'))
+
+            this.setState({spec:JSON.parse(this.props.data.spec)})
+            const final  =sessionStorage.getItem('RV')
+
+            console.log(final , 'final')
+            let split  = final.split(',').slice(1)
+            console.log(split)
+            let dup = Array.from(new Set(split))
+            this.setState({recent:dup})
+
+            localStorage.setItem('RVEXP' ,  new Date().getTime() +7.2e+6)
+            
+  
            
         }, 1000);
 
-
-     
+        setTimeout(() => {
+                this.recentview()
+        }, 2000);
+        
+       
+         /*    
+            setInterval(() => {
+             
+                if(localStorage.getItem('RV')){
+        
+                if(Number(localStorage.getItem('RVEXP')) < new Date().getTime()){
+                    console.log("hit")
+                    localStorage.removeItem('RV')
+                }else{
+                    console.log("not hit")
+                }
+            }
+            }, 1000 );
+       
+       */
       
 
     }
+
+    recentview  =  () =>{
+
+        store.dispatch(RecentViewAction(this.state.recent))
+
+    }
+
 
 
     cvProduct = () =>{
@@ -169,44 +221,53 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
         this.props.data.image.map((data) => {
             x.push(data)
         })
-        this.props.data.variation.map((data) => {
-            data.variation_image.map((data) => {
-                x.push(data)
-            })
-        })
+      
 
 
         this.setState({ thumbnail: x })
     }
 
-    variationimage = (id) => {
-        this.setState({variationid:id})
-        const x = this.props.data.variation.filter(data => data.id == id)
+ 
 
-        let y = []
-        x.map((data) => {
-            data.variation_image.map((data) => {
-                y.push(data)
-            })
-        })
-
-        this.setState({ variationthumb: y })
-
-    }
-
-    closethumb = () => {
-        this.setState({ variationthumb: null })
-    }
-
+ 
 
     test = (pid , id) =>{
 
-       
+
+    
+
+ 
         
 
-        console.log(pid , id)
+        console.log(pid , id , this.state.thumbnail)
       
         let t = this.props.data.variation.filter((item)=> item.product == pid && item.color == id )
+
+
+       
+
+        let variationImage = t.filter((item)=>  item.variation_image.length !== 0 )
+
+        console.log(variationImage)
+
+        if(variationImage.length == 0){
+            setTimeout(() => {
+                this.thumbimage()
+            }, 500);
+        }else{
+            
+        let variationImg = []
+
+        variationImage.map((data)=>{
+            
+            data.variation_image.map((img)=>{
+                variationImg.push(img)
+            })
+        })
+
+        this.setState({thumbnail:variationImg})
+
+        }
 
    
 
@@ -319,9 +380,8 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
 
     render(){
 
-        console.log(this.props.data )
-
-        
+       
+        console.log(this.state.thumbnail)
       
         return(
 
@@ -340,7 +400,7 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
     return (
     
             
-            <img  onMouseOver={this.productimage} width="15%" height="4%" src={`../../assets/static${data.photo}`} />
+            <img  onClick={this.productimage} style={{cursor:"pointer"}} width="8%" height="8%" src={`../../assets/static${data.photo}`} />
            
           
           
@@ -350,7 +410,9 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
   </th>
   </tr>
   <tr>
-      <th scope="col" > <ReactImageMagnify {...{
+      <th scope="col" > 
+      <div class="text-center position-relative " style={{justifyContent:"center", display:"flex" , alignItems:"center"}}>
+      <ReactImageMagnify {...{
                                             smallImage: {
                                                 alt: 'Wristwatch by Ted Baker London',
                                                 isFluidWidth: true,
@@ -362,25 +424,32 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
                                             },
                                             largeImage: {
                                                 src: this.state.imagePath,
-                                                width: 2000,
+                                                width: 1500,
                                                 className: 'test',
                                               
                                                 height: 1500
                                             },
                                             enlargedImageContainerDimensions: {
-                                                width: '180%',
-                                                height: '200%',
+                                                width: '130%',
+                                                height: '130%',
                                             
                                                
                                             },
                                             enlargedImageContainerStyle:{
                                                 marginLeft:"2pc",
-                                                padding:"2pc",
-                                                marginTop:"-6.5pc",
+                                                padding:"1pc",
+                                                marginTop:"-0.9pc",
+                                              
+                                               
                                                 border:"1px solid rgb(240, 240, 240)"
                                             },
+                                          
+                                     
                                             shouldUsePositiveSpaceLens: true
-                                        }} /></th>
+                                        }} />
+                                            
+                                            </div>
+                                            </th>
     
     </tr>
     <tr>
@@ -388,7 +457,7 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
                         cart</button>
                         <Form.Control
                                                                         as="select"
-                                                                        style={{width:"30%" , margin:"auto"}}
+                                                                        style={{width:"15%" , margin:"auto"}}
                                                                         value={this.state.pqty == undefined ? 1 : this.state.pqty}
                                                                         onChange={(e) => this.setState({pqty:e.target.value}) }
 
@@ -409,6 +478,20 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
                                                                         }
 
                                                                     </Form.Control>
+
+                                                                 
+                                                                            <p style={{width:"25%" , margin:"auto"}}>{this.props.RelatedAttrData == undefined ?  null:this.props.RelatedAttrData[0].qty < 10 ?  (<>
+                                                                            
+                                                                            <div><span class="text-uppercase small text-danger">
+           Only {this.props.RelatedAttrData[0].qty} Left </span>
+        </div>
+                                                                        </>) :( <>
+                                                                            
+                                                                                <div><span class="text-uppercase small text-primary">
+               In Stock - </span>{this.props.RelatedAttrData[0].qty}
+            </div>
+                                                                            </>)}
+                                                                            </p>                                                                 
 
         </th>
         </tr>
@@ -450,8 +533,7 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
 
            
           
-              
-                           
+        
                    
        
       
@@ -460,15 +542,17 @@ export default connect(mapStateToProps)(class ImageWithThumb extends React.Compo
         
 return (
     <>
-    <table class="table"  style={{width:"50%" , border:"none"}}>
-  <thead>
-    <tr >
-      <th style={{width:"5%", borderBottom:"none"}} ><p>{data.color.length == 0 ? null : 'Color'}</p></th>
+      {data.color.length == 0 ? null : 'Color'} {this.state.Cselected == undefined ? null : (<>: {this.state.Cselected }</>) } 
+    <ul class="list-group list-group-horizontal-xl">
+
+   
+
       { data.color == undefined ||  data.color.length == 0 ? null : data.color.map((d)=>{
     return(
 
        <>
-       <th style={{width:"5%"  ,borderBottom:"none"}} ><p class="button-13"  onClick={() => this.test(this.props.data.id  , d.id)} >{d.color}</p></th>  
+        <a href="#" class=" focus-ring-color"><li  style={{cursor:"pointer"  , borderRadius:"0px" ,borderColor: "rgb(240, 240, 240)" }} class="list-group-item "  onClick={() => this.test(this.props.data.id  , d.id)}>{d.color}</li></a>
+      
 
 
 
@@ -479,10 +563,9 @@ return (
     
           
     )
+    
 })}
-    </tr>
-  </thead> 
-    </table>
+   </ul> 
    
 
 
@@ -505,7 +588,9 @@ return (
      
 
 
-
+<div>
+    <br/>
+</div>
 
 
 
@@ -521,15 +606,17 @@ return (
         
 return (
     <>
-    <table class="table"  style={{width:"50%" }}>
-  <thead>
-    <tr >
-      <th style={{width:"5%", borderBottom:"none"}} ><p>{data.size.length == 0 ? null : 'Size'}</p></th>
+    
+   
+{data.size.length == 0 ? null : 'Size'}  {this.state.Sselected == undefined ? null : (<>: {this.state.Sselected} </>) }
+  <ul class="list-group list-group-horizontal-xl">
+
       { data.size == undefined ||  data.size.length == 0 ? null : data.size.map((d)=>{
     return(
 
        <>
-       <th style={{width:"5%"  ,borderBottom:"none"}} ><p class="button-13" role="button" onClick={()=> this.fetch(this.props.data.id , this.state.cid , d.id)}  >{d.size}</p>   </th>  
+        <a href="#" class=" focus-ring-size"><li  style={{cursor:"pointer"  , borderRadius:"0px" ,borderColor: "rgb(240, 240, 240)" }} class="list-group-item "  onClick={()=> this.fetch(this.props.data.id , this.state.cid , d.id)}  >{d.size}</li></a>
+
 
 
 
@@ -541,10 +628,8 @@ return (
           
     )
 })}
-    </tr>
-  </thead> 
-    </table>
-   
+    
+    </ul> 
 
 
 
@@ -560,6 +645,156 @@ return (
 
 
 
+   <br/>
+
+  
+
+          
+<div class="row"><br/></div>
+
+ 
+     
+
+
+   
+<div class="container "style={{/* borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0" */  padding:"10px"}}>
+    
+
+  <div class="row">
+
+    {this.props.data.highlights == undefined ? null : this.props.data.highlights.length == 0 ? null : (
+        <>
+          <div class="col-2" style={{fontWeight:600 , color:"#878787" , fontSize:"13px"}}>
+      Highlight
+    </div>
+       
+    <div class="col-4">
+    <ul>
+    {this.props.data.highlights.map((data)=>{
+
+        return (
+            <>
+             <li>{data}</li>
+            
+            </>
+           
+           
+        )
+
+    })}
+    </ul>
+    </div>  
+
+        </>
+    
+    )
+
+   
+        
+    }
+
+
+
+
+
+{this.props.data.services == undefined ? null : this.props.data.services == null ? null : (
+        <>
+          <div class="col-1" style={{fontWeight:600 , color:"#878787" , fontSize:"13px"}}>
+      Services
+    </div>
+       
+    <div class="col-5">
+    <ul>
+    
+            <>
+            <p><i class="fa-regular fa-circle-check me-1" style={{color:"#388E3C"}}></i> {this.props.data.services.warrenty}</p>
+            {this.props.data.highlights.map((data)=>{
+
+return (
+    <>
+      <p><i class="fa fa-genderless me-1" style={{color:"#388E3C"}}></i>{data}</p>
+    
+    </>
+   
+
+)
+
+})}
+        
+            
+            
+            </>
+           
+           
+        
+
+ 
+    </ul>
+    </div>  
+
+        </>
+    
+    )
+
+   
+        
+    }
+
+
+  </div>
+
+
+
+
+
+
+
+ 
+  
+
+  {this.props.data.seller == undefined  ? null : this.props.data.seller == null ? null :  (
+
+<div class="row">
+
+
+<div class="col-2" style={{fontWeight:600 , color:"#878787" , fontSize:"13px"}}>
+Seller
+</div>
+
+<div class="col-10">
+
+
+
+
+
+   <p style={{fontSize:"13px"}}> {this.props.data.seller.store_name} &nbsp; <Rating value={this.props.data.seller.srating}/></p>
+    
+
+   
+   
+
+
+
+
+</div>  
+</div>
+
+
+)
+
+
+
+}
+
+
+
+
+
+
+<div class="row"><br/></div>
+
+
+ 
 
 
 
@@ -579,133 +814,46 @@ return (
 
 
 
+  {this.props.data.sdes == undefined  ? null : this.props.data.sdes == null ? null :  (
 
+        <div class="row">
 
+      
+<div class="col-2" style={{fontWeight:600 , color:"#878787" , fontSize:"13px"}}>
+      Description
+    </div>
+       
+    <div class="col-10">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 
        
       
-       
-
-
-       
-       
-
-
-   <br/>
-
-   <table class="table table-bordered" style={{width:"50%"}}>
-    
-     <tbody>
-
-     {this.state.Cselected == undefined && this.state.Sselected == undefined ? null :(
-
-<tr>
-<td scope="row" style={{width:"30%"}}>Selected</td>
-<td>{this.state.Cselected == undefined ? null : this.state.Cselected } &nbsp; {this.state.Sselected == undefined ? null : this.state.Sselected }</td>
-</tr>
-
-     )}
-   
-      {this.props.RelatedAttrData == undefined ? null : (
-
-      <tr>
-        <td scope="row">QTY</td>
-        <td>{this.props.RelatedAttrData == undefined ?  this.props.data.totalqty : this.props.RelatedAttrData[0].qty } </td>
-      </tr>
-    )}
-       {this.props.RelatedAttrData == undefined ? null : (
-
-                <tr>
-                <td scope="row">SKU</td>
-                <td>{this.props.RelatedAttrData  == undefined   ? null : this.props.RelatedAttrData[0].sku }</td>
-                </tr>
-    
-
-    )}
-
-        {this.props.RelatedAttrData == undefined ? null : (
-
-        <tr>
-        <td scope="row">Price</td>
-        <td>{this.props.RelatedAttrData  == undefined   ? null : this.props.RelatedAttrData[0].sku }</td>
-        </tr>
-        )}
-
-
-      </tbody>
-          </table>
-
-          
-            <hr class="my-6" style={{ border: "none" }} />
-            <div class="mb-5">
-
-              
+           <p style={{fontSize:"13px"}}> {this.props.data.sdes}</p>
+            
         
-
-                <hr class="my-6" style={{ border: "none" }} />
-
-                <div >
-                    {this.state.variationthumb === null ? null : this.state.variationthumb.map((data) => {
-                        return (
-                            <>
-
-                                <img onClick={this.productimage} width="20%" height="30%" src={`../../assets/static${data.photo}`} />&nbsp;
-                            </>
-                        )
-                    })}
-
-
-                </div> 
-
-                {this.state.variationthumb === null ? null : (<button onClick={this.closethumb} type="button" class="btn-close me-2 m-auto" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>)}
-
-            </div>
-
-            <div>
-
-
            
-                   
-                
+           
+    
 
-            </div>
-     
+   
+   
+    </div>  
+    </div>
+  
+    
+    )
 
-            <hr class="my-6" style={{ border: "none" }} />
+   
+        
+    }
 
-            <div class="container">
-  <div class="row">
-    <div class="col">
-      Column
-    </div>
-    <div class="col">
-      Column
-    </div>
-    <div class="col">
-      Column
-    </div>
 
-    <div class="col">
-      Column
-    </div>
-  </div>
+
+
 </div>
 
-<hr/>
+<div class="row"><br/></div>
 
 
 
@@ -720,14 +868,13 @@ return (
         
     
     <div class="row" style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>
-      <div class="col-md-9">
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      <div class="col-md-12"     >
+  <p style={{width:"1pc"}} style={{textAlign:"center"}} dangerouslySetInnerHTML={{__html: this.props.data.ldes}}></p>
     </div>
 
-    <div class="col-md-3">
-     <img width="50%" src="https://picsum.photos/seed/picsum/200/300" />
-    </div >
     </div>
+
+    
   
 
 
@@ -743,49 +890,133 @@ return (
 <br/>
     
   
- <div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0"}}>
-    
-    <div class="row">
-    <h1 style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>Specification</h1>
-    
 
-    </div>
-    
 
-<div class="row" style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>
-  <div class="col-md-9">
-  <table class="table " >
-  <thead>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row"><br/></div>
+
+
+
+
+
+
+
+
+
+
+
+
+{this.props.data.spec == null ? null : (  
+
+
+
+
+<div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0"}}>
+    
+        <div class="row">
+        <h1 style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>Spec</h1>
+        
+
+        </div>
+        {this.state.spec == undefined ? null: Object.keys(this.state.spec).map((key)=>{
+
+
+
+        return (
+                    
+
+            <div class="row" style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>
+            <div class="col-md-2">
+           {key}
+          </div>
+      
+          <div class="col-md-9">
+            {this.state.spec[key]}
+          </div >
+          </div>
+        
+            
+            )
+
+        }) }
+
+    
    
-    <tr style={{borderBottom:"1px"}}>
-     
-      <th  style={{borderBottom:"none" ,width:"20%" }} scope="col">Compoent</th>
-      <th scope="col" style={{borderBottom:"none"}}>kabjaha</th>
-     
-    </tr>
-    
-
-    
-  </thead>
-
-    </table>
-</div>
 
 
 
 
-</div>
+ </div>
 
 
 
 
 
-</div>
+)}
 
-<br/>
+
+
+
+
+
+
+
+
+
+
+
+
+ <div class="row"><br/></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
-<div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0", borderBottom:"1px solid #f0f0f0"}}>
+
+<br/>
+    
+    {this.props.data.rc.length == 0 ? null : (
+
+
+ 
+    <div class="container "style={{borderTop:"1px solid #f0f0f0",borderLeft:"1px solid #f0f0f0",borderRight:"1px solid #f0f0f0", borderBottom:"1px solid #f0f0f0"}}>
     
     <div class="row">
     <h1 style={{borderBottom:"1px solid #f0f0f0" , padding:"10px"}}>Rating & Reviews</h1>
@@ -875,8 +1106,7 @@ return (
           </div>
 </div>
 
-   
-
+  
 
     {this.state.comment == undefined ? null : this.state.comment.map((data)=>{
 
@@ -886,7 +1116,7 @@ return (
 
 <div class="ms-5">
    
-    <div class=" mb-2">
+    <div class=" mb-4">
 
         <Rating value={data.rating}/>
 
@@ -930,6 +1160,7 @@ return (
 
 </div>
 
+     )}
 
 
 
@@ -937,10 +1168,15 @@ return (
     </div>
 )
 
+
 }
             </>
         )
     }
 
 
+
+
+
 })
+

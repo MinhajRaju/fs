@@ -20,6 +20,7 @@ import { FilterItemReducers } from './Reducers/reducers'
 import { RegisterCustomerReducers } from './Reducers/reducers'
 import { CustomerLoginReducers } from './Reducers/reducers'
 import { RelatedAttrReducers } from './Reducers/reducers'
+import { RecentViewReducers } from './Reducers/reducers'
 import {AES, enc}from 'crypto-js';
 
 
@@ -55,7 +56,8 @@ const reducer = combineReducers({
     FilterItemReducers,
     RegisterCustomerReducers,
     CustomerLoginReducers,
-    RelatedAttrReducers
+    RelatedAttrReducers,
+    RecentViewReducers
     
 })
 

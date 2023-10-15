@@ -212,7 +212,7 @@ div.zoom img {
     --fc-font-sans-serif: "Inter", sans-serif;
     --fc-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --fc-gradient: linear-gradient(180deg, hsla(0, 0%, 100%, .15), hsla(0, 0%, 100%, 0));
-    --fc-body-font-family: var(--fc-font-sans-serif);
+    --fc-body-font-family: var(--fc-font-open-sanss ,sans-serif);
     --fc-body-font-size: 0.875rem;
     --fc-body-font-weight: 500;
     --fc-body-line-height: 1.6;
@@ -2399,7 +2399,7 @@ progress {
 
     .row-cols-xl-6>* {
         flex: 0 0 auto;
-        width: 16.6666666667%
+        width: 19%
     }
 
     .col-xl-auto {
@@ -10139,8 +10139,12 @@ fieldset:disabled .btn {
     text-decoration-color: RGBA(var(--fc-emphasis-color-rgb), var(--fc-link-underline-opacity, .75))
 }
 
-.focus-ring:focus {
-    box-shadow: var(--fc-focus-ring-x, 0) var(--fc-focus-ring-y, 0) var(--fc-focus-ring-blur, 0) var(--fc-focus-ring-width) var(--fc-focus-ring-color);
+.focus-ring-color:focus {
+    border: 1px solid #388E3C;
+    outline: 0
+}
+.focus-ring-size:focus {
+    border: 1px solid #388E3C;
     outline: 0
 }
 
@@ -26724,12 +26728,7 @@ h3 {
 
 .card-product .card-hidden {
     background-color: #fff;
-    border-bottom: 1px solid var(--fc-gray-300);
-    border-left: 1px solid var(--fc-gray-300);
-    border-radius: .4375rem;
-    border-right: 1px solid var(--fc-gray-300);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+   
     left: 0;
     margin-top: -1.25rem;
     opacity: 0;
@@ -26765,8 +26764,8 @@ h3 {
 }
 
 .card-product:hover {
-    border: 1px solid var(--fc-primary);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, .12);
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
     transition: .2s;
     -moz-transition: .2s;
     -webkit-transition: .2s;
@@ -31194,3 +31193,4 @@ span.flatpickr-weekday {
 .button-87:active {
   transform: scale(0.95);
 }
+

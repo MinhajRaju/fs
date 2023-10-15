@@ -20,7 +20,7 @@ import {AES, enc}from 'crypto-js';
 
 const mapStateToProps = (state) => {
   
-    return { CustomerInfoData:state.CustomerInfoReducer.CustomerInfoData , SingleProductData: state.SingleProductReducer.SingleProductData , shuffleProductData:state.SellerProductShuffleReducer.SellerProductShuffleData ,RelatedItemData:state.RelatedItemReducer.RelatedItemData }
+    return { CustomerInfoData:state.CustomerInfoReducer.CustomerInfoData , SingleProductData: state.SingleProductReducer.SingleProductData , shuffleProductData:state.SellerProductShuffleReducer.SellerProductShuffleData ,RelatedItemData:state.RelatedItemReducer.RelatedItemData , RecentData:state.RecentViewReducers.RecentViewData }
 
 }
 
@@ -30,7 +30,7 @@ export default withRouter(connect(mapStateToProps)(class Product extends React.C
 
     constructor(props) {
         super(props)
-        
+    
         store.dispatch(SingleProductAction(this.props.params.slug))
         store.dispatch(RelatedItemAction(this.props.params.slug))
         store.dispatch(CustomerInfoAction(1))
@@ -169,141 +169,18 @@ export default withRouter(connect(mapStateToProps)(class Product extends React.C
 
                         </div>
                     </div>
-                </section >
+                </section >            
+                <section class="mt-8" >
 
-                <section class="mt-lg-14 mt-8 " >
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <ul class="nav nav-pills nav-lb-tab" id="myTab" role="tablist">
+                <ProductCarousel data={this.props.shuffleProductData} section="Same Store"/>
+                </section > 
+                <section class="mt-8" >
+                <ProductCarousel data={this.props.RelatedItemData} section="Similar Product"/>
+                </section > 
+                <section class="mt-8" >
+                <ProductCarousel data={this.props.RecentData} section="Recently View"/>
+                </section > 
 
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="product-tab" data-bs-toggle="tab"
-                                            data-bs-target="#product-tab-pane" type="button" role="tab" aria-controls="product-tab-pane"
-                                            aria-selected="true">Product Details</button>
-                                    </li>
-
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
-                                            data-bs-target="#reviews-tab-pane" type="button" role="tab" aria-controls="reviews-tab-pane"
-                                            aria-selected="false">Reviews</button>
-                                    </li>
-
-                                </ul>
-
-                                <div class="tab-content" id="myTabContent">
-
-                                    <div class="tab-pane fade show active" id="product-tab-pane" role="tabpanel" aria-labelledby="product-tab"
-                                        tabindex="0">
-                                        <div class="my-4">
-                                            <div class="mb-5">
-
-                                                <h4 class="mb-1">Nutrient Value & Benefits</h4>
-                                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi, tellus iaculis urna
-                                                    bibendum
-                                                    in lacus, integer. Id imperdiet vitae varius sed magnis eu nisi nunc sit. Vel, varius
-                                                    habitant ornare ac rhoncus. Consequat risus facilisis ante ipsum netus risus adipiscing
-                                                    sagittis sed. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                            </div>
-                                            <div class="mb-5">
-                                                <h5 class="mb-1">Storage Tips</h5>
-                                                <p class="mb-0">Nisi, tellus iaculis urna bibendum in lacus, integer. Id imperdiet vitae varius sed
-                                                    magnis eu
-                                                    nisi nunc sit. Vel, varius habitant ornare ac rhoncus. Consequat risus facilisis ante ipsum
-                                                    netus risus adipiscing sagittis sed.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                                </p>
-                                            </div>
-
-                                            <div class="mb-5">
-                                                <h5 class="mb-1">Unit</h5>
-                                                <p class="mb-0">3 units</p>
-                                            </div>
-                                            <div class="mb-5">
-                                                <h5 class="mb-1">Seller</h5>
-                                                <p class="mb-0">DMart Pvt. LTD</p>
-                                            </div>
-                                            <div>
-                                                <h5 class="mb-1">Disclaimer</h5>
-                                                <p class="mb-0">Image shown is a representation and may slightly vary from the actual product. Every
-                                                    effort
-                                                    is made to maintain accuracy of all information displayed.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
-                                        <div class="my-4">
-
-                                            <div class="row">
-                                                
-
-                                                <div class="col-md-8">
-                                                    <div class="mb-10">
-                                                   
-                                                        
-
-                                                        
-                                                        
-                                                        
-                                                        
-                                                        
-
-
-
-
-
-
-
-                                                        <div>
-                                                            <a href="#" class="btn btn-outline-gray-400 text-muted">Read More Reviews</a>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    {this.reviews()}
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="tab-pane fade" id="sellerInfo-tab-pane" role="tabpanel" aria-labelledby="sellerInfo-tab"
-                                        tabindex="0">...</div>
-                                </div>
-                            </div>
-
-
-
-
-                            <ProductShuffle data={this.props.shuffleProductData}/>
-
-
-
-
-                            
-
-
-
-
-
-
-
-                        </div>
-
-
-
-
-
-                    </div>
-
-
-
-                </section>
-
-                <ProductCarousel data={this.props.RelatedItemData} section="Related Item"/>
-                
 
             </>
         )

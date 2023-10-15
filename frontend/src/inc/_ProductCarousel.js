@@ -1,7 +1,7 @@
 import React from 'react'
 import Carousel from 'react-grid-carousel'
 import Rating from './_Rating'
-
+import { Link } from 'react-router-dom'
 
 
 export default class ProductCarousel extends React.Component{
@@ -11,7 +11,70 @@ export default class ProductCarousel extends React.Component{
         return (
             <>
             <section class="my-lg-14 my-14">
-                    <div class="container">
+
+            <div class="container "style={{border:"1px solid #f0f0f0", padding:"10px"  , background:'#fbfdff'}}>
+    
+    <div class="row">
+    <h1 style={{borderBottom:"1px solid #f0f0f0" , padding:"20px"}}>{this.props.section}</h1>
+    
+
+    </div>
+    
+
+<div class="row" >
+  <div class="col-md-12">
+
+                        <Carousel  responsiveLayout={[{breakpoint: 800,    cols: 5,    rows: 1,},{breakpoint: 500,    cols: 3,    rows: 1,}]} cols={6} rows={1} gap={10} hideArrow={ this.props.data != undefined ? this.props.data.length > 6 ? false : true : true} loop>
+                            {this.props.data === undefined ? null : this.props.data.map((data)=>{
+
+                                return (
+                                    <Carousel.Item>
+                                    <div class="col">
+                                    <div class="card card-product" style={{border:"none"}}>
+                                        <div class="card-body">
+     
+                                            <div class="text-center position-relative"  style={{height:"18pc" , justifyContent:"center", display:"flex" , alignItems:"center"}}> 
+                                         
+                                            <Link to={`/product/${data.slug}`}> <img class="card-img-top" src={data.image.length == 0 ? 'noiamage' : data.image[0].thumbnail}
+                                            alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></Link>
+    
+                                            </div>
+    
+                                            
+                                            <h2 class="fs-6"><a href={`/product/${data.slug}`} class="text-inherit text-decoration-none">{data.title.trim().length <= 42 ? data.title.substring(0,42) : data.title.substring(0,42) + '....'} </a></h2>
+                                            <div class="text-warning">
+                                            
+                                            <Rating value={data.rating}/>
+                                             <span class="text-muted small">&nbsp;{data.rating}</span>
+                                            </div>
+    
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div><span class="text-dark">$24</span>
+                                                </div>
+
+       
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </Carousel.Item>
+                                )
+
+
+                            })}
+
+                               
+                            </Carousel>
+
+
+                            
+                        </div>
+                    </div>
+
+</div>
+
+                    {/* <div class="container">
+                        
 
                         <div class="row">
                             <div class="col-12">
@@ -102,7 +165,7 @@ export default class ProductCarousel extends React.Component{
 
                             
                         </div>
-                    </div>
+                    </div> */}
                 </section>
             
             </>

@@ -4,18 +4,103 @@ import store from '../store'
 
 
 import {connect} from 'react-redux'
+import ReactQuill , {Quill} from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import ImageResize from 'quill-image-resize-module-react';
+Quill.register('modules/imageResize', ImageResize);
+const mapStateToProps = (state) =>{
+
+  return {  CategoryData: state.NestedcategoryReducer.NestedCategoryData}
+
+}
 
 
-
-
-export default connect()(class AddProdcut extends React.Component{
+export default connect(mapStateToProps)(class AddProdcut extends React.Component{
 
     constructor(props){
         super(props)
+
+        this.state={
+          sub_cat_first:null,
+          sub_cat_second:null,
+          parent:null,
+          child1:null,
+          child2:null,
+          text:"",
+        }
+
+    
+
+
     }
 
 
+    parentTofirstLevel = (e) =>{
+      console.log(e.target.value)
+
+
+    const res = this.props.CategoryData.filter((cat) => cat.id == e.target.value)
+      
+    res.map((data)=>{
+
+      this.setState({sub_cat_first:data.children , parent:e.target.value , child1:null, child2:null})
+
+    })
+
+    }
+
+    childToSecondLevel = (e) =>{
+      console.log(e.target.value)
+
+
+    const res = this.props.CategoryData.filter((cat) => cat.id == e.target.value)
+      
+    res.map((data)=>{
+
+      this.setState({sub_cat_second:data.children , child1:e.target.value})
+
+    })
+
+    }
+  
+    handleChange = (value) => {
+      this.setState({text: value});
+    }
+
+
+    modules = {
+     
+      imageResize: {
+        parchment: Quill.import('parchment'),
+        modules: ['Resize', 'DisplaySize']
+      },
+      
+      toolbar: [
+        [{ 'header': [1, 2,3,4,5,6, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote',],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image' ,'video'],
+        [{ 'direction': 'rtl' }]
+        [{ 'color': ['red'] }, { 'background': [] }],        
+  [{ 'font': [] }],
+  [{ 'align': [] }],
+        ['clean'],
+      
+      ],
+  }
+ 
+    formats = [
+      'header',
+      'bold', 'italic', 'underline', 'strike', 'blockquote',
+      'list', 'bullet', 'indent',
+      'link', 'image' , 'video','color','font','backgorund','align','clean'
+    ]
+
     render(){
+
+      console.log(this.state.parent , this.state.child1,  this.state.child2 , this.state.text)
+
+
 
         return (
 
@@ -26,7 +111,7 @@ export default connect()(class AddProdcut extends React.Component{
       
         <div class="row">
 
-          <div class="col-lg-8 col-12">
+          <div class="col-lg-12 col-12">
         
             <div class="card mb-6 card-lg">
        
@@ -34,144 +119,162 @@ export default connect()(class AddProdcut extends React.Component{
                 <h4 class="mb-4 h5">Product Information</h4>
                 <div class="row">
              
-                  <div class="mb-3 col-lg-6">
+                  <div class="mb-3 col-lg-0">
                     <label class="form-label">Title</label>
-                    <input type="text" class="form-control" placeholder="Product Name" required />
+                    <input style={{width:"70%"}} type="text" class="form-control" placeholder="Product Name" required />
                   </div>
-              
-                  <div class="mb-3 col-lg-6">
-                    <label class="form-label">Product Category</label>
-                    <select class="form-select">
-                      <option selected>Product Category</option>
-                      <option value="Dairy, Bread & Eggs">Dairy, Bread & Eggs</option>
-                      <option value="Snacks & Munchies">Snacks & Munchies</option>
-                      <option value="Fruits & Vegetables">Fruits & Vegetables</option>
-                    </select>
-                  </div>
-              
-                  <div class="mb-3 col-lg-6">
-                    <label class="form-label">Weight</label>
-                    <input type="text" class="form-control" placeholder="Weight" required />
-          
-                  <div class="mb-3 col-lg-6">
-                    <label class="form-label">Units</label>
-                    <select class="form-select">
-                      <option selected>Select Units</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  </div>
-                  <div>
-                    <div class="mb-3 col-lg-12 mt-5">
-                   
-                      <h4 class="mb-3 h5">Product Images</h4>
-
-                 
-                      <form action="#" class="d-block dropzone border-dashed rounded-2 ">
-                        <div class="fallback">
-                          <input name="file" type="file" multiple />
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+                  <br/>
                
-                  <div class="mb-3 col-lg-12 mt-5">
-                    <h4 class="mb-3 h5">Product Descriptions</h4>
-                    <div class="py-8" id="editor"></div>
+                  <div class="mb-3 col-lg-0">
+                    <label class="form-label">Category</label>
+                    
                   </div>
-                </div>
+                 
+                  <div class="mb-3 col-lg-2">
+                      <label class="form-label" for="selectOne"><i class="fa-solid fa-p"></i> <span
+                      class="text-secondary"><i class="fa-solid fa-family"></i>arent Category &nbsp; -> </span></label>
+                      <select class="form-select" aria-label="Default select example" onChange={this.parentTofirstLevel}>
+                      <option selected>Open this select menu</option>
+
+                      {this.props.CategoryData == undefined ? 
+                      null
+                    
+                    
+                    : (this.props.CategoryData.map((x)=>{
+                            
+                        if(x.level == 0){
+                            return <option value={x.id} >{x.name}</option>   
+                        }                        
+
+                    }))                
+                    
+                    
+                    
+                     }
+                     
+                      </select>                    
+                  </div>
+
+
+
+                   
+                  <div class="mb-3 col-lg-2">
+                      <label class="form-label" for="selectOne"><span
+                      class="text-secondary"><i class="fa-solid fa-c"></i>&nbsp; <i class="fa-solid fa-1"></i>&nbsp; -></span></label>
+                      <select class="form-select" aria-label="Default select example" onChange={this.childToSecondLevel}>
+                      <option selected>Open this select menu</option>
+
+
+                      {this.state.sub_cat_first  == undefined ? 
+                      null
+                    
+                    
+                    : (this.state.sub_cat_first.map((x)=>{
+                            
+                     
+                            return <option value={x.id} >{x.name}</option>   
+                                           
+
+                    }))                
+                    
+                    
+                    
+                     }
+                      
+                      </select>                    
+                  </div>
+
+
+
+
+                  <div class="mb-3 col-lg-2">
+                      <label class="form-label" for="selectOne"><span
+                      class="text-secondary"><i class="fa-solid fa-c"> </i>&nbsp; <i class="fa-solid fa-2"></i>&nbsp;</span></label>
+                      <select class="form-select" aria-label="Default select example" onChange={(e) => this.setState({child2:e.target.value})}>
+                      <option selected>Open this select menu</option>
+                      {this.state.sub_cat_second  == undefined ? 
+                      null
+                    
+                    
+                    : (this.state.sub_cat_second.map((x)=>{
+                            
+                     
+                            return <option value={x.id} >{x.name}</option>   
+                                           
+
+                    }))                
+                    
+                    
+                    
+                     }
+                      </select>                    
+                  </div>
+
+                  
+                  <div class="mb-3 col-lg-0">
+                    
+                  </div>
+                  <div class="mb-3 col-lg-0">
+                    <label class="form-label">Brand</label>
+                    <select  style={{width:"20%"}} class="form-select" aria-label="Default select example" onChange={this.parentTofirstLevel}>
+                      <option selected>Open this select menu</option>
+
+                     
+                      </select>    
+                   
+                  </div>
+
+
+
+                
+                   
+                  <div class="mb-3 col-lg-0">
+                    <label class="form-label">Warranty</label>
+                    <select  style={{width:"20%"}} class="form-select" aria-label="Default select example" onChange={this.parentTofirstLevel}>
+                      <option selected>Open this select menu</option>
+
+                     
+                      </select>  
+                  </div>
+
+                  <div class="mb-3 col-lg-0">
+                    <label class="form-label">Highlights</label>
+                    <input  style={{width:"70%"}} type="text" class="form-control" placeholder="Eg : Red,Durable,Fashionable" required />
+                    </div>
+                    
+                    
+                    <div class="mb-3 col-lg-0">
+                      <label for="textarea-input" class="form-label">Short Description</label>
+                      <textarea style={{width:"70%"}} class="form-control" id="textarea-input" rows="5"></textarea>
+                    </div>
+                    
+
+                    <div class="mb-3 col-lg-0">
+                      <label for="textarea-input" class="form-label">Description</label>
+                      <ReactQuill   style={{width:"70%"}} value={this.state.text}
+                        modules={this.modules}
+                        formats={this.formats}
+                    
+
+                        onChange={this.handleChange} />
+                    </div>
+                   
+                    <div class="mb-3 col-lg-0">
+                      <label for="textarea-input" class="form-label">Specification</label>
+                      <input  style={{width:"70%"}} type="text" class="form-control" placeholder="Eg : key,value,key,value -> Ram,16gb,Weight,200kg" required />
+                    </div>
+
+             
               </div>
+             
+
             </div>
 
           </div>
           
 
         </div>
-        <div class="col-lg-4 col-12">
-       
-            <div class="card mb-6 card-lg">
-     
-              <div class="card-body p-6">
-          
-                <div class="form-check form-switch mb-4">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchStock" checked />
-                  <label class="form-check-label" for="flexSwitchStock">In Stock</label>
-                </div>
-              
-                <div>
-                  <div class="mb-3">
-                    <label class="form-label">Product Code</label>
-                    <input type="text" class="form-control" placeholder="Enter Product Title" />
-                  </div>
-                
-                  <div class="mb-3">
-                    <label class="form-label">Product SKU</label>
-                    <input type="text" class="form-control" placeholder="Enter Product Title" />
-                  </div>
         
-                  <div class="mb-3">
-                    <label class="form-label" id="productSKU">Status</label><br/>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                        value="option1" checked />
-                      <label class="form-check-label" for="inlineRadio1">Active</label>
-                    </div>
-                  
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                        value="option2" />
-                      <label class="form-check-label" for="inlineRadio2">Disabled</label>
-                    </div>
-               
-                  </div>
-
-                </div>
-              </div>
-            </div>
-         
-            <div class="card mb-6 card-lg">
-         
-              <div class="card-body p-6">
-                <h4 class="mb-4 h5">Product Price</h4>
-          
-                <div class="mb-3">
-                  <label class="form-label">Regular Price</label>
-                  <input type="text" class="form-control" placeholder="$0.00" />
-                </div>
-               
-                <div class="mb-3">
-                  <label class="form-label">Sale Price</label>
-                  <input type="text" class="form-control" placeholder="$0.00" />
-                </div>
-
-              </div>
-            </div>
-         
-            <div class="card mb-6 card-lg">
-           
-              <div class="card-body p-6">
-                <h4 class="mb-4 h5">Meta Data</h4>
-              
-                <div class="mb-3">
-                  <label class="form-label">Meta Title</label>
-                  <input type="text" class="form-control" placeholder="Title "/>
-                </div>
-
-             
-                <div class="mb-3">
-                  <label class="form-label">Meta Description</label>
-                  <textarea class="form-control" rows="3" placeholder="Meta Description"></textarea>
-                </div>
-              </div>
-            </div>
-         
-            <div class="d-grid">
-              <a href="#" class="btn btn-primary">
-                Create Product
-              </a>
-            </div>
-          </div>
       </div>
       </div>      
             </>

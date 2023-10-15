@@ -10,7 +10,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product_Image
-        fields = ['id','photo']
+        fields = ['id','photo' , 'thumbnail']
 
 
 class ProductVariation(serializers.ModelSerializer):
@@ -43,6 +43,12 @@ class ProductVariation(serializers.ModelSerializer):
 
 
 
+class WarrentySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Services
+        fields = '__all__'
+
+
 
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -52,15 +58,24 @@ class ProductSerializer(serializers.ModelSerializer):
     seller = serializers.SerializerMethodField(read_only=True)
     rc = serializers.SerializerMethodField(read_only=True)
     category = serializers.SerializerMethodField(read_only=True)
+    services = serializers.SerializerMethodField(read_only=True)
 
 
     class Meta:
         model =  Product
-        fields = ['id'  ,'brand' ,'seller','title','slug', 'flashsale' ,'sku','totalqty','variation' ,'image' ,'rc' ,'rating' ,'category' ,'price' ,'createdAt' , 'active']
+        fields = ['id'  ,'brand' ,'seller','title','slug', 'flashsale' ,'sku','totalqty','variation' ,'image' ,'rc' ,'rating' ,'category' ,'price' ,'createdAt' , 'active' , 'spec' , 'highlights','sdes' ,'ldes','services','oservices']
 
  
     def get_seller(self , obj):
         return SellerProfileSerializer(obj.seller , many=False).data   
+    
+    def get_services(self , obj):
+
+        if obj.wservices == None:
+            return None
+        else:
+            
+            return WarrentySerializer(obj.wservices , many=False).data
     def get_variation(self, obj):
         return ProductVariation(obj.product_variation_set.all() , many=True).data
     def get_image(self, obj):

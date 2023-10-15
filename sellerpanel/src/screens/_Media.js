@@ -119,41 +119,76 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
   
                   
      
-
+  <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-sm-2 g-2">
                         {this.props.MediaData == undefined ? null : this.props.MediaData.map((data)=>{
 
                             return (
 
-<div class="col-lg-2 col-12 mb-3">
                               
-                              <div class="">                               
-                                      <img src={`${data.photo}`} style={{width:"120px" , height:"150px"}} />
-                                        
-                                      <div class="dropdown ">
-                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="feather-icon icon-more-horizontal fs-5"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                              <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="form-check">
+
+
+                              
+                              
+                       
+
+                              <div class="card card-product mb-lg-12"  style={{border:"none" }}>
+                                <div  class="card-body">
+                                <div class="form-check">
                             <input onClick={(e) =>
                                         this.state.idArray == []
                                           ? null
                                           : this.state.idArray.includes(data.id)
                                           ? this.removeid(data.id)
                                           : this.handleSelect(data.id)
-                                      } class="form-check-input" type="checkbox" value={`${data.id}`} id="customerOne" style={{padding:"12px"}}  checked={this.state.idArray.length == 0 ? false :this.state.idArray.includes(data.id) ? true : false } />
+                                      } class="form-check-input" type="checkbox" value={`${data.id}`} id="customerOne" style={{padding:"7px"}}  checked={this.state.idArray.length == 0 ? false :this.state.idArray.includes(data.id) ? true : false } />
                             <label class="form-check-label" for="customerOne">
 
                             </label>
+                          
                           </div>
-                              </div>
+                          <br/>
+                                    <div 
+                                        
+                                        onClick={(e) =>
+                                          this.state.idArray == []
+                                            ? null
+                                            : this.state.idArray.includes(data.id)
+                                            ? this.removeid(data.id)
+                                            : this.handleSelect(data.id)
+                                        }  class="text-center position-relative " style={{height:"4pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+                                        
+                                    
+                                        <img 
+                                        src={`${data.thumbnail}`}  />
+                                        
                            
+                               
+
+
+                                    </div>
+
+                                    <br/>
+                         
+                                   <div class="row">
+                                    <div class="col-6">
+                                    <button href="#" class="button-13"  style={{fontSize:"10px",  fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                    <button href="#" class="button-13"  style={{ fontSize:"10px", fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>Edit</button>
+                                    </div>
+                                   </div>
+                                 
+                                    
+                          
                           </div>
+                                  
+                            
+
+
+                            </div>
+                           
+                           
+                        
                             )
 
 
@@ -163,7 +198,7 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
                             
                             
                           
-                          
+               </div>
                          
                           
                             

@@ -19,7 +19,7 @@ class SellerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Seller_Profile
-        fields = ['id' , 'phone_number' , 'flag' , 'user']
+        fields = ['id' , 'phone_number' , 'flag' , 'user' , 'store_name' , 'srating']
 
     def get_user(self , obj):
         return UserSerializer(obj.user , many=False).data

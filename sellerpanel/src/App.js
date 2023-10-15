@@ -12,6 +12,7 @@ import Media from "./screens/_Media";
 import AddProduct from "./screens/_AddProduct";
 import OrderList from "./screens/_OrderList";
 import OrderDetails from "./screens/_OrderDetails";
+import { NestedCategoryAction } from "./Actions/action";
 
 
 export default class App extends React.Component {
@@ -19,6 +20,8 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props)
+
+    store.dispatch(NestedCategoryAction())
 
   
 

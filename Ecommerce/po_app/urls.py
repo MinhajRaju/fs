@@ -31,8 +31,9 @@ urlpatterns = [
 
     path('filter/' ,  views.FilterRelatedItem , name='FilterRelatedItem'),
 
-     path('relatedattr/' ,  views.RelatedAttr , name='RelatedAttr'),
+    path('relatedattr/' ,  views.RelatedAttr , name='RelatedAttr'),
 
+    path('recentp/' ,  views.RecentView , name='RelatedAttr'),
 
 
 

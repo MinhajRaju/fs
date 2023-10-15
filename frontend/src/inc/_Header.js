@@ -28,9 +28,12 @@ export default connect(mapStateToProps)(class Header extends React.Component {
             cat2: []
         }
 
+      
+
 
 
     }
+
 
 
 
@@ -208,7 +211,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
           <a href="/"><img src="https://freshcart.codescandy.com/assets/images/logo/freshcart-logo.svg"
                                     alt="" /></a>
           </div>
-          <div class="col-md-3 col-12 text-center text-md-start">
+          <div class="col-md-5 col-12 text-center text-md-start">
           <form action="#">
             <div class="input-group ">
               <input class="form-control rounded" type="search" placeholder="Search for products " />
@@ -227,10 +230,8 @@ export default connect(mapStateToProps)(class Header extends React.Component {
 
             </div>
 
+           
             <div class="col-1 text-end d-none d-md-block">
-
-            </div>
-            <div class="col-2 text-end d-none d-md-block">
             <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button"
                                             aria-controls="offcanvasRight" class="text-reset">
                                                 <div class="lh-1" style={{marginTop:"14px" ,color:"#00bd00"}}>
@@ -245,7 +246,7 @@ export default connect(mapStateToProps)(class Header extends React.Component {
                                                 </div>
                                             </a> 
             </div>
-          <div class="col-2 text-end d-none d-md-block">
+          <div class="col-1 text-end d-none d-md-block">
                                          
          
 

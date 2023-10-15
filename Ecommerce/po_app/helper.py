@@ -11,8 +11,9 @@ from PIL import Image  ,ImageOps
 
 def compress(image):
     im = Image.open(image) 
+    
     im_io = BytesIO()
-    im.save(im_io, 'PNG', quality=60)
+    im.save(im_io, 'PNG', quality=100)
     new_image = File(im_io, name=image.name)   
 
     return new_image
