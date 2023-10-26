@@ -12,6 +12,10 @@ import {
     ALL_NESTED_CATEGORY_REQUEST,
     ALL_NESTED_CATEGORY_SUCCESS,
    
+    BRAND_SUCCESS,
+    WARRANTY_SUCCESS,
+    FOLDER_DETAILS,
+    SELECT_FOLDER_IMG
 
 
 
@@ -32,6 +36,33 @@ export const NestedcategoryReducer = (state = [], action) => {
             return state
     }
 }
+
+export const BrandTotalReducer = (state = {}, action) => {
+
+    switch (action.type) {        
+        case BRAND_SUCCESS:
+            return {TotalBrand:action.payload}      
+        default:
+            return state
+    }
+
+
+}
+
+
+export const WarrantyReducer = (state = {}, action) => {
+
+    switch (action.type) {        
+        case WARRANTY_SUCCESS:
+            return {Warranty:action.payload}      
+        default:
+            return state
+    }
+
+
+}
+
+
 
 
 
@@ -152,6 +183,42 @@ export const StatusLengthReducers = (state={} , action) => {
 
 
 }
+
+
+export const FolderDetailReducers = (state={} , action) => {
+
+
+    switch(action.type){
+
+        case FOLDER_DETAILS:
+            return {loading:false , FolderDetails:action.payload}
+
+        default:
+            return state
+    }
+
+
+
+}
+
+export const FolderImageReducers = (state={} , action) => {
+
+
+    switch(action.type){
+
+        case SELECT_FOLDER_IMG:
+            return {loading:false , FolderImageDetails:action.payload}
+
+        default:
+            return state
+    }
+
+
+
+}
+
+
+
 
 
 

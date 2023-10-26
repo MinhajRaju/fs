@@ -28,6 +28,9 @@ urlpatterns = [
     path('orderstatus/<int:id>' , views.OrderStatusUpdate , name="OrderInfo"),
 
 
-    path('statuslength/',  views.OrderStatusLength , name="OrderStatusLength")
+    path('statuslength/',  views.OrderStatusLength , name="OrderStatusLength"),
+    
+    path('fetchfolderdetails/',  views.FolderDetails , name="OrderStatusLength"),
+    path('fetchimage/',  views.FolderImage , name="OrderStatusLength")
 
 ]

@@ -5,3 +5,4 @@ from seller_app.models import *
 
 
 admin.site.register(Seller_Profile)
+admin.site.register(Image_Folder)

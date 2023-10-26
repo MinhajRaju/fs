@@ -21,7 +21,7 @@ class ProductVariation(serializers.ModelSerializer):
 
     class Meta:
         model = Product_Variation
-        fields= ['id','sku','product','color','colors','qty','size','variation_image']
+        fields= ['id','sku','product','color','colors','qty','size','variation_image' , 'active' ,'price']
 
     def get_colors(self , obj):
 

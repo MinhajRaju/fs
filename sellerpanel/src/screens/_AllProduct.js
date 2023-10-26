@@ -12,8 +12,12 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import {EditOutlined}  from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
+import {Space,   Form, Radio , Switch, Table , Dropdown  , Empty ,Tag, Badge , InputNumber, Select} from 'antd';
 
-
+import { Button, message, Popconfirm , Popover , Input } from 'antd';
 import { SellerProductAction } from "../Actions/action";
 import { BulkAction } from "../Actions/action";
 
@@ -58,7 +62,10 @@ export default connect(mapStateToProps)(class AllProduct extends React.Component
           id: "",
           sign: "",
           stock: "",
-          rowId: "",         
+          rowId: "", 
+          pStockId:null,
+          sing:null,
+          stockValue:null    
         
     
     
@@ -195,261 +202,403 @@ export default connect(mapStateToProps)(class AllProduct extends React.Component
   
     }
   
-    dataTableChange = (selectableRows) => {
-
-      const arr = []
-  
-      selectableRows.selectedRows.map((data) => {
-  
-  
-        if (!arr.includes(data['id'])) {
-          arr.push(data['id'])
-        } else {
-          arr.pop(data['id'])
-        }
-  
-  
-  
-  
-  
-      })
-  
-      this.setState({ idArray: arr })
-  
-    }
-
-   
 
 
-    action =  (id , flag , success , cancel)=>{
+    
 
+
+    action =  (id , flag , msg )=>{
+
+  
       store.dispatch(BulkAction(id , flag ))
-
-      if(id.length == 0){
-        return;
-      }
-      const bool = window.confirm(`Execute ${id.length} selected items`)
-
-      if(bool == true){
-    
-        store.dispatch(BulkAction(id , flag )).then(()=>{
-
-          toast(success, {
-            position: "top-right",
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          })
-
-          
-        }).catch((err)=>{
-          return;
-        })
-       
-      }
-      else{
-
-        console.log(id ,"active")
-      
-        toast(cancel, {
-          position: "top-right",
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        })
-        
-      }
+      message.success(msg);     
 
 
    
       }
     
-
+      cancel = (msg) => {
     
+        message.error(msg);
+      };
+    
+      onChange = (value) => {
+        console.log('changed', value);
+        this.setState({stockValue:value})
+
+      };
+      
+      onChangeplusminus = (value) => {
+        console.log('changed', value);
+        this.setState({sign:value})
+      };
+
+      updateStock = (id , sign , value) =>{
+
+        console.log(id , sign , value)
+      }
+
+
+
+      hello = (id , totalstock , sku) =>{
+    
+     
+        const columns = [
+        
+          
+          {
+            title: 'Total Stock',
+            dataIndex:"totalstock"
+        
+          },
+          {
+            title: 'sku',
+            dataIndex: 'sku',
+          },
+            {
+            title: 'Modify Stock',
+            render : (record) => (
+              <>
+<Space>
+<Select size="small" 
+        defaultValue={'+'}
+        style={{
+          width: "110%",
+        }}
+        onChange={this.onChangeplusminus}
+        options={[{
+          label: '+',
+          value: '+',
+        },{
+          label: '-',
+          value: '-',
+        }]}
+      />
+                <InputNumber size="small" min={1} max={100000} defaultValue={1} onChange={this.onChange} />
+</Space>
+
+              </>
+            )
+          },
+
+
+
+        ];
+        const data = [
+          {
+          
+            totalstock : totalstock,
+            sku: sku ,
+
+          },
+   
+        ];
+        return(
+          
+          <>
+          <Table
+    columns={columns}
+    dataSource={data}
+    bordered
+    pagination={false}
+    footer={() => (
+
+    <>
+   <Button type="primary" onClick={()=> this.updateStock(this.state.pStockId , this.state.sign  , this.state.stockValue)}> 
+      Confirm
+    </Button>
+    </>
+    )}
+
+  />
+          </>
+        )
+
+      }
     
    
 
     render() {
 
-
-      const ExpandedComponent = ({ data }) =>{
-
-        console.log(data , "Data form expandaskdfhdashfo")
-
-        return (
-          <>
-          {data.variation.length == 0 ?  null : (
-
-
-<div class="card-body p-0">
-   <div class="table-responsive ">
-      <table class="table table-centered table-hover mb-0 text-nowrap table-borderless table-with-checkbox">
-         <thead class="bg-light">
-            <tr>
-              
-              
-               <th> Name</th>
-               <th>Proudct</th>
-               <th>Status</th>
-               <th>Status</th>
-               <th>Status</th>
-               <th>Status</th>
-               <th>Status</th>
-               <th>Status</th>
-               <th>Status</th>
-            </tr>
-         </thead>
-         <tbody>
-           {data.variation.map((data)=>{
-
-            return(
-
-              <>
-                       <tr>
-              
-             
-              
-              <td>{data.color}</td>
-            
-               <td>12</td>
-               <td>12</td>
-               <td>12</td>
-              
-               <td>12</td>
-               <td>12</td>
-               <td>12</td>
-         
-              
-              
-        
-           </tr>
-              </>
-
-            )
-
-           })}
-           
-           
-   
-
-
-         </tbody>
-      </table>
-   </div>
-</div>
-
-          ) }
-
-         
-          </>
-        )
-
-      }
-
-      
-
-
-
-    
-
-      const columns = [
-          
-   
-        
-          {
-              name: 'Title',
-              selector: row => (<> {row.active == false ? <span ><i class="fa fa-ban" aria-hidden="true"></i> &nbsp;{row.title}</span> : row.title}  </>) 
-          },
-          {
-              name: 'Year',
-              selector: row => row.year,
-          },
-          {
-            name: 'Year',
-            selector: row => row.year,
-        },
-        {
-          name: 'Year',
-          selector: row => row.year,
-      },
-      {
-        name: 'Year',
-        selector: row => row.year,
-    },
-          
-          {
-          
-            
-            selector: row => (
-             <>
-              
-             
-                <button type="button" class="btn btn-rounded" onClick={this.multiDelete} style={{padding:"0px"}}  ><i class="fa-sharp fa-solid fa-trash fa-sm" style={{color:"Red" ,fontSize:"10px"}}></i></button>|
-                <button type="button" class="btn btn-rounded" onClick={this.multiDelete}  style={{padding:"0px"}}><i class="fas fa-edit" style={{color:"green",fontSize:"10px"}}></i></button>|
-                <button type="button" class="btn btn-rounded" onClick={this.multiDelete}  style={{padding:"0px"}} ><i class="fa fa-link"  aria-hidden="true" style={{color: "rgb(235, 65, 0)" ,fontSize:"10px"}}></i></button>
-
-            
-
-             
-             </>
-           
-           
-            )
-    
-    
-    
-          },
-      ];
-
-      const customStyles = {
-        rows: {
-            style: {
-                minHeight: '72px',
-               
-              // override the row height
-            },
-        },
-        headCells: {
-            style: {
-                paddingLeft: '8px', // override the cell padding for head cells
-                paddingRight: '8px',
-              
-              
-               
-                
-
-            },
-        },
-        cells: {
-            style: {
-               padding:'10px',
-             
-              
-            },
-        },
-    };
-      
- 
-
-
-
       const selectionRange = {
-
-
         startDate: this.state.startDate,
         endDate: this.state.endDate,
         key: 'selection',
-      }
-      
+      } 
 
+
+      console.log('akdhkfahdskfhd' , this.state.pStockId , this.state.sign , this.state.stockValue )
+
+
+
+    
+
+ 
+
+    const items = [
+        {
+          key: '1',
+          label: <a>test</a>,
+        },
+        {
+          key: '2',
+          label: <a>test1</a>,
+        },
+      ];
+
+
+    
+
+  const columns = [
+     {
+     
+      render: (record) => (<> {record.image.length == []  ? <Empty imageStyle={{display:"flex" , height:"0.5pc"}} description={"No Image"} image={Empty.PRESENTED_IMAGE_SIMPLE} />  : 
+          
+        <div class="text-center position-relative " style={{height:"2pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+
+        <Popover placement="top" content={<img src={record.image[0]['thumbnail'] == 0 ? null : record.image[0]['thumbnail']} alt=""/>}>
+        <img src={record.image[0]['thumbnail'] == 0? null : record.image[0]['thumbnail']} alt=""/>
+</Popover>
+       
+ 
+        </div>
+        
+        
+        } </>) 
+   
+    },
+  {
+    
+    title: 'Name',
+    render :(record) =>  (<>{record.active == true ? <Badge.Ribbon text="Active" color="lime"  size="s" style={{fontSize:"10px" , fontVariantCaps:"small-caps" , letterSpacing:"1px"}} />: <Badge.Ribbon text="Deactive" color="volcano" size="small" style={{fontSize:"10px" , fontVariantCaps:"small-caps" , letterSpacing:"1px"}}/>} {record.title.trim().length <= 80 ? (<span style={{fontFamily:"open sans ,sans-serif"}}>{record.title.substring(0,80)}</span>) : (<span style={{fontFamily:"open sans ,sans-serif"}}>{record.title.substring(0,80) + '..'}</span>)} </>)
+  },
+ 
+  {
+    title: 'Sku',
+    render: (record) => (<span style={{color:"#afafaf"}}>{record.sku}</span>)
+  
+  },
+  {
+    title: 'Price',
+    render : (record) => (<><span style={{color:"black" , fontWeight:"500"}}>{record.price}</span> <span style={{color:"#afafaf" , fontWeight:"500"}}>BDT</span> </>)
+  
+  },
+  {
+    title: 'Stock',
+    render : (record) =>  (<><Space>{record.totalqty == 0 ? <span style={{"color":"Red"}}>Stock out
+    
+    
+    
+    </span>  : record.totalqty} 
+    <Popover content={()=> this.hello(record.id , record.totalqty , record.sku)} title="Title" trigger="click" >
+    {record.variation.length == 0 ? <EditOutlined onClick={()=>  this.setState({pStockId:record.id , sign:null , stockValue:null})} /> : null }
+    </Popover></Space></>)
+  },
+
+  {
+    title: 'Action',
+    key: 'action',
+    sorter: true,
+    render: () => (
+      <Space size="middle">
+        <a>Delete</a>
+
+        <Dropdown
+       
+        menu={{items}}
+
+        >
+      
+        <a>
+        <Space >
+            More actions
+            <DownOutlined />
+            </Space>
+        </a>
+        </Dropdown>
+      
+      </Space>
+    ),
+  },
+];
+
+
+
+const Variationcolumns = [
+  {
+  
+   render: (record) =>(<> 
+   
+    {record.variation_image.length == [] ? <Empty imageStyle={{display:"flex" , height:"1.5pc"}} description={"No Image"} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : 
+       
+   <div class="text-center position-relative " style={{height:"2pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+
+   <Popover placement="top" content={<img src={record.variation_image[0].thumbnail} alt=""/>}>
+   <img src={record.variation_image[0].thumbnail} alt=""/>
+   </Popover>
+   
+   
+   </div>
+      
+    
+    }
+
+   
+   
+    </>) 
+    
+  },
+  {
+    title: 'Attribute',
+   
+    render :  (record) => (<>    {record.active == true ? <Badge.Ribbon text="Active" color="lime"  size="s" style={{fontSize:"10px" , fontVariantCaps:"small-caps" , letterSpacing:"1px"}} />: <Badge.Ribbon text="Deactive" color="volcano" size="small" style={{fontSize:"10px" , fontVariantCaps:"small-caps" , letterSpacing:"1px"}}/>} 
+    <Space size={[0, 8]} wrap> {record.colors == null ? <Tag color="warning">Color : None </Tag>  : <Tag color="success">Color: {record.colors.color}</Tag>}  {record.size == null  ? <Tag color="warning">Size : None</Tag> : <Tag color="success">Size: {record.size.size}</Tag>}  
+    
+
+    </Space> 
+   </>)
+  },  
+  
+    {
+    title: 'Sku',  
+    render : (record) => (<span style={{color:"#afafaf"}}>{record.sku}</span>)
+  
+  },
+  {
+    title: 'Price',
+    render : (record) => (<><span style={{color:"black" , fontWeight:"500"}}>{record.price}</span> <span style={{color:"#afafaf" , fontWeight:"500"}}>BDT</span> </>)
+  
+  },
+  {
+    title: 'Stock',  
+    render : (record) =>  (<><Space>{record.qty == 0 ? <span style={{"color":"Red"}}>Stock out
+    
+    
+    
+    </span>  : record.qty} 
+    <Popover content={()=> this.hello(record.id , record.totalqty , record.sku)} title="Title" trigger="click" >
+     <EditOutlined onClick={()=>  this.setState({pStockId:record.id , sign:null , stockValue:null})} /> 
+    </Popover></Space></>)
+  },
+  
+
+];
+
+
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+
+  
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
+    this.setState({idArray:selectedRowKeys})
+  },
+  onSelect: (record, selected, selectedRows) => {
+    console.log(record, selected, selectedRows);
+  },
+  onSelectAll: (selected, selectedRows, changeRows) => {
+    console.log(selected, selectedRows, changeRows);
+  },
+};
+
+const variationrowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+
+  
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
+   
+  },
+  onSelect: (record, selected, selectedRows) => {
+    console.log(record, selected, selectedRows);
+  },
+  onSelectAll: (selected, selectedRows, changeRows) => {
+    console.log(selected, selectedRows, changeRows);
+  },
+};
+const defaultExpandable = {
+  expandedRowRender: (record) => (
+    <>
+
+
+<Table
+ rowSelection={{
+  ...variationrowSelection,
+
+
+}}
+title={()=> 
+
+( <div class="col-xl-4 col-12 mb-5">
+        
+
+    <h6>Variation</h6>
+
+
+              
+              
+
+      &nbsp;
+
+      <Popconfirm
+title="Batch Delete"
+description="Are you sure to delete all selected item?"
+icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+onConfirm={()=>  this.action(this.state.idArray , "delete"  ,  'Deleted' )}
+onCancel={() => this.cancel('Action Cancel')}
+okText="Yes"
+cancelText="No"
+>
+<Button type="dashed"  class="btn btn-success">Batch Delete </Button>
+</Popconfirm>
+
+
+
+&nbsp;
+<Popconfirm
+title="Batch activation"
+description="Are you sure to active?"
+onConfirm={() => this.action(this.state.idArray , 'active' , 'Active Success' )}
+onCancel={() => this.cancel('Action Cancel')}
+okText="Yes"
+cancelText="No"
+>
+<Button type="dashed"  class="btn btn-success">Batch Active</Button>
+</Popconfirm>
+
+
+&nbsp;
+<Popconfirm
+title="Batch deactivaton"
+description="Are you sure to delete this task?"
+onConfirm={()=>  this.action(this.state.idArray , 'deactive' ,'Deactive Success')}
+onCancel={() => this.cancel('Action Cancel')}
+okText="Yes"
+cancelText="No"
+>
+<Button   type="dashed"  class="btn btn-success">Batch Deactive </Button>
+</Popconfirm>
+
+
+
+
+
+</div>)
+
+}
+ style={{}} bordered columns={Variationcolumns} 
+ dataSource={record.variation}
+ 
+ rowKey={"id"}
+ pagination={false}
+ />
+
+    
+
+   
+    </>
+  )
+};
       console.log(this.state.productFiltered , this.state.idArray)
   
   
@@ -458,65 +607,28 @@ export default connect(mapStateToProps)(class AllProduct extends React.Component
 
  
       <div class="container">
-     
-        <div class="row ">
-          <div class="col-xl-12 col-12 mb-5">
-        
-            <div class="card h-100 card-lg">
-             
-              
-
-   
-
-              <div class="card-body p-0">
-  
-              <ToastContainer />
-
-                  
-				  
-				  
-              <DataTable
-      
-            columns={columns}
-            data={this.state.productFiltered.length == 0 ?  this.props.SellerProductData : this.state.productFiltered}
-            expandableRows
-            expandableRowsComponent={ExpandedComponent}
-            onSelectedRowsChange={this.dataTableChange}
-            defaultSortField="id"
-            defaultSortAsc={false}
-            noHeader
-            selectableRows
-            pagination
-
-            customStyles={customStyles}
-
-            subHeader
-            dense
-           
-            subHeaderAlign="right"
-            subHeaderComponent={<React.Fragment>
-
-<div class=" d-md-flex justify-content-between align-items-center p-6">
-                
-                  <nav class="mt-2 mt-md-0">
-                    <ul class="pagination mb-0 ">
-                     
-                      <li onClick={()=>  this.action(this.state.idArray , "delete" , "Success" , 'cancel'  )} class="page-item"><a class="page-link" href="#!"><i style={{color:"red"}} class="fa fa-trash" aria-hidden="true"></i></a></li>
-                      <li  onClick={()=>  this.action(this.state.idArray , 'active', "Active" , 'cancel'  )} class="page-item"><a class="page-link" href="#!"><i style={{color:"green"}}class="fas fa-toggle-on"></i></a></li>
-                      <li  onClick={()=>  this.action(this.state.idArray , 'deactive' ,"Deactive" , 'cancel'  )} class="page-item"><a class="page-link" href="#!"><i style={{color:"#eb4100"}} class="fas fa-toggle-off"></i></a></li>
-                    
-                    </ul>
-                  </nav>
-                </div>
-
-
-              <div class="form-group">
-                <input type="text" class="form-control" id="inputAddress" placeholder="Search for...." value={this.state.title}
+          
+          <div class="row">
+            <div class="col-xl-4 col-12 mb-5">
+            <div class="form-group">
+                <Input type="text" class="form-control" id="inputAddress" placeholder="Search for...." value={this.state.title}
                   onChange={this.handleSearchChange('title')} />
               </div>
-              &nbsp; &nbsp; &nbsp;
-              <div class="form-group">
-                {this.state.dateDrop == "disable" ? (<button onClick={this.event} class="btn btn-success">Date Range </button>) :
+            </div>
+
+            <div class="col-xl-4 col-12 mb-5">
+
+            </div>
+          <div class="col-xl-4 col-12 mb-5">
+        
+
+
+
+
+              
+              
+              <div class="form-group" style={{display:"contents"}}>
+                {this.state.dateDrop == "disable" ? (<Button type="dashed"  onClick={this.event} class="btn btn-success">Date Range </Button>) :
                   (<React.Fragment>
                     <DateRangePicker
                       ranges={[selectionRange]}
@@ -524,30 +636,95 @@ export default connect(mapStateToProps)(class AllProduct extends React.Component
                       rangeColors={["#FD5B61"]}
 
                     />
-                    <button onClick={this.event} class="btn btn-danger">Hide Range </button>
+                    <Button type="dashed" danger onClick={this.event} class="btn btn-danger">Hide Range </Button>
                   </React.Fragment>
                   )}
 
               </div>
+                    &nbsp;
+
+                    <Popconfirm
+    title="Batch Delete"
+    description="Are you sure to delete all selected item?"
+    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+    onConfirm={()=>  this.action(this.state.idArray , "delete"  ,  'Deleted' )}
+    onCancel={() => this.cancel('Action Cancel')}
+    okText="Yes"
+    cancelText="No"
+  >
+<Button type="dashed"  class="btn btn-success">Batch Delete </Button>
+  </Popconfirm>
+
+            
+
+              &nbsp;
+              <Popconfirm
+    title="Batch activation"
+    description="Are you sure to active?"
+    onConfirm={() => this.action(this.state.idArray , 'active' , 'Active Success' )}
+    onCancel={() => this.cancel('Action Cancel')}
+    okText="Yes"
+    cancelText="No"
+  >
+<Button type="dashed"  class="btn btn-success">Batch Active</Button>
+  </Popconfirm>
+
+
+&nbsp;
+<Popconfirm
+    title="Batch deactivaton"
+    description="Are you sure to delete this task?"
+    onConfirm={()=>  this.action(this.state.idArray , 'deactive' ,'Deactive Success')}
+    onCancel={() => this.cancel('Action Cancel')}
+    okText="Yes"
+    cancelText="No"
+  >
+    <Button   type="dashed"  class="btn btn-success">Batch Deactive </Button>
+  </Popconfirm>
 
 
 
 
+         
+          </div>
 
 
-            </React.Fragment>
+          </div>
+        <div class="row ">
+          <div class="col-xl-12 col-12 mb-5">
+        
+            <div class="card h-100 card-lg">
+             
+            
+            <Table
+            
+        columns={columns}
+        bordered
+      expandable={defaultExpandable}
+      rowSelection={{
+        ...rowSelection,
+      
+      
+      }}
+        size
+        dataSource={this.state.productFiltered.length == 0 ?  this.props.SellerProductData : this.state.productFiltered}
+        rowKey={"id"}
+       
+      />
+   
 
+           
+  
+              <ToastContainer />
 
-            }
-
-
-
-
-          />
+                  
+				  
+				  
+              
       
 
                
-              </div>
+         
              
             </div>
 

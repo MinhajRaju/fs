@@ -53,9 +53,10 @@ class Product_Variation(models.Model):
     product = models.ForeignKey(Product , on_delete=models.CASCADE  , null=True , blank=True)
     color  = models.ForeignKey(Color_Attr , on_delete=models.SET_NULL ,  null=True,  blank=True)
     size  = models.ForeignKey(Size_Attr ,on_delete=models.SET_NULL , null=True,  blank=True)
-    sku  = models.CharField(max_length=150 , null=True,  blank=True)
- 
+    sku  = models.CharField(max_length=150 , null=True,  blank=True) 
     qty  = models.IntegerField(default=0 , null=True,  blank=True)
+    price  = models.IntegerField(default=0 , null=True , blank=True)
+    active = models.BooleanField(default=True, null=True,  blank=True)
     
    
     #product_image_id  = ArrayField(models.IntegerField(max_length=200) , null=True , blank=True)

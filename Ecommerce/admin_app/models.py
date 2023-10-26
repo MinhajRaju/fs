@@ -22,6 +22,7 @@ class Category(MPTTModel):
         return self.name
 
 
+
 class Brand(models.Model):
     category = models.ForeignKey(Category , null=True , blank=True , on_delete=models.CASCADE)
     name = models.CharField(max_length=200 , null=True)

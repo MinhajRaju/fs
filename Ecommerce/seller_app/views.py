@@ -294,4 +294,36 @@ def OrderInfo(request  , id):
     return Response(serializer)
 
     
+
+@api_view(['GET','POST'])
+def FolderDetails(request): 
+
+    seller = Seller_Profile.objects.get(id=1)
+    folderDetails = Image_Folder.objects.filter(owner=seller)
+    
+    serializer = ImageFolderDetailsSerializer(folderDetails , many=True).data
+
+
+    return Response(serializer)
+
+
+
+@api_view(['GET','POST'])
+def FolderImage(request): 
+
+  
+    folderImage = Image_Folder.objects.get(id=request.data['id'])
+    print(request.data['id'])
+    
+    serializer = ImageFolderSerializer(folderImage , many=False).data
+
+
+    return Response(serializer)
+
+
+
+
+
+
+    
     

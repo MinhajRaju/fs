@@ -10,7 +10,11 @@ import { OrderInfoReducers } from './Reducers/reducers'
 import { StatusFlagReducers } from './Reducers/reducers'
 import { StatusLengthReducers } from './Reducers/reducers'
 import { NestedcategoryReducer } from './Reducers/reducers'
+import { BrandTotalReducer } from './Reducers/reducers'
+import { WarrantyReducer } from './Reducers/reducers'
+import { FolderDetailReducers } from './Reducers/reducers'
 
+import { FolderImageReducers } from './Reducers/reducers'
 
 const reducer = combineReducers({
 
@@ -21,8 +25,11 @@ const reducer = combineReducers({
     OrderInfoReducers,
     StatusFlagReducers,
     StatusLengthReducers,
-    NestedcategoryReducer
-    
+    NestedcategoryReducer,
+    BrandTotalReducer,
+    WarrantyReducer,
+    FolderDetailReducers,
+    FolderImageReducers
     
 })
 

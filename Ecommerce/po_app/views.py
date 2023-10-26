@@ -306,12 +306,37 @@ def CatTotal(request ,category  , **kwargs):
 
 @api_view(['GET','POST'])
 def CatRelatedBrand(request ,category  , **kwargs):
-    category_id = Category.objects.get(name=category)
+    category_id = Category.objects.get(name=category )
+
+    
+ 
     brand = Brand.objects.filter(category=category_id) 
     
+
+
     serializer = BrandSerializer(brand , many=True).data
     
     return Response(serializer)
+
+
+@api_view(['GET','POST'])
+def SellerCatRelatedBrand(request):
+    print()
+
+    brand = Brand.objects.filter(category=request.data['id']) 
+    serializer = BrandSerializer(brand , many=True).data
+    return Response(serializer)
+
+@api_view(['GET','POST'])
+def Warranty(request):
+   
+    warranty = Services.objects.all()
+  
+    serializer = WarrentySerializer(warranty , many=True).data
+    return Response(serializer)
+
+
+
 
 
 

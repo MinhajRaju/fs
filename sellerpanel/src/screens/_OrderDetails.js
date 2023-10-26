@@ -8,6 +8,8 @@ import { OrderInfoAction } from "../Actions/action";
 import { StatusFlagAction } from "../Actions/action";
 import withRouter from "./_Helper";
 import { Link } from "react-router-dom";
+import { Button, message, Popconfirm , Popover } from 'antd';
+
 
 const mapStateToProps = (state) =>{
 
@@ -62,22 +64,22 @@ export default withRouter(connect(mapStateToProps)(class OrderDetails extends Re
 
     }
 
-    rts  = (id ) => {
-        const bool = window.confirm(`Waning!!! You cannot change this (Rts) state again`)
+   
+     rtsconfirm = (e , id) => {
+      console.log(e ,id);
+      store.dispatch(SellerWiseOrderAction(this.props.params.id  , id , "Rts" , this.state.status))
+      message.success('Ready To ship Successful');
+    };
+    rejectAction = (e) => {
+      console.log(e);
+      message.error('Click on No');
+    };
 
-        if(bool ==true){
-            store.dispatch(SellerWiseOrderAction(this.props.params.id  , id , "Rts" , this.state.status))
-        }
-
-    
-        
-    }
-
-    cancle  = (id ) => {
-        const bool = window.confirm(`Waning!!! You cannot change (Cancle) this state again`)
-        if(bool ==true){
+    cancle  = (e ,  id ) => {
+       
         store.dispatch(SellerWiseOrderAction(this.props.params.id  , id , "Cancle" , this.state.status))
-    }
+        message.success('Cancle Succesfully');
+    
 }
     
 
@@ -245,9 +247,13 @@ export default withRouter(connect(mapStateToProps)(class OrderDetails extends Re
                           <td>
                             <a href="#" class="text-inherit">
                               <div class="d-flex align-items-center">
-                                <div>
-                                  <img src={data.product.image.length == 0 ? null :data.product.image[0].photo} alt=""
-                                    class="icon-shape icon-lg" />
+                                
+                                <div class="text-center position-relative " style={{height:"2pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+
+                                <Popover placement="rightBottom" content={<img src={data.product.image.length == 0 ? null :data.product.image[0].photo} alt=""/>}>
+                                <img src={data.product.image.length == 0 ? null :data.product.image[0].photo} alt=""/>
+  </Popover>
+                               
                          
                                 </div>
                                 <div class="ms-lg-4 mt-2 mt-lg-0">
@@ -276,9 +282,28 @@ export default withRouter(connect(mapStateToProps)(class OrderDetails extends Re
                           
                           
                             <ul class="dropdown-menu">
-                            {data.order_status == 'Cancle' ? null :  <li class="dropdown-item"  onClick={()=> this.rts(data.id)}><i class="bi bi-trash me-3"></i>Ready to ship</li>}
-
-                            {data.order_status == 'Rts' ? null :   <li class="dropdown-item"  onClick={()=> this.cancle(data.id)}><i class="bi bi-trash me-3"></i>Cancle</li>}
+                            {data.order_status == 'Cancle' ? null :  <Popconfirm
+    title="Delete the task"
+    description="Are you sure to delete this task?"
+    onConfirm={(e) => this.rtsconfirm(e , data.id)}
+    onCancel={this.rejectAction}
+    okText="Yes"
+    cancelText="No"
+    
+  >
+   <span style={{cursor:"pointer"}}><i  style={{cursor:"pointer"}} class="bi bi-trash me-3"></i>Rts</span>
+  </Popconfirm>}
+<br/>
+                            {data.order_status == 'Rts' ? null :   <Popconfirm
+    title="Delete the task"
+    description="Are you sure to delete this task?"
+    onConfirm={(e) => this.cancle(e , data.id)}
+    onCancel={this.rejectAction}
+    okText="Yes"
+    cancelText="No"
+  >
+   <span style={{cursor:"pointer"}}><i  class="bi bi-trash me-3"></i>Cancle</span>
+  </Popconfirm>}
                            
                              
                               

@@ -9,13 +9,61 @@ import { SELLER_RELETAD_PRODUCT,
     ALL_NESTED_CATEGORY_REQUEST,
     ALL_NESTED_CATEGORY_SUCCESS,
 
+    BRAND_SUCCESS,
+    WARRANTY_SUCCESS,
+    FOLDER_DETAILS,
+    SELECT_FOLDER_IMG
+
 
 
 } from "../Constants/constants";
 
 
 import axios from 'axios'
+export const BrandTotalAction =  (id) => async(dispatch) =>{
 
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+    console.log(id)
+
+    const parameter = {
+        id
+    }
+
+    const {data} = await axios.post('/api/po/spbrand/', parameter,config)
+
+    dispatch({
+        type:BRAND_SUCCESS,
+        payload:data
+    })
+
+
+}
+
+export const WarrantyAction =  () => async(dispatch) =>{
+
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+
+
+   
+    const {data} = await axios.get('/api/po/warranty/',config)
+
+    dispatch({
+        type:WARRANTY_SUCCESS,
+        payload:data
+    })
+
+
+}
 
 
 export const NestedCategoryAction = () => async (dispatch) => {
@@ -371,6 +419,73 @@ export const StatusLengthAction = () => async (dispatch , getState) => {
    dispatch({
 
     type:STATUS_LENGTH,
+    payload:data
+   })
+
+
+
+
+
+}
+
+
+
+export const FolderDetailsAction = () => async (dispatch , getState) => {
+
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }   
+
+
+  
+  
+
+
+   const {data} =  await axios.get(`/api/seller/fetchfolderdetails/`   ,config)
+
+   dispatch({
+
+    type:FOLDER_DETAILS,
+    payload:data
+   })
+
+
+
+
+
+}
+
+
+
+
+
+
+export const FolderImageAction = (id) => async (dispatch , getState) => {
+
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }   
+
+    const parameter ={
+        id
+    }
+  
+  
+
+
+   const {data} =  await axios.post(`/api/seller/fetchimage/`  , parameter  ,config)
+
+   dispatch({
+
+    type: SELECT_FOLDER_IMG,
     payload:data
    })
 

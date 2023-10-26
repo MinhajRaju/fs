@@ -13,7 +13,7 @@ export default class HCF extends React.Component {
             
 
              
-<nav class="navbar navbar-expand-lg navbar-glass">
+<nav class="navbar navbar-expand-lg ">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center w-100">
             <div class="d-flex align-items-center">

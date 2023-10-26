@@ -28,6 +28,9 @@ urlpatterns = [
     path('categorytotal/<str:category>/' ,  views.CatTotal , name='RelatedItem'),
 
     path('brand/<str:category>/' , views.CatRelatedBrand , name="CatRelatedBrand"),
+    path('spbrand/' , views.SellerCatRelatedBrand , name="SellerCatRelatedBard"),
+
+    path('warranty/' , views.Warranty , name='Warranty'),
 
     path('filter/' ,  views.FilterRelatedItem , name='FilterRelatedItem'),
 
