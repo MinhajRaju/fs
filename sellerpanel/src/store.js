@@ -15,6 +15,7 @@ import { WarrantyReducer } from './Reducers/reducers'
 import { FolderDetailReducers } from './Reducers/reducers'
 
 import { FolderImageReducers } from './Reducers/reducers'
+import { MoveFolderReducers } from './Reducers/reducers'
 
 const reducer = combineReducers({
 
@@ -29,7 +30,8 @@ const reducer = combineReducers({
     BrandTotalReducer,
     WarrantyReducer,
     FolderDetailReducers,
-    FolderImageReducers
+    FolderImageReducers,
+    MoveFolderReducers
     
 })
 

@@ -31,6 +31,8 @@ urlpatterns = [
     path('statuslength/',  views.OrderStatusLength , name="OrderStatusLength"),
     
     path('fetchfolderdetails/',  views.FolderDetails , name="OrderStatusLength"),
-    path('fetchimage/',  views.FolderImage , name="OrderStatusLength")
+    path('fetchimage/',  views.FolderImage , name="OrderStatusLength"),
+    path('movetofolder/',  views.MoveToFolder , name="OrderStatusLength"),
+
 
 ]

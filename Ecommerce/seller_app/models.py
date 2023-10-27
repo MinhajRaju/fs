@@ -27,7 +27,7 @@ class Seller_Profile(models.Model):
 class Image_Folder(models.Model):
     owner = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
     title = models.CharField(max_length=50, unique=True)
-    img_id = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )
+    img_id = ArrayField(models.IntegerField(max_length=1000) , null=True , blank=True  )
 
 
 

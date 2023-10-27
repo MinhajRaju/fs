@@ -12,7 +12,8 @@ import { SELLER_RELETAD_PRODUCT,
     BRAND_SUCCESS,
     WARRANTY_SUCCESS,
     FOLDER_DETAILS,
-    SELECT_FOLDER_IMG
+    SELECT_FOLDER_IMG,
+    MOVE_TO_FOLDER
 
 
 
@@ -486,6 +487,43 @@ export const FolderImageAction = (id) => async (dispatch , getState) => {
    dispatch({
 
     type: SELECT_FOLDER_IMG,
+    payload:data
+   })
+
+
+
+
+
+}
+
+
+
+
+
+export const MoveToFolderAction = (selectedFolder , moveFolder , dataId) => async (dispatch , getState) => {
+
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }   
+
+    const parameter ={
+        selectedFolder,
+        moveFolder,
+        dataId
+    }
+  
+  
+
+
+   const {data} =  await axios.post(`/api/seller/movetofolder/`  , parameter  ,config)
+
+   dispatch({
+
+    type: MOVE_TO_FOLDER,
     payload:data
    })
 

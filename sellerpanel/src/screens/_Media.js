@@ -5,6 +5,7 @@ import store from "../store";
 import { MediaAction, MediaUploadAction ,MediaBulkAction } from "../Actions/action";
 import axios from 'axios';
 import { FolderDetailsAction } from "../Actions/action";
+import { MoveToFolderAction } from "../Actions/action";
 import { Tree ,Row ,Col } from 'antd';
 import { FolderImageAction } from "../Actions/action";
 import {Space,   Form, Radio , Switch, Table , Dropdown  , Empty ,Tag, Badge , InputNumber, Select , Button , Modal} from 'antd';
@@ -37,6 +38,7 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
             folderImage:null,
             isModalOpen:null,
 
+            selectfolderId:null,
             folderId:null
 
         
@@ -44,6 +46,8 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
 
 
     }
+
+
     
   
     componentDidMount(){
@@ -159,27 +163,48 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
 
   }
 
-  moveToFolder = () =>{
 
-    console.log(this.state.folderId , this.state.idArray)
-
-  }
 
     render(){
 
  
 
-      console.log(this.state.folderDetails ,  'folderImage',this.props.FolderImageData , this.state.folderDetails)
+      console.log(this.state.folderDetails , this.state.selectfolderId,  'folderImage',this.props.FolderImageData , this.state.folderDetails , this.state.folderId , this.state.folderImage )
 
 
+      const moveToFolder = () =>{
 
+
+        store.dispatch(MoveToFolderAction(this.state.selectfolderId , this.state.folderId , this.state.idArray))
+        this.setState({idArray:[]})
+    
+        console.log(this.state.selectfolderId , this.state.folderId , this.state.idArray)
+
+       
+       
+        setTimeout(() => {
+          store.dispatch(FolderImageAction(this.state.selectfolderId))
+          
+    
+        }, 1000);
+
+        setTimeout(() => {
+          this.setState({folderImage:this.props.FolderImageData , selectfolderId:this.state.selectfolderId})
+
+          console.log("hiiiiiiting")
+    
+        }, 2000);
+       
+    
+      }
       const onSelect = (keys, info) => {
         console.log('Trigger Select', keys, info);
     
         store.dispatch(FolderImageAction(keys[0]))
 
         setTimeout(() => {
-          this.setState({folderImage:this.props.FolderImageData})
+          this.setState({folderImage:this.props.FolderImageData , selectfolderId:keys[0]})
+
         }, 1000);
       };
   
@@ -199,8 +224,9 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
      <div class="col-xl-2 col-12 mb-5"  style={{borderRight:"1px solid #f0f0f0"}}>
     <a style={{cursor:"pointer"}} onClick={this.flushFolder}>All Image</a>
      <DirectoryTree
-      rootStyle={{background:"Red" ,color:"black"}}
-   
+      style={{color:"gray" }}
+      option={true}
+          
       multiple
       defaultExpandAll
       onSelect={onSelect}
@@ -235,7 +261,7 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
 
     options={this.state.folderMoveDetails}
     
-    />            <Button type="dashed" onClick={()=> this.moveToFolder()} style={{color:"#f50"}}>
+    />            <Button type="dashed" onClick={moveToFolder} style={{color:"#f50"}}>
     Move
 </Button>
 
@@ -281,7 +307,11 @@ export default connect(mapStateToProps)(class Meida extends React.Component{
                   
      
   <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-sm-2 g-2">
-                        {this.state.folderImage == undefined ? this.state.allImage.map((data)=>{
+
+                      {this.state.fol}
+
+
+                        {this.state.folderImage == undefined   ? this.state.allImage.map((data)=>{
 
                               
 return (

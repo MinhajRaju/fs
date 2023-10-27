@@ -15,7 +15,8 @@ import {
     BRAND_SUCCESS,
     WARRANTY_SUCCESS,
     FOLDER_DETAILS,
-    SELECT_FOLDER_IMG
+    SELECT_FOLDER_IMG,
+    MOVE_TO_FOLDER
 
 
 
@@ -208,6 +209,23 @@ export const FolderImageReducers = (state={} , action) => {
 
         case SELECT_FOLDER_IMG:
             return {loading:false , FolderImageDetails:action.payload}
+
+        default:
+            return state
+    }
+
+
+
+}
+
+
+export const MoveFolderReducers = (state={} , action) => {
+
+
+    switch(action.type){
+
+        case MOVE_TO_FOLDER:
+            return {loading:false , MoveToFolderData:action.payload}
 
         default:
             return state

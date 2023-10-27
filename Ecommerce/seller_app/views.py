@@ -322,6 +322,34 @@ def FolderImage(request):
 
 
 
+@api_view(['GET','POST'])
+def MoveToFolder(request): 
+
+    print(request.data['dataId'] , request.data['selectedFolder'] , request.data['moveFolder'] )
+
+    f = Image_Folder.objects.get(id=request.data['selectedFolder'])
+    arr = f.img_id
+    
+    for i in request.data['dataId']:
+        arr.remove(i)
+    f.save()
+   
+    
+
+
+    m = Image_Folder.objects.get(id=request.data['moveFolder'])
+
+    res =  m.img_id + request.data['dataId']
+    
+    Image_Folder.objects.filter(id=request.data['moveFolder']).update(img_id=res)
+    
+
+  
+ 
+
+
+    return Response({})
+
 
 
 
