@@ -265,8 +265,7 @@ export default withRouter(connect(mapStateToProps)(class OrderDetails extends Re
                               </div>
                             </a>
                           </td>
-                          <td>{data.variation.colors.color == undefined ? null : data.variation.colors.color } ->{data.variation.size.size == undefined ? null :data.variation.size.size}</td>
-                          <td><span class="text-body">{data.product.price}</span></td>
+                         
                           <td>{ data.order_status == 'Cancle' ? 0 : data.qty}</td>
                           <td>&#2547;{ data.order_status == 'Cancle' ? 0 : data.tprice}</td>
                           <td>

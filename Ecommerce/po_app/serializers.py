@@ -110,6 +110,31 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 
+class TrackingDetailSerializer(serializers.ModelSerializer):
+
+    product = serializers.SerializerMethodField(read_only=True)
+    customer = serializers.SerializerMethodField(read_only=True)
+    shipping = serializers.SerializerMethodField(read_only=True)
+    variation =serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Tracking_Details
+        fields = ['id' ,'seller', 'order_no','customer' , 'shipping' , 'product', 'variation' , 'tracking' ]
+
+
+    def get_product(self , obj):
+        return ProductSerializer(obj.product , many=False).data
+    
+    def get_shipping(self, obj):
+        return ShippingAdressSerializer(obj.shipping , many=False).data    
+    def get_customer(self , obj):
+        return CustomerProfileSerializer(obj.customer , many=False).data
+    def get_variation(self , obj):
+        return ProductVariation(obj.variation_id , many=False).data
+
+    
+    
+
 
 
 
@@ -118,11 +143,12 @@ class OrderSerailizer(serializers.ModelSerializer):
     customer = serializers.SerializerMethodField(read_only=True)
     shipping = serializers.SerializerMethodField(read_only=True)
     order = serializers.SerializerMethodField(read_only=True)
+    tracking = serializers.SerializerMethodField(read_only=True)
     
     
     class Meta:
         model = Order
-        fields = ['id' ,'customer' , 'shipping' , 'order']
+        fields = ['id' ,'customer' , 'shipping' , 'order' , 'order_date' , 'tracking']
     
     
     def get_customer(self, obj):
@@ -134,6 +160,15 @@ class OrderSerailizer(serializers.ModelSerializer):
      
     def get_order(self, obj):
         return OrderDetailSerializer(obj.order_details_set.all() , many=True).data
+
+    def get_tracking(self, obj):
+        return TrackingDetailSerializer(obj.tracking_details_set.all() , many=True).data
+
+       
+    
+
+
+  
         
 
 
@@ -165,6 +200,24 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         else:      
          
          return ProductVariation(obj.variation_id , many=False).data
+        
+
+
+        
+
+class TrackingSerializer(serializers.ModelSerializer):
+
+  
+
+    class Meta:
+        model = Tracking
+        fields = ['id','order','seller' , 'tracking_status']
+
+
+   
+
+
+
 
 
   

@@ -18,6 +18,9 @@ from django.db.models import Q
 import random
 
 
+from  po_app.utils import  test
+
+
 
 
 
@@ -188,6 +191,10 @@ def OrderItemSave(request):
 
     cartitem = data['cartItems']
 
+
+
+    print(cartitem)
+
     customerinstance = Customer_Profile.objects.get(id=3)
     shippingAddressinstance = shippingAddress.objects.get(id=2)
     
@@ -236,7 +243,16 @@ def OrderItemSave(request):
                 qty = j['pqty']
             )
             product.totalqty -= j['pqty']
-            product.save() 
+            product.save()
+
+
+  
+
+        
+    test(cartitem , orderInstance , sellerid)
+
+  
+            
 
           
 
@@ -434,7 +450,66 @@ def RecentView(request):
         product.append(Product.objects.get(id=int(i)))    
     serializer = ProductSerializer(product , many=True).data
     return Response(serializer)
+
+
+
+
   
+
+
+
+@api_view(['GET' , 'POST'])
+def OrderTracking(request):
+
+    order = Order.objects.get(id=68)
+    print(order)
+    t= Tracking.objects.filter(order=order)     
+
+    serializer =  TrackingSerializer(t , many=True).data
+    return Response(serializer)
+
+
+
+@api_view(['GET' , 'POST'])
+def TrackingChecklist(request):
+
+    tracking = [365 , 366]
+    od = Order_Details.objects.filter(order_no=162).filter(seller=1)
+    plist = []
+
+    for i in od:
+        plist.append(i.product.id)
+    
+    print(plist)
+
+
+
+    e = []
+
+    for i in tracking:
+
+        for p in product:
+            pro = Product.objects.get(id=p)
+            pro =ProductSerializer(pro , many=False).data
+            order = Tracking_Details.objects.filter(tracking=i).filter(order_no=162).filter(seller=1).filter(product=p)
+
+            if len(order) == 0:
+
+                pass
+            else:                
+                e.append({str(i):{'Product':pro , 'qty':len(order)}})
+
+    print("final e" , e)     
+        
+       
+
+
+    return Response(e)
+
+
+
+
+
 
 
 

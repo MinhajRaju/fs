@@ -165,7 +165,8 @@ class shippingAddress(models.Model):
 class Order(models.Model):
     customer  = models.ForeignKey(Customer_Profile , on_delete=models.CASCADE , null=True , blank=True)
     shipping = models.ForeignKey(shippingAddress , on_delete=models.CASCADE , null=True , blank=True)
-    seller_id_array = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )   
+    seller_id_array = ArrayField(models.CharField(max_length=1000) , null=True , blank=True  )  
+    tracking_id_array  = ArrayField(models.IntegerField(default=0) , null=True , blank=True) 
     status = models.CharField(max_length=200 , null=True , blank=True)
     payment_type = models.CharField(max_length=200 , null=True , blank=True)
     payment_status = models.CharField(max_length=150 , null=True , blank=True)      
@@ -198,7 +199,30 @@ class Order_Details(models.Model):
 
 
     def __str__(self):
-        return self.product.title
+        return str(self.id)
+
+
+class Tracking(models.Model):
+     
+    order = models.ForeignKey(Order , on_delete=models.CASCADE , null=True , blank=True)
+    seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
+    order_items = ArrayField(models.IntegerField(max_length=1000) , null=True , blank=True  )
+    tracking_status = models.CharField(max_length=200 , null=True , blank=True)
+
+
+class Tracking_Details(models.Model):
+     
+    product=  models.ForeignKey(Product ,  on_delete=models.CASCADE , null=True , blank=True)
+    order_no= models.ForeignKey(Order , on_delete=models.CASCADE , null=True , blank=True)
+    seller = models.ForeignKey(Seller_Profile , on_delete=models.CASCADE , null=True , blank=True)
+    variation_id = models.ForeignKey(Product_Variation , on_delete=models.SET_NULL , null=True , blank=True)
+    customer  = models.ForeignKey(Customer_Profile , on_delete=models.CASCADE , null=True , blank=True)
+    shipping = models.ForeignKey(shippingAddress , on_delete=models.CASCADE , null=True , blank=True)
+    tracking = models.ForeignKey(Tracking , on_delete=models.CASCADE , null=True ,  blank=True) 
+    qty = models.IntegerField(default=0 , null=True ,  blank=True)  
+   
+
+
 
 
 

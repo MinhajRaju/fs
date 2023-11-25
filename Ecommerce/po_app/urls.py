@@ -39,6 +39,11 @@ urlpatterns = [
     path('recentp/' ,  views.RecentView , name='RelatedAttr'),
 
 
+    path('tracking/' ,  views.OrderTracking , name='RelatedAttr'),
+
+    path('trackingchecklist/' , views.TrackingChecklist , name="TrackingChcecklist")
+
+
 
 ]
 

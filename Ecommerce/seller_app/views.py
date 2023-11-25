@@ -204,7 +204,7 @@ def SellerWiseOrder(request ):
     if request.data['flag'] != None:
         Order_Details.objects.filter(id=request.data['id']).update(order_status=request.data['flag'])
 
-    seller = Seller_Profile.objects.get(id=1)
+    seller = Seller_Profile.objects.get(id=2)
     order = Order.objects.get(id=int(request.data['orderId']))
 
 
@@ -245,9 +245,22 @@ def OrderStatusUpdate(request ,id ):
 @api_view(['GET','POST'])
 def SellerOrderId(request ): 
 
-    order = Order.objects.filter(seller_id_array__contains=[1]) 
+
+    tracking  = Tracking.objects.filter(seller=1)
+
+    trackingdetails = Tracking_Details.objects.filter(seller=1)                                                       
+   
+
+  
+    order = Order.objects.filter(seller_id_array__contains=[1])
+    print(order)
+
+
     serializer  = OrderSerailizer(order , many=True).data
-    return Response(serializer)
+    serializer2 = TrackingSerializer(tracking  ,  many=True).data
+    serializer3 = TrackingDetailSerializer(trackingdetails , many=True).data
+    
+    return Response({'order':serializer , 'tracking':serializer2 , 'trackingdetails':serializer3 , })
 
 
 

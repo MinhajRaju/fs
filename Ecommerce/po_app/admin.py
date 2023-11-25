@@ -10,4 +10,6 @@ admin.site.register(shippingAddress)
 admin.site.register(Order)
 admin.site.register(Order_Details)
 admin.site.register(Services)
+admin.site.register(Tracking)
+admin.site.register(Tracking_Details)
 

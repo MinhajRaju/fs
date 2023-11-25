@@ -31171,7 +31171,7 @@ span.flatpickr-weekday {
   transition: 0.5s;
   background-size: 200% auto;
   color: white;
- 
+  vertical-align: middle;
   display: block;
   border: 0px;
   font-weight: 700;

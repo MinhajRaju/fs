@@ -45,3 +45,12 @@ class Size_Attr(models.Model):
 
     def __str__(self):
         return str(self.size)
+    
+
+
+class PackageSize(models.Model):
+    cateogry  = models.ForeignKey(Category , on_delete=models.CASCADE , null=True , blank=True)
+    size = models.CharField(max_length=150 , null=True , blank=True)
+
+    def __str__(self):
+        return str(self.size)

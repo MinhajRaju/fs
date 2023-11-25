@@ -167,7 +167,7 @@ export default connect(mapStateToProps)(class Dashboard extends React.Component 
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-3 col-4 text-end">
-                                                <a href="#" class="button-13"  style={{ width:"50%" , fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>View All</a>
+                                                <a href="#" class="button-87"  style={{ fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>View All</a>
                                             </div>
                                         </div>
                                         <div class="row row-cols-xl-6 row-cols-lg-3 g-2">
@@ -208,7 +208,7 @@ export default connect(mapStateToProps)(class Dashboard extends React.Component 
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-3 col-4 text-end">
-                                            <a href="#" class="button-13"  style={{ width:"50%" , fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>View All</a>
+                                            <a href="#" class="button-87"  style={{ fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>View All</a>
                                             </div>
                                         </div>
                                         <div class="row row-cols-xl-6 row-cols-lg-3 g-2">
@@ -218,7 +218,7 @@ export default connect(mapStateToProps)(class Dashboard extends React.Component 
                                             <Spinner />
                                         ) : (<div class="row align-items-center mb-6">
                                             <div class="col-xl-12 col-lg-3 col-4 text-center">
-                                                <button  onClick={() => store.dispatch(DashProductAction())} class="button-13" style={{ width:"9%" , fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>Load more</button>
+                                                <button  onClick={() => store.dispatch(DashProductAction())} class="button-87" style={{ textAlign:"center" , display:"inline-block", fontFamily:"Open sans ,sans-serif" , fontWeight:600}}>Load more</button>
                                             </div>
                                         </div>)}
                                     </div>

@@ -13,6 +13,7 @@ import AddProduct from "./screens/_AddProduct";
 import OrderList from "./screens/_OrderList";
 import OrderDetails from "./screens/_OrderDetails";
 import { NestedCategoryAction } from "./Actions/action";
+import LabelTracking from "./screens/_LabelTracking";
 
 
 export default class App extends React.Component {
@@ -45,7 +46,7 @@ export default class App extends React.Component {
             
          
             <Route element={<HCF/>} >
-
+            
             <Route exact path="/" element={<Dashboard />} />
 
             <Route exact path="/allp" element={<AllProduct />} />
@@ -53,10 +54,11 @@ export default class App extends React.Component {
             <Route exact path="/addp" element={<AddProduct/>} />
             <Route exact path="/ol" element={<OrderList/>} />
             <Route exact path="/od/:id" element={<OrderDetails/>} />
-            
+         
 
             </Route>
-
+           
+            <Route exact path="/labeltracking/:value/:idarray/" element={<LabelTracking/>} />
 
           </Routes>
 

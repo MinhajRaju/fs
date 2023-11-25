@@ -3,20 +3,24 @@ import React from 'react'
 import store from '../store'
 import { BrandTotalAction } from '../Actions/action';
 import { WarrantyAction } from '../Actions/action';
-import { Select  , Input ,Button ,message, Popconfirm} from 'antd';
+import { Select  , Input ,Button ,message, Popconfirm ,Tree  , Modal , Space} from 'antd';
 import { Cascader } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
+import { FolderDetailsAction } from "../Actions/action";
+import { MoveToFolderAction } from "../Actions/action";
+import { FolderImageAction } from '../Actions/action';
 import { MediaAction, MediaUploadAction ,MediaBulkAction } from "../Actions/action";
+
 import {connect} from 'react-redux'
 import ReactQuill , {Quill} from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageResize from 'quill-image-resize-module-react';
 import { getAdapter } from 'axios';
 Quill.register('modules/imageResize', ImageResize);
+const { DirectoryTree } = Tree;
 const mapStateToProps = (state) =>{
 
-  return {  CategoryData: state.NestedcategoryReducer.NestedCategoryData ,MediaData:state.MediaItemReducers.MediaData , BrandData: state.BrandTotalReducer.TotalBrand, Warranty:state.WarrantyReducer.Warranty}
+  return {  CategoryData: state.NestedcategoryReducer.NestedCategoryData ,MediaData:state.MediaItemReducers.MediaData , BrandData: state.BrandTotalReducer.TotalBrand, Warranty:state.WarrantyReducer.Warranty , FolderDetailsData:state.FolderDetailReducers.FolderDetails , FolderImageData:state.FolderImageReducers.FolderImageDetails}
 
 }
 
@@ -51,7 +55,24 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
           warranty:[],
           OpBrand:[],
-          NestedCat:[]
+          NestedCat:[],
+
+
+
+
+          images :[],
+   
+
+          folderDetails : [],
+          folderMoveDetails:[],
+          allImage:[],
+          folderImage:null,
+          isModalOpen:null,
+
+          selectfolderId:null,
+          folderId:null,
+
+          previewImageArray:[]
 
         } 
 
@@ -60,17 +81,34 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
 
     
-  
+   
 
     
-  handleSelect = (id) =>{
+  handleSelect = (id , thumbnail) =>{
+
+    console.log(id , thumbnail)
     
-    if(this.state.idArray.length < 8) {
+    if(this.state.idArray.length < 6) {
 
 
       this.setState((prevState) => ({
         idArray: [...prevState.idArray, id],
       }));
+
+
+      this.setState((prevState) => ({
+        previewImageArray: [...prevState.previewImageArray, thumbnail],
+      }));
+
+      console.log(this.state.allImage , "form handleselect")
+
+
+    
+
+
+
+
+
     } 
     else{
       console.log("Not More Than 8")
@@ -78,16 +116,24 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
 
   }
-    removeid = (id) => {
+    removeid = (id , thumbnail) => {
         
       const res = this.state.idArray.filter((item) => item !== id);
+     
+
+
+
+      const thumb = this.state.previewImageArray.filter((item) => item !== thumbnail);
   
       this.setState({ idArray: res });
+
+      this.setState({previewImageArray:thumb})
   
     }
 
     componentDidMount(){
       store.dispatch(MediaAction())
+      store.dispatch(FolderDetailsAction())
 
       
      store.dispatch(WarrantyAction())
@@ -130,16 +176,75 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
         })
      }, 2000);
+
+
+
+
+
+
+
+
+     
+     setTimeout(() => {
+      this.props.FolderDetailsData.map((data)=>{
+      
+ 
+
+        this.setState(prevState =>({
+ 
+          folderDetails:[...prevState.folderDetails ,  {'title':data.title , 'key':data.id }]
+       }))
+ 
+       })
+
+       this.setState({allImage:this.props.MediaData})
+
+
+       this.props.FolderDetailsData.map((data)=>{
+
+        this.setState(prevState =>({
+
+          folderMoveDetails:[...prevState.folderMoveDetails  , {'value':data.id , 'label':data.title}]
+        }))
+
+      })
+     
+    }, 2000);
+
+
+
    
      
     }
+
+    
+  showModal = () => {
+  
+    this.setState({isModalOpen:true})
+  };
+  handleOk = () => {
+    this.setState({isModalOpen:false})
+  };
+  handleCancel = () => {
+    this.setState({isModalOpen:false})
+  };
+ 
+  filterOption = (input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+
+  handleImageMove = (value) =>{
+
+      this.setState({folderId:value})  
+
+  }
 
 
     addClick = (e) =>{
       console.log("hit")
       this.setState(prevState => ({ 
         variation: [...prevState.variation, {}],
-        idArray:[]  
+        idArray:[],
+        previewImageArray:[]  
           
       }))
   }
@@ -156,11 +261,18 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
   }
   else{
     let stock = [...this.state.variation];
-    stock[index] = {...stock[index], "image":this.state.idArray};
-    this.setState({ variation:stock , idArray:[] });
+    console.log("hiiittt")
+    stock[index] = {...stock[index], "image":this.state.idArray , "preview":this.state.previewImageArray};
+    this.setState({ variation:stock  });
 
   }
   
+
+ }
+ quill = (value) =>{
+
+  console.log(value,"ASDfasdfas")
+
 
  }
 
@@ -186,27 +298,7 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
    }
 
 
-   const fileList = [
-    {
-      uid: '0',
-      name: 'xxx.png',
-      status: 'uploading',
-      percent: 33,
-    },
-    {
-      uid: '-1',
-      name: 'yyy.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-    {
-      uid: '-2',
-      name: 'zzz.png',
-      status: 'error',
-    },
-  ];
-
+  
   
 
 
@@ -220,11 +312,18 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
 
     res.map((data)=>{
+      console.log(data , data)
 
-      if(data.image !=undefined ){
-        this.setState({idArray:data.image})
+
+      if(Object.keys(data).length === 0){
+        this.setState({idArray:[] , previewImageArray:[]})
+
+      }else{
+
+        this.setState({idArray:data.image, previewImageArray:data.preview})
       }
 
+    
     })
 
 
@@ -245,8 +344,9 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
 <>
 <div class="mb-3 col-lg-12" style={{marginTop:"8px"}} >
-                                <a name="image" type="number" data-bs-toggle="modal" data-bs-target=".gd-example-modal-xl" style={{cursor:"pointer"}} onClick={() => this.atest(index)} ><i class="fa-solid fa-image" style={{color:"#FD5417"}}></i><span style={{padding:"15px" , color:"#FD5417"}}>Media Libary</span></a>
-                                | &nbsp; <a name="image" type="number" data-bs-toggle="modal" data-bs-target=".gd-example-modal-xl" style={{cursor:"pointer"}} onClick={() => this.atest(index)} ><i class="fa-solid fa-image" style={{color:"#FD5417"}}></i><span style={{padding:"15px" , color:"#FD5417"}}>Media Libary</span></a>
+  
+          <a name="image" type="number" data-bs-toggle="modal" data-bs-target=".gd-example-modal-xl" style={{cursor:"pointer"}} onClick={() => this.atest(index)} ><i class="fa-solid fa-image" style={{color:"#FD5417"}}></i><span style={{padding:"15px" , color:"#FD5417"}}>Media Libary</span></a>
+                                | &nbsp; <a  style={{cursor:"pointer"}}  onClick={()=> this.showModal()}  ><i class="fa-solid fa-image" style={{color:"#FD5417"}}></i><span style={{padding:"15px" , color:"#FD5417"}}>Local upload</span></a>
             
           
                     </div>
@@ -433,6 +533,12 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
 
   } 
 
+  flushFolder = () =>{
+
+    this.setState({folderImage:null})
+
+  }
+
 
     render(){
 
@@ -455,10 +561,49 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
             this.state.warranty,
             this.state.OpBrand,
 
-            this.state.NestedCat
+            this.state.NestedCat,
+
+
+            this.state.previewImageArray
         
         
         )
+
+        const moveToFolder = () =>{
+
+
+          store.dispatch(MoveToFolderAction(this.state.selectfolderId , this.state.folderId , this.state.idArray))
+          this.setState({idArray:[]})
+      
+          console.log(this.state.selectfolderId , this.state.folderId , this.state.idArray)
+  
+         
+         
+          setTimeout(() => {
+            store.dispatch(FolderImageAction(this.state.selectfolderId))
+            
+      
+          }, 1000);
+  
+          setTimeout(() => {
+            this.setState({folderImage:this.props.FolderImageData , selectfolderId:this.state.selectfolderId})
+  
+            console.log("hiiiiiiting")
+      
+          }, 2000);
+         
+      
+        }
+        const onSelect = (keys, info) => {
+          console.log('Trigger Select', keys, info);
+      
+          store.dispatch(FolderImageAction(keys[0]))
+  
+          setTimeout(() => {
+            this.setState({folderImage:this.props.FolderImageData , selectfolderId:keys[0]})
+  
+          }, 1000);
+        };
 
 
 
@@ -486,7 +631,7 @@ export default connect(mapStateToProps)(class AddProdcut extends React.Component
              
                   <div class="mb-3 col-lg-0">
                     <label class="form-label">Title</label><br/>
-                   <Input placeholder="Basic usage" style={{
+                   <Input onChange={(e)=>  this.setState({title:e.target.value})} placeholder="Basic usage" style={{
 width: '60%',
 
 }} />
@@ -645,7 +790,7 @@ width: '60%',
 
                   <div class="mb-3 col-lg-0">
                     <label class="form-label">Highlights</label><br/>
-                    <Input placeholder="Eg : Red,Durable,Fashionable" style={{
+                    <Input onChange={(e)=>  this.setState({highlights:e.target.value})} placeholder="Eg : Red,Durable,Fashionable" style={{
 width: '60%',
 
 }} />
@@ -654,7 +799,7 @@ width: '60%',
                     
                     <div class="mb-3 col-lg-0">
                       <label for="textarea-input" class="form-label">Short Description</label><br/>
-                      <Input.TextArea placeholder="Short Description : Red,Durable,Fashionable" style={{
+                      <Input.TextArea  onChange={(e)=>  this.setState({sdes:e.target.value})} placeholder="Short Description : Red,Durable,Fashionable" style={{
 width: '60%',
 
 }}autoSize={{ minRows: 3, maxRows: 5 }} />
@@ -663,17 +808,19 @@ width: '60%',
 
                     <div class="mb-3 col-lg-0">
                       <label for="textarea-input" class="form-label">Description</label>
-                      <ReactQuill   style={{width:"70%"}} value={this.state.text}
+                      <ReactQuill   style={{width:"70%"}} 
                         modules={this.modules}
                         formats={this.formats}
+
+                        value={this.state.ldes}
                     
 
-                        onChange={this.handleChange} />
+                        onChange={this.quill} />
                     </div>
                    
                     <div class="mb-3 col-lg-0">
                       <label for="textarea-input" class="form-label">Specification</label><br/>
-                      <Input placeholder="Eg : key,value,key,value -> Ram,16gb,Weight,200kg" style={{
+                      <Input  onChange={(e)=>  this.setState({spec:e.target.value})} placeholder="Eg : key,value,key,value -> Ram,16gb,Weight,200kg" style={{
 width: '60%',
 
 }}
@@ -737,6 +884,51 @@ width: '60%',
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="row">
 
 <div class="col-lg-12 col-12">
@@ -744,7 +936,7 @@ width: '60%',
   <div class="card mb-6 card-lg">
 
     <div class="card-body p-6 ">
-                   <Button type="dashed" danger onClick={this.addClick}>
+                   <Button type="dashed" danger onClick={() => this.addClick()}>
       Add Sku
     </Button> 
  
@@ -759,7 +951,7 @@ width: '60%',
 
       <div style={{width:"20%"}} class="input-group mb-3">
                    
-                
+   
                    <div class="modal fade gd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                      <div class="modal-dialog modal-xl">
                        <div class="modal-content" style={{margin:"8%" , padding:"5px"}}>
@@ -767,7 +959,374 @@ width: '60%',
                        <button type="button" class="button-13" data-bs-dismiss="modal" style={{width:"auto"}} onClick={() => this.test(this.state.Mediaid , this.state.flag)}> Save </button>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-                       <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-sm-2 g-2">
+
+
+
+
+
+
+                        <div class="container">
+
+    
+     <div class="row " style={{border:"1px solid #f0f0f0"}}>
+    
+
+
+     <div class="col-xl-3 col-12 mb-5"  style={{borderRight:"1px solid #f0f0f0"}}>
+    <a style={{cursor:"pointer"}} onClick={this.flushFolder}>All Image</a>
+     <DirectoryTree
+      style={{color:"gray" }}
+      option={true}
+          
+      multiple
+      defaultExpandAll
+      onSelect={onSelect}
+  
+      treeData={this.state.folderDetails}
+    />  
+      </div>
+       <div class="col-xl-9 col-12 mb-5">
+     
+         <div class="card h-100 card-lg">
+          
+           
+
+
+
+           <div class="card-body p-0">
+
+            <div class="row" style={{borderBottom:"1px solid #f0f0f0"}}>
+
+           
+                  <div class="col-12 mb-3 col-lg-0" style={{marginTop:"20px"}}>
+            
+         
+
+
+
+
+
+
+
+
+                <div class="row row-cols-xl-12 row-cols-lg-6 row-cols-sm-2 g-2">
+
+                      
+
+
+{this.state.previewImageArray.length !== 0   ? this.state.previewImageArray.map((data)=>{
+
+      
+return (
+
+      
+
+
+      
+      
+
+
+
+<div  class="card-body">
+
+<div  class="text-center position-relative " style={{height:"2pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+
+
+<img 
+src={`${data}`}  />
+
+
+
+
+
+</div>
+
+<br/>
+
+<div class="row">
+<div class="col-6">
+
+</div>
+<div class="col-6">
+
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+)
+
+
+
+}) :"No image seleceted"}
+            
+
+
+
+
+        </div>
+
+
+
+
+
+
+{/*   <button onClick={()=>  this.bulkRemove(this.state.idArray)} class="btn"><i style={{color:"red"}} class="fa fa-trash" aria-hidden="true"></i></button> */}
+      <Modal footer={false} title="Basic Modal" open={this.state.isModalOpen} onOk={()=> this.handleOk()} onCancel={()=> this.handleCancel()}>
+      <form onSubmit={this.handleSubmit}>
+       
+       <input onChange={(e)=> this.setState({images:e.target.files})} class="form-control" type="file" id="formFile" multiple name='images'  style={{width:"100%"}} /><br/>
+       
+       <Space>
+       <button  type="submit" onClick={ ()=> this.handleOk()} class="button-13" style={{width:"auto"}}>Confirm</button> 
+        <button   onClick={()=> this.handleCancel()} class="button-13" style={{width:"auto"}} >Cancle</button> 
+
+       </Space>
+
+       </form>
+      </Modal>
+
+
+  
+
+  </div>
+
+            </div>
+
+
+           <div class="row" style={{padding:"10px"}} >
+
+
+           
+                  
+     
+  <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-sm-2 g-2">
+
+                      
+
+
+                        {this.state.folderImage == undefined   ? this.state.allImage.map((data)=>{
+
+                              
+return (
+
+                              
+
+
+                              
+                              
+                       
+
+  <div class="card card-product mb-lg-12"  style={{border:"none" }}>
+    <div  class="card-body">
+    <div class="form-check">
+<input onClick={(e) =>
+            this.state.idArray == []
+              ? null
+              : this.state.idArray.includes(data.id) || this.state.previewImageArray.includes(data.thumbnail)
+              ? this.removeid(data.id ,data.thumbnail)
+              : this.handleSelect(data.id , data.thumbnail)
+          } class="form-check-input" type="checkbox" value={`${data.id}`} id="customerOne" style={{padding:"7px"}}  checked={this.state.idArray.length == 0 ? false :this.state.idArray.includes(data.id) ? true : false } />
+<label class="form-check-label" for="customerOne">
+
+</label>
+
+</div>
+<br/>
+        <div 
+            
+            onClick={(e) =>
+              this.state.idArray == []
+                ? null
+                : this.state.idArray.includes(data.id) || this.state.previewImageArray.includes(data.thumbnail)
+                ? this.removeid(data.id ,data.thumbnail)
+                : this.handleSelect(data.id, data.thumbnail)
+            }  class="text-center position-relative " style={{height:"4pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+            
+        
+            <img 
+            src={`${data.thumbnail}`}  />
+            
+
+   
+
+
+        </div>
+
+        <br/>
+
+       <div class="row">
+        <div class="col-6">
+       
+        </div>
+        <div class="col-6">
+        
+        </div>
+       </div>
+     
+        
+
+</div>
+      
+
+
+
+</div>
+
+
+
+)
+
+
+
+                        }) : this.state.folderImage.image.map((data)=>{
+
+                          return (
+
+                              
+
+
+                              
+                              
+                       
+
+                            <div class="card card-product mb-lg-12"  style={{border:"none" }}>
+                              <div  class="card-body">
+                              <div class="form-check">
+                          <input onClick={(e) =>
+                                      this.state.idArray == []
+                                        ? null
+                                        :  this.state.idArray.includes(data.id) || this.state.previewImageArray.includes(data.thumbnail)
+                                        ? this.removeid(data.id ,data.thumbnail)
+                                        : this.handleSelect(data.id,data.thumbnail)
+                                    } class="form-check-input" type="checkbox" value={`${data.id}`} id="customerOne" style={{padding:"7px"}}  checked={this.state.idArray.length == 0 ? false :this.state.idArray.includes(data.id) ? true : false } />
+                          <label class="form-check-label" for="customerOne">
+                          
+                          </label>
+                          
+                          </div>
+                          <br/>
+                                  <div 
+                                      
+                                      onClick={(e) =>
+                                        this.state.idArray == []
+                                          ? null
+                                          : this.state.idArray.includes(data.id) || this.state.previewImageArray.includes(data.thumbnail)
+                                          ? this.removeid(data.id , data.thumbnail)
+                                          : this.handleSelect(data.id ,data.thumbnail)
+                                      }  class="text-center position-relative " style={{height:"4pc" , cursor:"pointer" ,justifyContent:"center", display:"flex" }}>
+                                      
+                                  
+                                      <img 
+                                      src={`${data.thumbnail}`}  />
+                                      
+                          
+                             
+                          
+                          
+                                  </div>
+                          
+                                  <br/>
+                          
+                                 <div class="row">
+                                  <div class="col-6">
+                                  
+                                  </div>
+                                  <div class="col-6">
+                                 
+                                  </div>
+                                 </div>
+                               
+                                  
+                          
+                          </div>
+                                
+                          
+                          
+                          
+                          </div>
+                          
+                          
+                          
+                          )
+
+
+
+                        })
+                        
+                        
+                        
+                        }
+               
+                            
+                            
+                          
+               </div>
+                         
+                          
+                            
+                            
+                            
+                        </div>
+   
+
+            
+           </div>
+          
+         </div>
+
+       </div>
+
+     </div>
+   </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                       {/* <div class="row row-cols-xl-6 row-cols-lg-5 row-cols-sm-2 g-2">
                                            {this.props.MediaData == undefined ? null : this.props.MediaData.map((data)=>{
                    
                                                return (
@@ -847,7 +1406,7 @@ width: '60%',
                     
                                        
                                              
-                                  </div>
+                                  </div> */}
                        </div>
                                               
                      </div>
@@ -857,7 +1416,7 @@ width: '60%',
                      
                     
                    
-                                    </div>
+                          
 
 
 </div>
