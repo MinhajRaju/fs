@@ -471,40 +471,59 @@ def OrderTracking(request):
 
 
 @api_view(['GET' , 'POST'])
-def TrackingChecklist(request):
+def TrackingChecklist(request): 
 
-    tracking = [365 , 366]
-    od = Order_Details.objects.filter(order_no=162).filter(seller=1)
+
+    order = Order.objects.get(id=166)
+    Oserializer  = OrderSerailizer(order , many=False).data
+
+
+    orderDetails = Order_Details.objects.filter(order_no=order.id).filter(seller=1)
+    orderDetails = OrderDetailSerializer(orderDetails , many=True).data
+
+
+    
+
+ 
+    od = Order_Details.objects.filter(order_no=166).filter(seller=1)
     plist = []
 
     for i in od:
         plist.append(i.product.id)
     
-    print(plist)
+    print(plist , "plist")
 
-
+    seller = Seller_Profile.objects.get(id=1)
+    seller = SellerProfileSerializer(seller , many=False).data
 
     e = []
+    order = [{'o':Oserializer ,'od':orderDetails , 'seller':seller }]
 
-    for i in tracking:
+    for i in request.data['id']:
 
-        for p in product:
+        for p in plist:
             pro = Product.objects.get(id=p)
-            pro =ProductSerializer(pro , many=False).data
-            order = Tracking_Details.objects.filter(tracking=i).filter(order_no=162).filter(seller=1).filter(product=p)
+          
+            pro = ProductSerializer(pro , many=False).data
 
-            if len(order) == 0:
+          
+            td = Tracking_Details.objects.filter(tracking=i).filter(order_no=166).filter(seller=1).filter(product=p)
+    
+            print(td)
+
+            if len(td) == 0:
 
                 pass
             else:                
-                e.append({str(i):{'Product':pro , 'qty':len(order)}})
+              
+                e.append({str(i):{'Product':pro , 'qty':len(td)  }})
 
     print("final e" , e)     
-        
+
        
 
 
-    return Response(e)
+    return Response([e ,order] )
 
 
 

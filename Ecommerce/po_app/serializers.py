@@ -148,7 +148,7 @@ class OrderSerailizer(serializers.ModelSerializer):
     
     class Meta:
         model = Order
-        fields = ['id' ,'customer' , 'shipping' , 'order' , 'order_date' , 'tracking']
+        fields = ['id' ,'customer' , 'shipping' , 'order' , 'order_date' , 'tracking' , 'seller_id_array' , 'shipping_cost']  
     
     
     def get_customer(self, obj):

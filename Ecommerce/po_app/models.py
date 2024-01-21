@@ -172,6 +172,7 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=150 , null=True , blank=True)      
     order_date = models.DateTimeField(auto_now_add=True , blank=True , null=True)
     update_date = models.DateTimeField(auto_now=True, blank=True , null=True)
+    shipping_cost  = models.IntegerField(default=0 , null=True , blank=True)    
 
 
  

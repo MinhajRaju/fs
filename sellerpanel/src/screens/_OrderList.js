@@ -42,7 +42,7 @@ export default connect(mapStateToProps)(class OrderList extends React.Component{
         setTimeout(() => {
           
             this.setState({order:this.props.SellerOrder.order , tracking:this.props.SellerOrder.tracking , trackingdetails:this.props.SellerOrder.trackingdetails})
-        }, 6000);
+        }, 10000);
        
         store.dispatch(StatusLengthAction())
         
@@ -60,8 +60,13 @@ export default connect(mapStateToProps)(class OrderList extends React.Component{
 
       console.log("fire" , this.state.idArray)
 
+      if(value == "chekclist"){
+        window.location.replace(`/labeltracking/${value}/${this.state.idArray}/`)
 
-      window.location.replace(`/labeltracking/${value}/${this.state.idArray}/`)
+      }
+
+
+     
 
 
     }
@@ -302,7 +307,7 @@ export default connect(mapStateToProps)(class OrderList extends React.Component{
       
     style={{width:"50%"}}  
 
-    options={[{value:"checklist" , label:"Print selected checklist"},{value:"allchekclist" , label:"Print selected all checklist"},{value:"chekclist with label" , label:"Print selected checklist with label"}]}
+    options={[{value:"checklist" , label:"Print selected checklist"},{value:"invoice" , label:"Print invoice"},{value:"checklist&invoice" , label:"Print chekclist & invoice"}]}
     
     />
 

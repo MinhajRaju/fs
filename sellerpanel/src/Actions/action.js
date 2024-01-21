@@ -13,7 +13,8 @@ import { SELLER_RELETAD_PRODUCT,
     WARRANTY_SUCCESS,
     FOLDER_DETAILS,
     SELECT_FOLDER_IMG,
-    MOVE_TO_FOLDER
+    MOVE_TO_FOLDER,
+    TRACKING_CHECKLIST
 
 
 
@@ -524,6 +525,47 @@ export const MoveToFolderAction = (selectedFolder , moveFolder , dataId) => asyn
    dispatch({
 
     type: MOVE_TO_FOLDER,
+    payload:data
+   })
+
+
+
+
+
+}
+
+
+
+
+
+
+
+export const TrackingCheckListAction = (id) => async (dispatch ) => {
+
+
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }   
+
+    const parameter ={
+       id
+    }
+
+
+    console.log('id come aform action ',id)
+  
+  
+  
+
+
+   const {data} =  await axios.post(`/api/po/trackingchecklist/`  , parameter  ,config)
+
+   dispatch({
+
+    type: TRACKING_CHECKLIST,
     payload:data
    })
 

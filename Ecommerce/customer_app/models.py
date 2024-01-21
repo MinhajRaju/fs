@@ -13,6 +13,8 @@ class Customer_Profile(models.Model):
         return self.user.username
     
 from po_app.models import Product 
+
+
 class Rating_Comment(models.Model):
     product_id  = models.ForeignKey(Product , on_delete=models.CASCADE)
     customer  = models.ForeignKey(Customer_Profile , on_delete=models.CASCADE , null=True , blank=True)

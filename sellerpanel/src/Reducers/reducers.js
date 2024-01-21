@@ -16,7 +16,8 @@ import {
     WARRANTY_SUCCESS,
     FOLDER_DETAILS,
     SELECT_FOLDER_IMG,
-    MOVE_TO_FOLDER
+    MOVE_TO_FOLDER,
+    TRACKING_CHECKLIST,
 
 
 
@@ -234,6 +235,25 @@ export const MoveFolderReducers = (state={} , action) => {
 
 
 }
+
+
+
+export const TrackingCheckListReducers = (state={} , action) => {
+
+
+    switch(action.type){
+
+        case TRACKING_CHECKLIST:
+            return {loading:false , CheckList:action.payload}
+
+        default:
+            return state
+    }
+
+
+
+}
+
 
 
 

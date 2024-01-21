@@ -16,6 +16,7 @@ import { FolderDetailReducers } from './Reducers/reducers'
 
 import { FolderImageReducers } from './Reducers/reducers'
 import { MoveFolderReducers } from './Reducers/reducers'
+import { TrackingCheckListReducers } from './Reducers/reducers'
 
 const reducer = combineReducers({
 
@@ -31,7 +32,8 @@ const reducer = combineReducers({
     WarrantyReducer,
     FolderDetailReducers,
     FolderImageReducers,
-    MoveFolderReducers
+    MoveFolderReducers,
+    TrackingCheckListReducers
     
 })
 
